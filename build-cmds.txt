@@ -1,0 +1,3 @@
+Mac OS:   b2 -q release address-model=32_64 toolset=clang
+Windows:  b2 -q release address-model=64,32 toolset=msvc-14.1
+Linux:    b2 -q release address-model=64,32 toolset=gcc

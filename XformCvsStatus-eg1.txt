@@ -1,0 +1,97 @@
+$ cvs st 2>&1 | grep '^\?'
+? .cvsignore
+? AboutDlg.cpp
+? AboutDlg.h
+? CdtStartColumnHeadingDiagram.pdf
+? CdtStartColumnHeadingDiagram.tex
+? CountOf.h
+? DCSelector.h
+? EpochTime.cpp
+? EpochTime.h
+? TimeInterval.cpp
+? TimeInterval.h
+? TimeSeries.cpp
+? TimeSeries.h
+? UserImages.bmp
+? Util.cpp
+? Util.h
+? targetver.h
+? res/Toolbar256.bmp
+
+
+
+$ cvs st 2>&1 | grep '^File: ' | grep -v 'Status: Up-to-date'
+File: .cvsignore       	Status: Locally Added
+File: AboutDlg.cpp     	Status: Locally Added
+File: AboutDlg.h       	Status: Locally Added
+File: ArchiveDlg.cpp   	Status: Locally Modified
+File: ArchiveDlg.h     	Status: Locally Modified
+File: BTRFrequency.cpp 	Status: Locally Modified
+File: BTRFrequency.h   	Status: Locally Modified
+File: BTRFrequency.htm 	Status: Locally Modified
+File: BrowseFolder.cpp 	Status: Locally Modified
+File: BrowseFolder.h   	Status: Locally Modified
+File: CTSOption.cpp    	Status: Locally Modified
+File: CTSOption.h      	Status: Locally Modified
+File: CdtStart.2003.sln	Status: Locally Modified
+File: CdtStart.2003.vcproj	Status: Locally Modified
+File: CdtStart.cpp     	Status: Locally Modified
+File: CdtStart.h       	Status: Locally Modified
+File: CdtStart.rc      	Status: Locally Modified
+File: CdtStart.sln     	Status: Locally Modified
+File: CdtStart.vcproj  	Status: Locally Modified
+File: CdtStartDoc.cpp  	Status: Locally Modified
+File: CdtStartDoc.h    	Status: Locally Modified
+File: CdtStartView.cpp 	Status: Locally Modified
+File: CdtStartView.h   	Status: Locally Modified
+File: CdtStarter.cpp   	Status: Locally Modified
+File: CdtStarter.h     	Status: Locally Modified
+File: CountOf.h        	Status: Locally Added
+File: DCSelector.h     	Status: Locally Added
+File: DisplayOption.cpp	Status: Locally Modified
+File: DisplayOption.h  	Status: Locally Modified
+File: EpochTime.cpp    	Status: Locally Added
+File: EpochTime.h      	Status: Locally Added
+File: HidarInputSetting.cpp	Status: Locally Modified
+File: HidarInputSetting.h	Status: Locally Modified
+File: HidarProcDlg.cpp 	Status: Locally Modified
+File: HidarProcDlg.h   	Status: Locally Modified
+File: MainFrm.cpp      	Status: Locally Modified
+File: MainFrm.h        	Status: Locally Modified
+File: NormParam.cpp    	Status: Locally Modified
+File: NormParam.h      	Status: Locally Modified
+File: NormParam.htm    	Status: Locally Modified
+File: NormType.h       	Status: Locally Modified
+File: OutputSelection.cpp	Status: Locally Modified
+File: OutputSelection.h	Status: Locally Modified
+File: OutputSelection.htm	Status: Locally Modified
+File: ReadMe.txt       	Status: Locally Modified
+File: SpeedupFactor.cpp	Status: Locally Modified
+File: SpeedupFactor.h  	Status: Locally Modified
+File: SpeedupFactor.htm	Status: Locally Modified
+File: TimeInterval.cpp 	Status: Locally Added
+File: TimeInterval.h   	Status: Locally Added
+File: TimeSeries.cpp   	Status: Locally Added
+File: TimeSeries.h     	Status: Locally Added
+File: UserChoiceDlg.cpp	Status: Locally Modified
+File: UserChoiceDlg.h  	Status: Locally Modified
+File: UserImages.bmp   	Status: Locally Added
+File: Util.cpp         	Status: Locally Added
+File: Util.h           	Status: Locally Added
+File: aaps.ini         	Status: Locally Modified
+File: aaps_digital.ini 	Status: Locally Modified
+File: aaps_mra4.ini    	Status: Locally Modified
+File: dct.ini          	Status: Locally Modified
+File: resource.h       	Status: Locally Modified
+File: stdafx.cpp       	Status: Locally Modified
+File: stdafx.h         	Status: Locally Modified
+File: targetver.h      	Status: Locally Added
+File: CdtStart.manifest	Status: Locally Modified
+File: Toolbar.bmp      	Status: Locally Modified
+File: Toolbar256.bmp   	Status: Locally Added
+
+
+
+$ cvs st 2>&1 | grep '^File: ' | grep -v 'Status: Up-to-date'
+File: no file CdtStart.2003.sln		Status: Locally Removed
+File: no file CdtStart.2003.vcproj		Status: Locally Removed

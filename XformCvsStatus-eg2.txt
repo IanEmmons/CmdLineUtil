@@ -1,0 +1,645 @@
+Welcome to BBN: Unauthorized access is prohibited.
+? CdtStartColumnHeadingDiagram.pdf
+? CdtStartColumnHeadingDiagram.tex
+? res/foo.txt
+cvs status: Examining .
+===================================================================
+File: .cvsignore       	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/.cvsignore,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: AboutDlg.cpp     	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/AboutDlg.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: AboutDlg.h       	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/AboutDlg.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: ArchiveDlg.cpp   	Status: Up-to-date
+
+   Working revision:	1.26
+   Repository revision:	1.26	/home/CVSTREE/SPE/CdtStart/ArchiveDlg.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: ArchiveDlg.h     	Status: Up-to-date
+
+   Working revision:	1.19
+   Repository revision:	1.19	/home/CVSTREE/SPE/CdtStart/ArchiveDlg.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: BTRFrequency.cpp 	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/BTRFrequency.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: BTRFrequency.h   	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/BTRFrequency.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: BTRFrequency.htm 	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/BTRFrequency.htm,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: BrowseFolder.cpp 	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/BrowseFolder.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: BrowseFolder.h   	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/BrowseFolder.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CTSOption.cpp    	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/CTSOption.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CTSOption.h      	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/CTSOption.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: no file CdtStart.2003.sln		Status: Locally Removed
+
+   Working revision:	-1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/CdtStart.2003.sln,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: no file CdtStart.2003.vcproj		Status: Locally Removed
+
+   Working revision:	-1.4
+   Repository revision:	1.4	/home/CVSTREE/SPE/CdtStart/CdtStart.2003.vcproj,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CdtStart.cpp     	Status: Up-to-date
+
+   Working revision:	1.12
+   Repository revision:	1.12	/home/CVSTREE/SPE/CdtStart/CdtStart.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CdtStart.h       	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/CdtStart.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CdtStart.rc      	Status: Up-to-date
+
+   Working revision:	1.30
+   Repository revision:	1.30	/home/CVSTREE/SPE/CdtStart/CdtStart.rc,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CdtStart.sln     	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/CdtStart.sln,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CdtStart.vcproj  	Status: Up-to-date
+
+   Working revision:	1.14
+   Repository revision:	1.14	/home/CVSTREE/SPE/CdtStart/CdtStart.vcproj,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CdtStartDoc.cpp  	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/CdtStartDoc.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CdtStartDoc.h    	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/CdtStartDoc.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CdtStartView.cpp 	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/CdtStartView.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CdtStartView.h   	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/CdtStartView.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CdtStarter.cpp   	Status: Up-to-date
+
+   Working revision:	1.63
+   Repository revision:	1.63	/home/CVSTREE/SPE/CdtStart/CdtStarter.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CdtStarter.h     	Status: Up-to-date
+
+   Working revision:	1.21
+   Repository revision:	1.21	/home/CVSTREE/SPE/CdtStart/CdtStarter.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: CountOf.h        	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/CountOf.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: DCSelector.h     	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/DCSelector.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: DisplayOption.cpp	Status: Up-to-date
+
+   Working revision:	1.7
+   Repository revision:	1.7	/home/CVSTREE/SPE/CdtStart/DisplayOption.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: DisplayOption.h  	Status: Up-to-date
+
+   Working revision:	1.4
+   Repository revision:	1.4	/home/CVSTREE/SPE/CdtStart/DisplayOption.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: EpochTime.cpp    	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/EpochTime.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: EpochTime.h      	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/EpochTime.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: HidarInputSetting.cpp	Status: Up-to-date
+
+   Working revision:	1.7
+   Repository revision:	1.7	/home/CVSTREE/SPE/CdtStart/HidarInputSetting.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: HidarInputSetting.h	Status: Up-to-date
+
+   Working revision:	1.6
+   Repository revision:	1.6	/home/CVSTREE/SPE/CdtStart/HidarInputSetting.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: HidarProcDlg.cpp 	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/HidarProcDlg.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: HidarProcDlg.h   	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/HidarProcDlg.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: MainFrm.cpp      	Status: Up-to-date
+
+   Working revision:	1.26
+   Repository revision:	1.26	/home/CVSTREE/SPE/CdtStart/MainFrm.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: MainFrm.h        	Status: Up-to-date
+
+   Working revision:	1.16
+   Repository revision:	1.16	/home/CVSTREE/SPE/CdtStart/MainFrm.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: NormParam.cpp    	Status: Up-to-date
+
+   Working revision:	1.22
+   Repository revision:	1.22	/home/CVSTREE/SPE/CdtStart/NormParam.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: NormParam.h      	Status: Up-to-date
+
+   Working revision:	1.15
+   Repository revision:	1.15	/home/CVSTREE/SPE/CdtStart/NormParam.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: NormParam.htm    	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/NormParam.htm,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: NormType.h       	Status: Up-to-date
+
+   Working revision:	1.14
+   Repository revision:	1.14	/home/CVSTREE/SPE/CdtStart/NormType.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: OutputSelection.cpp	Status: Up-to-date
+
+   Working revision:	1.4
+   Repository revision:	1.4	/home/CVSTREE/SPE/CdtStart/OutputSelection.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: OutputSelection.h	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/OutputSelection.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: OutputSelection.htm	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/OutputSelection.htm,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: ReadMe.txt       	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/ReadMe.txt,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: SpeedupFactor.cpp	Status: Up-to-date
+
+   Working revision:	1.4
+   Repository revision:	1.4	/home/CVSTREE/SPE/CdtStart/SpeedupFactor.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: SpeedupFactor.h  	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/SpeedupFactor.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: SpeedupFactor.htm	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/SpeedupFactor.htm,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: TimeInterval.cpp 	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/TimeInterval.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: TimeInterval.h   	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/TimeInterval.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: TimeSeries.cpp   	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/TimeSeries.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: TimeSeries.h     	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/TimeSeries.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: UserChoiceDlg.cpp	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/UserChoiceDlg.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: UserChoiceDlg.h  	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/UserChoiceDlg.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: UserImages.bmp   	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/UserImages.bmp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: Util.cpp         	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/Util.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: Util.h           	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/Util.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: aaps.ini         	Status: Up-to-date
+
+   Working revision:	1.7
+   Repository revision:	1.7	/home/CVSTREE/SPE/CdtStart/aaps.ini,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: aaps_digital.ini 	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/aaps_digital.ini,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: aaps_mra4.ini    	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/aaps_mra4.ini,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: dct.ini          	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/dct.ini,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: resource.h       	Status: Up-to-date
+
+   Working revision:	1.24
+   Repository revision:	1.24	/home/CVSTREE/SPE/CdtStart/resource.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: stdafx.cpp       	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/stdafx.cpp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: stdafx.h         	Status: Up-to-date
+
+   Working revision:	1.3
+   Repository revision:	1.3	/home/CVSTREE/SPE/CdtStart/stdafx.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+===================================================================
+File: targetver.h      	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/targetver.h,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+
+cvs status: Examining res
+===================================================================
+File: CdtStart.ico     	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/res/CdtStart.ico,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	-kb
+
+===================================================================
+File: CdtStart.manifest	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/res/CdtStart.manifest,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	-kb
+
+===================================================================
+File: CdtStart.rc2     	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/res/CdtStart.rc2,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	-kb
+
+===================================================================
+File: CdtStartDoc.ico  	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/res/CdtStartDoc.ico,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	-kb
+
+===================================================================
+File: Toolbar.bmp      	Status: Up-to-date
+
+   Working revision:	1.2
+   Repository revision:	1.2	/home/CVSTREE/SPE/CdtStart/res/Toolbar.bmp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	-kb
+
+===================================================================
+File: Toolbar256.bmp   	Status: Up-to-date
+
+   Working revision:	1.1
+   Repository revision:	1.1	/home/CVSTREE/SPE/CdtStart/res/Toolbar256.bmp,v
+   Sticky Tag:		(none)
+   Sticky Date:		(none)
+   Sticky Options:	(none)
+

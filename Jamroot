@@ -1,0 +1,148 @@
+
+# Note:  The "BOOST_RANGE_ENABLE_CONCEPT_ASSERT" compiler option
+# is included as a workaround to the Boost issue detailed in Boost
+# ticket #11228 and further described here:
+# http://stackoverflow.com/questions/29823931/compilation-issue-with-boost-range-copy-of-filesystem-path
+
+import testing ;
+
+project /CmdLineUtil
+	: build-dir bb-bin
+	: default-build release
+	;
+
+exe findext
+	:	FileEnumerator.cpp FindFileExt.cpp
+		/site-config//BoostHeaderOnlyLibraries
+		/site-config//BoostFileSystem/<link>static
+		/site-config//BoostRegex/<link>static
+		/site-config//BoostSystem/<link>static
+		/site-config//GSL
+	:	<include>.
+		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
+		#<os>LINUX:<threading>multi
+	:	# default build
+	:	# usage requirements
+	;
+
+exe indents
+	:	FileEnumerator.cpp IndentClassifier.cpp
+		/site-config//BoostHeaderOnlyLibraries
+		/site-config//BoostFileSystem/<link>static
+		/site-config//BoostRegex/<link>static
+		/site-config//BoostSystem/<link>static
+		/site-config//GSL
+	:	<include>.
+		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
+		#<os>LINUX:<threading>multi
+	:	# default build
+	:	# usage requirements
+	;
+
+exe isplainascii
+	:	FileEnumerator.cpp IsPlainAscii.cpp
+		/site-config//BoostHeaderOnlyLibraries
+		/site-config//BoostFileSystem/<link>static
+		/site-config//BoostRegex/<link>static
+		/site-config//BoostSystem/<link>static
+		/site-config//GSL
+	:	<include>.
+		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
+		#<os>LINUX:<threading>multi
+	:	# default build
+	:	# usage requirements
+	;
+
+exe random
+	:	Random.cpp
+		/site-config//BoostHeaderOnlyLibraries
+		/site-config//GSL
+	:	<include>.
+		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
+		#<os>LINUX:<threading>multi
+	:	# default build
+	:	# usage requirements
+	;
+
+exe regexmv
+	:	RegExMove.cpp Utils.cpp
+		/site-config//BoostHeaderOnlyLibraries
+		/site-config//BoostFileSystem/<link>static
+		/site-config//BoostRegex/<link>static
+		/site-config//BoostSystem/<link>static
+		/site-config//GSL
+	:	<include>.
+		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
+		#<os>LINUX:<threading>multi
+	:	# default build
+	:	# usage requirements
+	;
+
+exe stripws
+	:	FileEnumerator.cpp StripWS.cpp Utils.cpp
+		/site-config//BoostHeaderOnlyLibraries
+		/site-config//BoostFileSystem/<link>static
+		/site-config//BoostRegex/<link>static
+		/site-config//BoostSystem/<link>static
+		/site-config//GSL
+	:	<include>.
+		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
+		#<os>LINUX:<threading>multi
+	:	# default build
+	:	# usage requirements
+	;
+
+exe xeol
+	:	FileEnumerator.cpp Utils.cpp Xeol.cpp
+		/site-config//BoostHeaderOnlyLibraries
+		/site-config//BoostFileSystem/<link>static
+		/site-config//BoostRegex/<link>static
+		/site-config//BoostSystem/<link>static
+		/site-config//GSL
+	:	<include>.
+		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
+		#<os>LINUX:<threading>multi
+	:	# default build
+	:	# usage requirements
+	;
+
+exe xformcvsstatus
+	:	XformCvsStatus.cpp
+		/site-config//BoostHeaderOnlyLibraries
+		/site-config//BoostFileSystem/<link>static
+		/site-config//BoostRegex/<link>static
+		/site-config//BoostSystem/<link>static
+		/site-config//GSL
+	:	<include>.
+		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
+		#<os>LINUX:<threading>multi
+	:	# default build
+	:	# usage requirements
+	;
+
+run	[ glob *.cpp ]
+		/site-config//BoostHeaderOnlyLibraries
+		/site-config//BoostFileSystem/<link>static
+		/site-config//BoostRegex/<link>static
+		/site-config//BoostSystem/<link>static
+		/site-config//BoostUnitTest/<link>static
+		/site-config//GSL
+	:	# arguments
+	:	# input files
+	:	<include>.
+		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
+		<define>CMDLINEUTIL_TEST_MODE
+		#<os>LINUX:<threading>multi
+	:	CmdLineUtilTest
+	:	# default build
+	;
+
+install dist
+	:	findext indents isplainascii random regexmv stripws xeol xformcvsstatus
+	:	<location>dist
+		<install-dependencies>on
+		<install-type>EXE
+		<install-type>SHARED_LIB
+	:	# default build
+	:	# usage requirements
+	;
