@@ -40,16 +40,16 @@ int Random::usage(ostream& out, const char* pMsg)
 	return exitCode;
 }
 
-Random::Random(size_t argCount, const char*const*const ppArgList) :
+Random::Random(::gsl::span<const char*const> args) :
 	m_lowerBound(0),
 	m_upperBound(0),
 	m_count(0)
 {
-	if (argCount < 3)
+	if (args.size() < 3)
 	{
 		throw CmdLineError("Too few arguments");
 	}
-	else if (argCount > 4)
+	else if (args.size() > 4)
 	{
 		throw CmdLineError("Too many arguments");
 	}
@@ -57,11 +57,11 @@ Random::Random(size_t argCount, const char*const*const ppArgList) :
 	{
 		try
 		{
-			m_lowerBound = b::lexical_cast<int>(ppArgList[1]);
-			m_upperBound = b::lexical_cast<int>(ppArgList[2]);
-			if (argCount == 4)
+			m_lowerBound = b::lexical_cast<int>(args[1]);
+			m_upperBound = b::lexical_cast<int>(args[2]);
+			if (args.size() == 4)
 			{
-				m_count = b::lexical_cast<unsigned>(ppArgList[3]);
+				m_count = b::lexical_cast<unsigned>(args[3]);
 			}
 		}
 		catch(const b::bad_lexical_cast&)

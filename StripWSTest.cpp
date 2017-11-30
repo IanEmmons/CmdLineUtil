@@ -4,6 +4,7 @@
 #endif
 
 #include "Exceptions.h"
+#include "main.h"
 #include "StripWS.h"
 #include "Utils.h"
 
@@ -34,7 +35,7 @@ BOOST_AUTO_TEST_SUITE(CmdLineParseFailTestSuite)
 struct TestCase
 {
 	char const*const*const	m_testArgs;
-	size_t						m_testArgsCount;
+	size_t							m_testArgsCount;
 	char const*					m_exceptionMsgTestPattern;
 };
 
@@ -87,7 +88,7 @@ private:
 BOOST_DATA_TEST_CASE(cmdLineParseFailTest, utd::make(k_testCases), tc)
 {
 	CmdLineErrorPatternMatch isMatch(tc.m_exceptionMsgTestPattern);
-	BOOST_CHECK_EXCEPTION(StripWS(static_cast<int>(tc.m_testArgsCount), tc.m_testArgs), CmdLineError, isMatch);
+	BOOST_CHECK_EXCEPTION(StripWS(makeArgsSpan(tc)), CmdLineError, isMatch);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -99,10 +100,10 @@ BOOST_AUTO_TEST_SUITE(CmdLineParseOkTestSuite)
 struct TestCase
 {
 	char const*const*const	m_testArgs;
-	size_t						m_testArgsCount;
+	size_t							m_testArgsCount;
 	bool							m_isInQueryMode;
 	char const*const*const	m_fileList;
-	size_t						m_fileListLen;
+	size_t							m_fileListLen;
 };
 
 static char const*const k_args00[] = { "stripws", "StripWS.cpp" };
@@ -144,7 +145,7 @@ static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
 
 BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 {
-	StripWS app(static_cast<int>(tc.m_testArgsCount), tc.m_testArgs);
+	StripWS app(makeArgsSpan(tc));
 	BOOST_CHECK_EQUAL(tc.m_isInQueryMode, app.m_isInQueryMode);
 	BOOST_CHECK_EQUAL(tc.m_fileListLen, app.m_fileEnumerator.numFileSpecs());
 
@@ -166,9 +167,9 @@ struct TestCase
 {
 	char const*	m_input;
 	char const*	m_output;
-	size_t		m_numLinesAffected;
-	size_t		m_numSpacesStripped;
-	size_t		m_numTabsStripped;
+	size_t			m_numLinesAffected;
+	size_t			m_numSpacesStripped;
+	size_t			m_numTabsStripped;
 };
 
 static TestCase const k_testCases[] =

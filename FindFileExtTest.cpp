@@ -4,6 +4,7 @@
 #endif
 
 #include "FindFileExt.h"
+#include "main.h"
 #include "PathDeleter.h"
 #include "Utils.h"
 #include <boost/range/algorithm_ext/for_each.hpp>
@@ -50,7 +51,7 @@ BOOST_AUTO_TEST_CASE(FileExtCompilationTest)
 		const char* args[] = { "findext", nullptr };
 		string testDirStr = testDir.string();
 		args[arrayLen(args) - 1] = testDirStr.c_str();
-		FindFileExt app(arrayLen(args), args);
+		FindFileExt app(makeArgsSpan(arrayLen(args), args));
 		app.countFiles();
 
 		FindFileExt::StrToCountMap expExtToCountMap;	// expected result
@@ -66,7 +67,7 @@ BOOST_AUTO_TEST_CASE(FileExtCompilationTest)
 		const char* args[] = { "findext", "-r", nullptr };
 		string testDirStr = testDir.string();
 		args[arrayLen(args) - 1] = testDirStr.c_str();
-		FindFileExt app(arrayLen(args), args);
+		FindFileExt app(makeArgsSpan(arrayLen(args), args));
 		app.countFiles();
 
 		FindFileExt::StrToCountMap expExtToCountMap;	// expected result

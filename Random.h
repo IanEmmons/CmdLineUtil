@@ -2,6 +2,7 @@
 #if !defined(RANDOM_H_INCLUDED)
 #define RANDOM_H_INCLUDED
 
+#include <gsl/gsl>
 #include <iosfwd>
 
 class Random
@@ -9,7 +10,7 @@ class Random
 public:
 	static int usage(::std::ostream& strm, const char* pMsg);
 
-	Random(size_t argCount, const char*const*const ppArgList);
+	Random(::gsl::span<const char*const> args);
 	int run() const;
 
 	Random(const Random&) = delete;

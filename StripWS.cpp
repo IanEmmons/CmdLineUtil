@@ -4,7 +4,6 @@
 #include "main.h"
 #include "Utils.h"
 
-#include <boost/algorithm/string/case_conv.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
@@ -54,29 +53,27 @@ int StripWS::usage(ostream& out, const char* pMsg)
 	return exitCode;
 }
 
-StripWS::StripWS(size_t argCount, const char*const*const ppArgList) :
+StripWS::StripWS(::gsl::span<const char*const> args) :
 	m_isInQueryMode(true),
 	m_fileEnumerator()
 {
-	for (size_t i = 1; i < argCount; ++i)
+	for (auto pArg : args)
 	{
-		string arg = ppArgList[i];
-		string larg = boost::to_lower_copy(arg);
-		if (larg == "-?" || larg == "-h" || larg == "-help")
+		if (isIEqual(pArg, "-?") || isIEqual(pArg, "-h") || isIEqual(pArg, "-help"))
 		{
 			throw CmdLineError();
 		}
-		else if (larg == "-s")
+		else if (isIEqual(pArg, "-s"))
 		{
 			m_isInQueryMode = false;
 		}
-		else if (larg == "-r")
+		else if (isIEqual(pArg, "-r"))
 		{
 			m_fileEnumerator.setRecursive();
 		}
 		else
 		{
-			m_fileEnumerator.insert(arg);
+			m_fileEnumerator.insert(pArg);
 		}
 	}
 

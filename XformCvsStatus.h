@@ -3,6 +3,7 @@
 #define XFORMCVSSTATUS_H_INCLUDED
 
 #include <boost/filesystem.hpp>
+#include <gsl/gsl>
 #include <iosfwd>
 #include <map>
 #include <string>
@@ -12,7 +13,7 @@ class XformCvsStatus
 public:
 	static int usage(::std::ostream& strm, const char* pMsg);
 
-	XformCvsStatus(size_t argCount, const char*const*const ppArgList);
+	XformCvsStatus(::gsl::span<const char*const> args);
 	int run();
 
 	XformCvsStatus(const XformCvsStatus&) = delete;

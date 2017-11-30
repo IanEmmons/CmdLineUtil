@@ -4,6 +4,7 @@
 #endif
 
 #include "Exceptions.h"
+#include "main.h"
 #include "PathDeleter.h"
 #include "Utils.h"
 #include "Xeol.h"
@@ -35,7 +36,7 @@ BOOST_AUTO_TEST_SUITE(CmdLineParseFailTestSuite)
 struct TestCase
 {
 	char const*const*const	m_testArgs;
-	size_t						m_testArgsCount;
+	size_t							m_testArgsCount;
 	char const*					m_exceptionMsgTestPattern;
 };
 
@@ -112,7 +113,7 @@ private:
 BOOST_DATA_TEST_CASE(cmdLineParseFailTest, utd::make(k_testCases), tc)
 {
 	CmdLineErrorPatternMatch isMatch(tc.m_exceptionMsgTestPattern);
-	BOOST_CHECK_EXCEPTION(Xeol(static_cast<int>(tc.m_testArgsCount), tc.m_testArgs), CmdLineError, isMatch);
+	BOOST_CHECK_EXCEPTION(Xeol(makeArgsSpan(tc)), CmdLineError, isMatch);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -124,12 +125,12 @@ BOOST_AUTO_TEST_SUITE(CmdLineParseOkTestSuite)
 struct TestCase
 {
 	char const*const*const	m_testArgs;
-	size_t						m_testArgsCount;
+	size_t							m_testArgsCount;
 	bool							m_isInQueryMode;
 	Xeol::EolType				m_targetEolType;
 	bool							m_forceTranslation;
 	char const*const*const	m_fileList;
-	size_t						m_fileListLen;
+	size_t							m_fileListLen;
 };
 
 static char const*const k_args00[] = { "xeol", "Xeol.cpp" };
@@ -181,7 +182,7 @@ static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
 
 BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 {
-	Xeol app(static_cast<int>(tc.m_testArgsCount), tc.m_testArgs);
+	Xeol app(makeArgsSpan(tc));
 	BOOST_CHECK_EQUAL(tc.m_isInQueryMode, app.m_isInQueryMode);
 	BOOST_CHECK_EQUAL(static_cast<int>(tc.m_targetEolType), static_cast<int>(app.m_targetEolType));
 	BOOST_CHECK_EQUAL(tc.m_forceTranslation, app.m_forceTranslation);
@@ -207,9 +208,9 @@ struct TestCase
 	char const*		m_dosOutput;
 	char const*		m_macOutput;
 	char const*		m_unxOutput;
-	size_t			m_dosEolCount;
-	size_t			m_macEolCount;
-	size_t			m_unxEolCount;
+	size_t				m_dosEolCount;
+	size_t				m_macEolCount;
+	size_t				m_unxEolCount;
 	Xeol::EolType	m_eolType;
 };
 

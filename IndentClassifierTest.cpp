@@ -5,6 +5,7 @@
 
 #include "Exceptions.h"
 #include "IndentClassifier.h"
+#include "main.h"
 #include "PathDeleter.h"
 #include "Utils.h"
 
@@ -37,7 +38,7 @@ BOOST_AUTO_TEST_SUITE(CmdLineParseFailTestSuite)
 struct TestCase
 {
 	char const*const*const	m_testArgs;
-	size_t						m_testArgsCount;
+	size_t							m_testArgsCount;
 	char const*					m_exceptionMsgTestPattern;
 };
 
@@ -90,8 +91,7 @@ private:
 BOOST_DATA_TEST_CASE(cmdLineParseFailTest, utd::make(k_testCases), tc)
 {
 	CmdLineErrorPatternMatch isMatch(tc.m_exceptionMsgTestPattern);
-	BOOST_CHECK_EXCEPTION(IndentClassifier(static_cast<int>(tc.m_testArgsCount), tc.m_testArgs),
-		CmdLineError, isMatch);
+	BOOST_CHECK_EXCEPTION(IndentClassifier(makeArgsSpan(tc)), CmdLineError, isMatch);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -103,10 +103,10 @@ BOOST_AUTO_TEST_SUITE(CmdLineParseOkTestSuite)
 struct TestCase
 {
 	char const*const*const	m_testArgs;
-	size_t						m_testArgsCount;
+	size_t							m_testArgsCount;
 	bool							m_isRecursive;
 	char const*const*const	m_fileList;
-	size_t						m_fileListLen;
+	size_t							m_fileListLen;
 };
 
 static char const*const k_args00[] = { "indents", "IndentClassifier.cpp" };
@@ -138,7 +138,7 @@ static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
 
 BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 {
-	IndentClassifier app(static_cast<int>(tc.m_testArgsCount), tc.m_testArgs);
+	IndentClassifier app(makeArgsSpan(tc));
 	BOOST_CHECK_EQUAL(tc.m_isRecursive, app.m_fileEnumerator.isRecursive());
 	BOOST_CHECK_EQUAL(tc.m_fileListLen, app.m_fileEnumerator.numFileSpecs());
 
@@ -159,10 +159,10 @@ BOOST_AUTO_TEST_SUITE(ScanFileTestSuite)
 struct TestCase
 {
 	char const*							m_input;
-	size_t								m_numSpaceLines;
-	size_t								m_numTabLines;
-	size_t								m_numMixedLines;
-	size_t								m_numIndLines;
+	size_t									m_numSpaceLines;
+	size_t									m_numTabLines;
+	size_t									m_numMixedLines;
+	size_t									m_numIndLines;
 	IndentClassifier::IndentType	m_iType;
 };
 

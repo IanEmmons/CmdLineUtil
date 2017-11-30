@@ -7,6 +7,19 @@
 #include <iostream>
 #include <stdexcept>
 
+static inline ::gsl::span<const char*const> makeArgsSpan(
+	size_t argCount, const char*const*const argList)
+{
+	// Skip over the 0th element (program name):
+	return ::gsl::make_span(argList + 1, argCount - 1);
+}
+
+template <typename TC>
+static inline ::gsl::span<const char*const> makeArgsSpan(const TC& tc)
+{
+	return makeArgsSpan(tc.m_testArgsCount, tc.m_testArgs);
+}
+
 template <typename T>
 int commonMain(size_t argCount, const char*const*const argList)
 {
@@ -16,8 +29,7 @@ int commonMain(size_t argCount, const char*const*const argList)
 	int exitCode = EXIT_FAILURE;
 	try
 	{
-		//T program(argCount, argList);
-		T program(::gsl::make_span(argList, argCount));
+		T program(makeArgsSpan(argCount, argList));
 		exitCode = program.run();
 	}
 	catch (const CmdLineError& ex)

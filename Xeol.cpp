@@ -4,7 +4,6 @@
 #include "main.h"
 #include "Utils.h"
 
-#include <boost/algorithm/string/case_conv.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
 #include <iostream>
@@ -68,22 +67,20 @@ int Xeol::usage(ostream& out, const char* pMsg)
 	return exitCode;
 }
 
-Xeol::Xeol(size_t argCount, const char*const*const ppArgList) :
+Xeol::Xeol(::gsl::span<const char*const> args) :
 	m_isInQueryMode(true),
 	m_targetEolType(EolType::INDETERMINATE),
 	m_forceTranslation(false),
 	m_fileEnumerator()
 {
 	unsigned numTargetTypeArgs = 0;
-	for (size_t i = 1; i < argCount; ++i)
+	for (auto pArg : args)
 	{
-		string arg = ppArgList[i];
-		string larg = b::algorithm::to_lower_copy(arg);
-		if (larg == "-?" || larg == "-h" || larg == "-help")
+		if (isIEqual(pArg, "-?") || isIEqual(pArg, "-h") || isIEqual(pArg, "-help"))
 		{
 			throw CmdLineError();
 		}
-		else if (larg == "-d")
+		else if (isIEqual(pArg, "-d"))
 		{
 			if (m_targetEolType != EolType::DOS)
 			{
@@ -92,7 +89,7 @@ Xeol::Xeol(size_t argCount, const char*const*const ppArgList) :
 				++numTargetTypeArgs;
 			}
 		}
-		else if (larg == "-m")
+		else if (isIEqual(pArg, "-m"))
 		{
 			if (m_targetEolType != EolType::MACINTOSH)
 			{
@@ -101,7 +98,7 @@ Xeol::Xeol(size_t argCount, const char*const*const ppArgList) :
 				++numTargetTypeArgs;
 			}
 		}
-		else if (larg == "-u")
+		else if (isIEqual(pArg, "-u"))
 		{
 			if (m_targetEolType != EolType::UNIX)
 			{
@@ -110,17 +107,17 @@ Xeol::Xeol(size_t argCount, const char*const*const ppArgList) :
 				++numTargetTypeArgs;
 			}
 		}
-		else if (larg == "-f")
+		else if (isIEqual(pArg, "-f"))
 		{
 			m_forceTranslation = true;
 		}
-		else if (larg == "-r")
+		else if (isIEqual(pArg, "-r"))
 		{
 			m_fileEnumerator.setRecursive();
 		}
 		else
 		{
-			m_fileEnumerator.insert(arg);
+			m_fileEnumerator.insert(pArg);
 		}
 	}
 

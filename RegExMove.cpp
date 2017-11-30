@@ -3,7 +3,6 @@
 #include "main.h"
 #include "Utils.h"
 
-#include <boost/algorithm/string/case_conv.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/format.hpp>
 #include <vector>
@@ -67,7 +66,7 @@ int RegExMove::usage(ostream& out, const char* pMsg)
 	return exitCode;
 }
 
-RegExMove::RegExMove(size_t argCount, const char*const*const ppArgList) :
+RegExMove::RegExMove(::gsl::span<const char*const> args) :
 	m_caseSensitive(true),
 	m_renameDirectories(false),
 	m_renameFiles(true),
@@ -79,42 +78,40 @@ RegExMove::RegExMove(size_t argCount, const char*const*const ppArgList) :
 	m_replacement()
 {
 	vector<string> posArgs;	// positional arguments
-	for (size_t i = 1; i < argCount; ++i)
+	for (auto pArg : args)
 	{
-		string arg = ppArgList[i];
-		string larg = balg::to_lower_copy(arg);
-		if (larg == "-?" || larg == "-h" || larg == "-help")
+		if (isIEqual(pArg, "-?") || isIEqual(pArg, "-h") || isIEqual(pArg, "-help"))
 		{
 			throw CmdLineError();
 		}
-		else if (larg == "-i")
+		else if (isIEqual(pArg, "-i"))
 		{
 			m_caseSensitive = false;
 		}
-		else if (larg == "-d")
+		else if (isIEqual(pArg, "-d"))
 		{
 			m_renameDirectories = true;
 		}
-		else if (larg == "-dd")
+		else if (isIEqual(pArg, "-dd"))
 		{
 			m_renameDirectories = true;
 			m_renameFiles = false;
 		}
-		else if (larg == "-r")
+		else if (isIEqual(pArg, "-r"))
 		{
 			m_recursiveSearch = true;
 		}
-		else if (larg == "-v")
+		else if (isIEqual(pArg, "-v"))
 		{
 			m_verboseOutput = true;
 		}
-		else if (larg == "-y")
+		else if (isIEqual(pArg, "-y"))
 		{
 			m_allowOverwriteOnNameCollision = false;
 		}
 		else
 		{
-			posArgs.push_back(arg);
+			posArgs.push_back(pArg);
 		}
 	}
 
@@ -154,7 +151,6 @@ RegExMove::RegExMove(size_t argCount, const char*const*const ppArgList) :
 		throw CmdLineError(b::format("\"%1%\" is not a valid regular expression (%2%)")
 			% posArgs[1] % ex.what());
 	}
-
 }
 
 int RegExMove::run() const

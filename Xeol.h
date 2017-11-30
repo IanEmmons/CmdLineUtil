@@ -6,6 +6,7 @@
 #include "Utils.h"
 
 #include <boost/filesystem.hpp>
+#include <gsl/gsl>
 #include <iosfwd>
 #include <string>
 
@@ -14,7 +15,7 @@ class Xeol
 public:
 	static int usage(::std::ostream& strm, const char* pMsg);
 
-	Xeol(size_t argCount, const char*const*const ppArgList);
+	Xeol(::gsl::span<const char*const> args);
 	int run() const;
 
 	Xeol(const Xeol&) = delete;

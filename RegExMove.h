@@ -4,6 +4,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
+#include <gsl/gsl>
 #include <iosfwd>
 #include <string>
 
@@ -12,7 +13,7 @@ class RegExMove
 public:
 	static int usage(::std::ostream& strm, const char* pMsg);
 
-	RegExMove(size_t argCount, const char*const*const ppArgList);
+	RegExMove(::gsl::span<const char*const> args);
 	int run() const;
 
 	RegExMove(const RegExMove&) = delete;

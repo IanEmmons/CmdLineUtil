@@ -2,7 +2,6 @@
 #include "IndentClassifier.h"
 #include "main.h"
 
-#include <boost/algorithm/string/case_conv.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
 #include <iostream>
@@ -53,24 +52,22 @@ int IndentClassifier::usage(ostream& out, const char* pMsg)
 	return exitCode;
 }
 
-IndentClassifier::IndentClassifier(size_t argCount, const char*const*const ppArgList) :
+IndentClassifier::IndentClassifier(const ::gsl::span<const char*const> args) :
 	m_fileEnumerator()
 {
-	for (size_t i = 1; i < argCount; ++i)
+	for (auto pArg : args)
 	{
-		string arg = ppArgList[i];
-		string larg = b::algorithm::to_lower_copy(arg);
-		if (larg == "-?" || larg == "-h" || larg == "-help")
+		if (isIEqual(pArg, "-?") || isIEqual(pArg, "-h") || isIEqual(pArg, "-help"))
 		{
 			throw CmdLineError();
 		}
-		else if (larg == "-r")
+		else if (isIEqual(pArg, "-r"))
 		{
 			m_fileEnumerator.setRecursive();
 		}
 		else
 		{
-			m_fileEnumerator.insert(arg);
+			m_fileEnumerator.insert(pArg);
 		}
 	}
 

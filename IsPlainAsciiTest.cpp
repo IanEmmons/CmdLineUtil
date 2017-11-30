@@ -5,6 +5,7 @@
 
 #include "Exceptions.h"
 #include "IsPlainAscii.h"
+#include "main.h"
 #include "Utils.h"
 #include <boost/range/algorithm_ext/for_each.hpp>
 #include <boost/range/algorithm/sort.hpp>
@@ -30,7 +31,7 @@ BOOST_AUTO_TEST_SUITE(CmdLineParseFailTestSuite)
 struct TestCase
 {
 	char const*const*const	m_testArgs;
-	size_t						m_testArgsCount;
+	size_t							m_testArgsCount;
 	char const*					m_exceptionMsgTestPattern;
 };
 
@@ -81,7 +82,7 @@ private:
 BOOST_DATA_TEST_CASE(cmdLineParseFailTest, utd::make(k_testCases), tc)
 {
 	CmdLineErrorPatternMatch isMatch(tc.m_exceptionMsgTestPattern);
-	BOOST_CHECK_EXCEPTION(IsPlainAscii(static_cast<int>(tc.m_testArgsCount), tc.m_testArgs), CmdLineError, isMatch);
+	BOOST_CHECK_EXCEPTION(IsPlainAscii(makeArgsSpan(tc)), CmdLineError, isMatch);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -133,7 +134,7 @@ static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
 
 BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 {
-	IsPlainAscii app(static_cast<int>(tc.m_testArgsCount), tc.m_testArgs);
+	IsPlainAscii app(makeArgsSpan(tc));
 	BOOST_CHECK_EQUAL(tc.m_fileListLen, app.m_fileEnumerator.numFileSpecs());
 
 	PathList tcList(tc.m_fileList, tc.m_fileList + tc.m_fileListLen);

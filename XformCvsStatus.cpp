@@ -7,7 +7,6 @@
 #include "Utils.h"
 
 #include <algorithm>
-#include <boost/algorithm/string/case_conv.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/format.hpp>
 #include <boost/regex.hpp>
@@ -67,36 +66,34 @@ int XformCvsStatus::usage(ostream& strm, const char* pMsg)
 	return exitCode;
 }
 
-XformCvsStatus::XformCvsStatus(size_t argCount, const char*const*const ppArgList) :
+XformCvsStatus::XformCvsStatus(::gsl::span<const char*const> args) :
 	m_suppressNew(false),
 	m_suppressUpToDate(false),
 	m_suppressLocal(false),
 	m_lastWorkingDir("."),
 	m_map()
 {
-	for (size_t i = 1; i < argCount; ++i)
+	for (auto pArg : args)
 	{
-		string arg = ppArgList[i];
-		string larg = b::to_lower_copy(arg);
-		if (larg == "-?" || larg == "-h" || larg == "-help")
+		if (isIEqual(pArg, "-?") || isIEqual(pArg, "-h") || isIEqual(pArg, "-help"))
 		{
 			throw CmdLineError();
 		}
-		else if (larg == "-n")
+		else if (isIEqual(pArg, "-n"))
 		{
 			m_suppressNew = true;
 		}
-		else if (larg == "-u")
+		else if (isIEqual(pArg, "-u"))
 		{
 			m_suppressUpToDate = true;
 		}
-		else if (larg == "-l")
+		else if (isIEqual(pArg, "-l"))
 		{
 			m_suppressLocal = true;
 		}
 		else
 		{
-			throw CmdLineError(b::format("Unrecognized option \"%1%\"") % arg);
+			throw CmdLineError(b::format("Unrecognized option \"%1%\"") % pArg);
 		}
 	}
 }

@@ -6,6 +6,7 @@
 #include "Utils.h"
 
 #include <boost/filesystem.hpp>
+#include <gsl/gsl>
 #include <iosfwd>
 #include <string>
 
@@ -14,7 +15,7 @@ class StripWS
 public:
 	static int usage(::std::ostream& strm, const char* pMsg);
 
-	StripWS(size_t argCount, const char*const*const ppArgList);
+	StripWS(::gsl::span<const char*const> args);
 	int run() const;
 
 	StripWS(const StripWS&) = delete;
