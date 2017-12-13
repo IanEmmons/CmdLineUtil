@@ -2,8 +2,10 @@
 #if !defined(UTILS_H_INCLUDED)
 #define UTILS_H_INCLUDED
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/filesystem.hpp>
 #include <cstddef>
+#include <gsl/gsl>
 #include <iterator>
 #include <memory>
 #include <utility>
@@ -20,6 +22,12 @@ template<typename T, ::std::size_t N>
 constexpr ::std::size_t arrayLen(T(&)[N]) noexcept
 {
 	return N;
+}
+
+inline bool isIEqual(const char* pStr1, const char* pStr2)
+{
+	return ::boost::algorithm::iequals(
+		::gsl::ensure_z(pStr1), ::gsl::ensure_z(pStr2));
 }
 
 ::boost::filesystem::path getTempPath(const ::boost::filesystem::path& filePath);

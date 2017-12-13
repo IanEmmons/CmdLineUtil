@@ -1,7 +1,6 @@
 
 #include "RegExMove.h"
 #include "main.h"
-#include "Utils.h"
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/format.hpp>
@@ -107,7 +106,7 @@ RegExMove::RegExMove(::gsl::span<const char*const> args) :
 		}
 		else if (isIEqual(pArg, "-y"))
 		{
-			m_allowOverwriteOnNameCollision = false;
+			m_allowOverwriteOnNameCollision = true;
 		}
 		else
 		{
@@ -115,15 +114,22 @@ RegExMove::RegExMove(::gsl::span<const char*const> args) :
 		}
 	}
 
-	if (posArgs.size() != 3)
+	if (posArgs.size() < 3)
 	{
-		throw CmdLineError("All of the arguments <rootdir>, <regex>, and <replacement> are required");
+		throw CmdLineError("All of the arguments <rootdir>, <regex>, and "
+			"<replacement> are required");
+	}
+	else if (posArgs.size() > 3)
+	{
+		throw CmdLineError("Only three positional arguments are accepted:  "
+			"<rootdir>, <regex>, and <replacement>");
 	}
 
 	m_rootDir = posArgs[0];
 	if (!exists(m_rootDir))
 	{
-		throw CmdLineError(b::format("The directory \"%1%\" does not exist") % posArgs[0]);
+		throw CmdLineError(b::format("The directory \"%1%\" does not exist")
+			% posArgs[0]);
 	}
 	else if (!is_directory(m_rootDir))
 	{
@@ -151,6 +157,8 @@ RegExMove::RegExMove(::gsl::span<const char*const> args) :
 		throw CmdLineError(b::format("\"%1%\" is not a valid regular expression (%2%)")
 			% posArgs[1] % ex.what());
 	}
+
+	m_replacement = posArgs[2];
 }
 
 int RegExMove::run() const

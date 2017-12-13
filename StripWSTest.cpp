@@ -4,14 +4,13 @@
 #endif
 
 #include "Exceptions.h"
-#include "main.h"
 #include "StripWS.h"
+#include "TestUtil.h"
 #include "Utils.h"
 
 #include <algorithm>
 #include <boost/range/algorithm_ext/for_each.hpp>
 #include <boost/range/algorithm/sort.hpp>
-#include <boost/regex.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
 #include <sstream>
@@ -32,63 +31,25 @@ BOOST_AUTO_TEST_SUITE(StripWSTestSuite)
 
 BOOST_AUTO_TEST_SUITE(CmdLineParseFailTestSuite)
 
-struct TestCase
-{
-	char const*const*const	m_testArgs;
-	size_t							m_testArgsCount;
-	char const*					m_exceptionMsgTestPattern;
-};
-
 static char const*const k_args00[] = { "stripws" };
 static char const*const k_args01[] = { "stripws", "-?" };
 static char const*const k_args02[] = { "stripws", "-h" };
 static char const*const k_args03[] = { "stripws", "-help" };
 static char const*const k_args04[] = { "stripws", "-s" };
 
-static TestCase const k_testCases[] =
+static CmdLineParseFailTestCase const k_testCases[] =
 {
-#define MAKE_TC(args, pattern) \
-	{ args, arrayLen(args), pattern },
-
-	MAKE_TC(k_args00, ".*no files.*")
-	MAKE_TC(k_args01, "^$")
-	MAKE_TC(k_args02, "^$")
-	MAKE_TC(k_args03, "^$")
-	MAKE_TC(k_args04, ".*no files.*")
-
-#undef MAKE_TC
-};
-
-static ::std::ostream& operator<<(::std::ostream& ostrm, TestCase const& tc)
-{
-	return ostrm << "Test case #" << (&tc - k_testCases);
-}
-
-struct CmdLineErrorPatternMatch
-{
-	CmdLineErrorPatternMatch(char const* exceptionMsgTestPattern) :
-		m_pattern(exceptionMsgTestPattern),
-		m_rex(exceptionMsgTestPattern, b::regex::normal | b::regex::icase) {}
-
-	bool operator()(CmdLineError const& ex)
-	{
-		if (false)
-		{
-			BOOST_TEST_MESSAGE("Testing exception message \"" << ex.what()
-				<< "\" against \"" << m_pattern << "\"");
-		}
-		return regex_match(ex.what(), m_rex);
-	}
-
-private:
-	string m_pattern;
-	b::regex m_rex;
+	{ k_args00, ".*no files.*" },
+	{ k_args01, "^$" },
+	{ k_args02, "^$" },
+	{ k_args03, "^$" },
+	{ k_args04, ".*no files.*" },
 };
 
 BOOST_DATA_TEST_CASE(cmdLineParseFailTest, utd::make(k_testCases), tc)
 {
-	CmdLineErrorPatternMatch isMatch(tc.m_exceptionMsgTestPattern);
-	BOOST_CHECK_EXCEPTION(StripWS(makeArgsSpan(tc)), CmdLineError, isMatch);
+	BOOST_CHECK_EXCEPTION(StripWS(tc.makeArgSpan()), CmdLineError,
+		[&tc](const CmdLineError& ex) { return tc.doesExMatch(ex); });
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -97,13 +58,18 @@ BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(CmdLineParseOkTestSuite)
 
-struct TestCase
+struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 {
-	char const*const*const	m_testArgs;
-	size_t							m_testArgsCount;
-	bool							m_isInQueryMode;
-	char const*const*const	m_fileList;
-	size_t							m_fileListLen;
+	template<::std::size_t N, ::std::size_t M>
+	CmdLineParseOkTestCase(const char*const(&args)[N], bool isInQueryMode,
+			const char*const(&fileList)[M]) noexcept :
+		CmdLineParseTestCase(args),
+		m_isInQueryMode(isInQueryMode),
+		m_fileList(::std::make_pair(fileList, M))
+		{}
+
+	bool			m_isInQueryMode;
+	ArgListPair	m_fileList;
 };
 
 static char const*const k_args00[] = { "stripws", "StripWS.cpp" };
@@ -118,25 +84,15 @@ static char const*const k_files01[] = { "StripWS.cpp", "StripWS.h", "StripWSTest
 static char const*const k_files02[] = { "Strip*.h" };
 static char const*const k_files03[] = { "Strip*.h", "Strip*.cpp" };
 
-static TestCase const k_testCases[] =
+static CmdLineParseOkTestCase const k_testCases[] =
 {
-#define MAKE_TC(args, isInQueryMode, files) \
-	{ args, arrayLen(args), isInQueryMode, files, arrayLen(files) },
-
-	MAKE_TC(k_args00, true, k_files00)
-	MAKE_TC(k_args01, false, k_files00)
-	MAKE_TC(k_args02, false, k_files00)
-	MAKE_TC(k_args03, true, k_files01)
-	MAKE_TC(k_args04, true, k_files02)
-	MAKE_TC(k_args05, true, k_files03)
-
-#undef MAKE_TC
+	{ k_args00, true, k_files00 },
+	{ k_args01, false, k_files00 },
+	{ k_args02, false, k_files00 },
+	{ k_args03, true, k_files01 },
+	{ k_args04, true, k_files02 },
+	{ k_args05, true, k_files03 },
 };
-
-static ::std::ostream& operator<<(::std::ostream& ostrm, TestCase const& tc)
-{
-	return ostrm << "Test case #" << (&tc - k_testCases);
-}
 
 static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
 {
@@ -145,11 +101,11 @@ static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
 
 BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 {
-	StripWS app(makeArgsSpan(tc));
+	StripWS app(tc.makeArgSpan());
 	BOOST_CHECK_EQUAL(tc.m_isInQueryMode, app.m_isInQueryMode);
-	BOOST_CHECK_EQUAL(tc.m_fileListLen, app.m_fileEnumerator.numFileSpecs());
+	BOOST_CHECK_EQUAL(tc.m_fileList.second, app.m_fileEnumerator.numFileSpecs());
 
-	PathList tcList(tc.m_fileList, tc.m_fileList + tc.m_fileListLen);
+	PathList tcList(tc.m_fileList.first, tc.m_fileList.first + tc.m_fileList.second);
 	b::sort(tcList);
 	PathList appList;
 	app.m_fileEnumerator.getFileSpecList(appList);
@@ -163,16 +119,16 @@ BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(ScanFileTestSuite)
 
-struct TestCase
+struct ScanFileTestCase
 {
-	char const*	m_input;
-	char const*	m_output;
+	char const*	m_pInput;
+	char const*	m_pOutput;
 	size_t			m_numLinesAffected;
 	size_t			m_numSpacesStripped;
 	size_t			m_numTabsStripped;
 };
 
-static TestCase const k_testCases[] =
+static ScanFileTestCase const k_testCases[] =
 {
 	// input, output, numLinesAffected, numSpacesStripped, numTabsStripped
 	{
@@ -207,9 +163,9 @@ static TestCase const k_testCases[] =
 	}
 };
 
-static ::std::ostream& operator<<(::std::ostream& ostrm, TestCase const& tc)
+static ::std::ostream& operator<<(::std::ostream& ostrm, ScanFileTestCase const& tc)
 {
-	return ostrm << "Test case #" << (&tc - k_testCases);
+	return ostrm << "Test case with input \"" << tc.m_pInput << "\"";
 }
 
 static void dumpHex(string const& s)
@@ -228,11 +184,11 @@ static void dumpHex(string const& s)
 
 BOOST_DATA_TEST_CASE(scanFileTest, utd::make(k_testCases), tc)
 {
-	if (true)
+	if (false)
 	{
-		BOOST_TEST_MESSAGE("Testing scanFile with input \"" << tc.m_input << "\"");
+		BOOST_TEST_MESSAGE("Testing scanFile with input \"" << tc.m_pInput << "\"");
 	}
-	string input(tc.m_input);
+	string input(tc.m_pInput);
 	size_t numLinesAffected;
 	size_t numSpacesStripped;
 	size_t numTabsStripped;
@@ -252,7 +208,7 @@ BOOST_DATA_TEST_CASE(scanFileTest, utd::make(k_testCases), tc)
 		BOOST_CHECK_EQUAL(tc.m_numSpacesStripped, numSpacesStripped);
 		BOOST_CHECK_EQUAL(tc.m_numTabsStripped, numTabsStripped);
 		dumpHex(out.str());
-		BOOST_CHECK_EQUAL(tc.m_output, out.str());
+		BOOST_CHECK_EQUAL(tc.m_pOutput, out.str());
 	}
 }
 

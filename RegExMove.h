@@ -2,6 +2,8 @@
 #if !defined(REGEXMOVE_H_INCLUDED)
 #define REGEXMOVE_H_INCLUDED
 
+#include "Utils.h"
+
 #include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 #include <gsl/gsl>
@@ -21,7 +23,7 @@ public:
 	RegExMove(RegExMove&&) = delete;
 	RegExMove& operator=(RegExMove&&) = delete;
 
-private:
+PRIVATE_EXCEPT_IN_TEST:
 	using Path = ::boost::filesystem::path;
 	using DirEntry = ::boost::filesystem::directory_entry;
 

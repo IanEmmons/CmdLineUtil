@@ -4,14 +4,13 @@
 #endif
 
 #include "Exceptions.h"
-#include "main.h"
 #include "PathDeleter.h"
+#include "TestUtil.h"
 #include "Utils.h"
 #include "Xeol.h"
 
 #include <boost/range/algorithm_ext/for_each.hpp>
 #include <boost/range/algorithm/sort.hpp>
-#include <boost/regex.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
 #include <string>
@@ -33,13 +32,6 @@ BOOST_AUTO_TEST_SUITE(XeolTestSuite)
 
 BOOST_AUTO_TEST_SUITE(CmdLineParseFailTestSuite)
 
-struct TestCase
-{
-	char const*const*const	m_testArgs;
-	size_t							m_testArgsCount;
-	char const*					m_exceptionMsgTestPattern;
-};
-
 static char const*const k_args00[] = { "xeol" };
 static char const*const k_args01[] = { "xeol", "-?" };
 static char const*const k_args02[] = { "xeol", "-h" };
@@ -58,62 +50,31 @@ static char const*const k_args14[] = { "xeol", "-m", "-u", "Xeol.cpp" };
 static char const*const k_args15[] = { "xeol", "-d", "-m", "-f", "Xeol.cpp" };
 static char const*const k_args16[] = { "xeol", "-d", "-m", "-u", "Xeol.cpp" };
 
-static TestCase const k_testCases[] =
+static CmdLineParseFailTestCase const k_testCases[] =
 {
-#define MAKE_TC(args, pattern) \
-	{ args, arrayLen(args), pattern },
-
-	MAKE_TC(k_args00, ".*no files.*")
-	MAKE_TC(k_args01, "^$")
-	MAKE_TC(k_args02, "^$")
-	MAKE_TC(k_args03, "^$")
-	MAKE_TC(k_args04, "(.*option '-f' is allowed only if.*)|(.*no files.*)")
-	MAKE_TC(k_args05, ".*option '-f' is allowed only if.*")
-	MAKE_TC(k_args06, ".*no files.*")
-	MAKE_TC(k_args07, ".*no files.*")
-	MAKE_TC(k_args08, ".*no files.*")
-	MAKE_TC(k_args09, ".*no files.*")
-	MAKE_TC(k_args10, ".*no files.*")
-	MAKE_TC(k_args11, ".*no files.*")
-	MAKE_TC(k_args12, ".*mutually exclusive.*")
-	MAKE_TC(k_args13, ".*mutually exclusive.*")
-	MAKE_TC(k_args14, ".*mutually exclusive.*")
-	MAKE_TC(k_args15, ".*mutually exclusive.*")
-	MAKE_TC(k_args16, ".*mutually exclusive.*")
-
-#undef MAKE_TC
-};
-
-static ::std::ostream& operator<<(::std::ostream& ostrm, TestCase const& tc)
-{
-	return ostrm << "Test case #" << (&tc - k_testCases);
-}
-
-struct CmdLineErrorPatternMatch
-{
-	CmdLineErrorPatternMatch(char const* exceptionMsgTestPattern) :
-		m_pattern(exceptionMsgTestPattern),
-		m_rex(exceptionMsgTestPattern, b::regex::normal | b::regex::icase) {}
-
-	bool operator()(CmdLineError const& ex)
-	{
-		if (false)
-		{
-			BOOST_TEST_MESSAGE("Testing exception message \"" << ex.what()
-				<< "\" against \"" << m_pattern << "\"");
-		}
-		return regex_match(ex.what(), m_rex);
-	}
-
-private:
-	string m_pattern;
-	b::regex m_rex;
+	{ k_args00, ".*no files.*" },
+	{ k_args01, "^$" },
+	{ k_args02, "^$" },
+	{ k_args03, "^$" },
+	{ k_args04, "(.*option '-f' is allowed only if.*)|(.*no files.*)" },
+	{ k_args05, ".*option '-f' is allowed only if.*" },
+	{ k_args06, ".*no files.*" },
+	{ k_args07, ".*no files.*" },
+	{ k_args08, ".*no files.*" },
+	{ k_args09, ".*no files.*" },
+	{ k_args10, ".*no files.*" },
+	{ k_args11, ".*no files.*" },
+	{ k_args12, ".*mutually exclusive.*" },
+	{ k_args13, ".*mutually exclusive.*" },
+	{ k_args14, ".*mutually exclusive.*" },
+	{ k_args15, ".*mutually exclusive.*" },
+	{ k_args16, ".*mutually exclusive.*" },
 };
 
 BOOST_DATA_TEST_CASE(cmdLineParseFailTest, utd::make(k_testCases), tc)
 {
-	CmdLineErrorPatternMatch isMatch(tc.m_exceptionMsgTestPattern);
-	BOOST_CHECK_EXCEPTION(Xeol(makeArgsSpan(tc)), CmdLineError, isMatch);
+	BOOST_CHECK_EXCEPTION(Xeol(tc.makeArgSpan()), CmdLineError,
+		[&tc](const CmdLineError& ex) { return tc.doesExMatch(ex); });
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -122,15 +83,23 @@ BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(CmdLineParseOkTestSuite)
 
-struct TestCase
+struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 {
-	char const*const*const	m_testArgs;
-	size_t							m_testArgsCount;
-	bool							m_isInQueryMode;
-	Xeol::EolType				m_targetEolType;
-	bool							m_forceTranslation;
-	char const*const*const	m_fileList;
-	size_t							m_fileListLen;
+	template<::std::size_t N, ::std::size_t M>
+	CmdLineParseOkTestCase(const char*const(&args)[N], bool isInQueryMode,
+			Xeol::EolType targetEolType, bool forceTranslation,
+			const char*const(&fileList)[M]) noexcept :
+		CmdLineParseTestCase(args),
+		m_isInQueryMode(isInQueryMode),
+		m_targetEolType(targetEolType),
+		m_forceTranslation(forceTranslation),
+		m_fileList(::std::make_pair(fileList, M))
+		{}
+
+	bool				m_isInQueryMode;
+	Xeol::EolType	m_targetEolType;
+	bool				m_forceTranslation;
+	ArgListPair		m_fileList;
 };
 
 static char const*const k_args00[] = { "xeol", "Xeol.cpp" };
@@ -150,30 +119,20 @@ static char const*const k_files01[] = { "Xeol.cpp", "Xeol.h", "XeolTest.cpp" };
 static char const*const k_files02[] = { "Eol*.h" };
 static char const*const k_files03[] = { "Eol*.h", "Eol*.cpp" };
 
-static TestCase const k_testCases[] =
+static CmdLineParseOkTestCase const k_testCases[] =
 {
-#define MAKE_TC(args, isInQueryMode, targetEolType, force, files) \
-	{ args, arrayLen(args), isInQueryMode, Xeol::EolType::targetEolType, force, files, arrayLen(files) },
-
-	MAKE_TC(k_args00, true, INDETERMINATE, false, k_files00)
-	MAKE_TC(k_args01, false, DOS, false, k_files00)
-	MAKE_TC(k_args02, false, DOS, false, k_files00)
-	MAKE_TC(k_args03, false, MACINTOSH, false, k_files00)
-	MAKE_TC(k_args04, false, UNIX, false, k_files00)
-	MAKE_TC(k_args05, false, DOS, true, k_files00)
-	MAKE_TC(k_args06, false, MACINTOSH, true, k_files00)
-	MAKE_TC(k_args07, false, UNIX, true, k_files00)
-	MAKE_TC(k_args08, true, INDETERMINATE, false, k_files01)
-	MAKE_TC(k_args09, true, INDETERMINATE, false, k_files02)
-	MAKE_TC(k_args10, true, INDETERMINATE, false, k_files03)
-
-#undef MAKE_TC
+	{ k_args00, true, Xeol::EolType::INDETERMINATE, false, k_files00 },
+	{ k_args01, false, Xeol::EolType::DOS, false, k_files00 },
+	{ k_args02, false, Xeol::EolType::DOS, false, k_files00 },
+	{ k_args03, false, Xeol::EolType::MACINTOSH, false, k_files00 },
+	{ k_args04, false, Xeol::EolType::UNIX, false, k_files00 },
+	{ k_args05, false, Xeol::EolType::DOS, true, k_files00 },
+	{ k_args06, false, Xeol::EolType::MACINTOSH, true, k_files00 },
+	{ k_args07, false, Xeol::EolType::UNIX, true, k_files00 },
+	{ k_args08, true, Xeol::EolType::INDETERMINATE, false, k_files01 },
+	{ k_args09, true, Xeol::EolType::INDETERMINATE, false, k_files02 },
+	{ k_args10, true, Xeol::EolType::INDETERMINATE, false, k_files03 },
 };
-
-static ::std::ostream& operator<<(::std::ostream& ostrm, TestCase const& tc)
-{
-	return ostrm << "Test case #" << (&tc - k_testCases);
-}
 
 static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
 {
@@ -182,13 +141,13 @@ static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
 
 BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 {
-	Xeol app(makeArgsSpan(tc));
+	Xeol app(tc.makeArgSpan());
 	BOOST_CHECK_EQUAL(tc.m_isInQueryMode, app.m_isInQueryMode);
 	BOOST_CHECK_EQUAL(static_cast<int>(tc.m_targetEolType), static_cast<int>(app.m_targetEolType));
 	BOOST_CHECK_EQUAL(tc.m_forceTranslation, app.m_forceTranslation);
-	BOOST_CHECK_EQUAL(tc.m_fileListLen, app.m_fileEnumerator.numFileSpecs());
+	BOOST_CHECK_EQUAL(tc.m_fileList.second, app.m_fileEnumerator.numFileSpecs());
 
-	PathList tcList(tc.m_fileList, tc.m_fileList + tc.m_fileListLen);
+	PathList tcList(tc.m_fileList.first, tc.m_fileList.first + tc.m_fileList.second);
 	b::sort(tcList);
 	PathList appList;
 	app.m_fileEnumerator.getFileSpecList(appList);
@@ -202,19 +161,19 @@ BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(ScanFileTestSuite)
 
-struct TestCase
+struct ScanFileTestCase
 {
-	char const*		m_input;
-	char const*		m_dosOutput;
-	char const*		m_macOutput;
-	char const*		m_unxOutput;
+	char const*		m_pInput;
+	char const*		m_pDosOutput;
+	char const*		m_pMacOutput;
+	char const*		m_pUnxOutput;
 	size_t				m_dosEolCount;
 	size_t				m_macEolCount;
 	size_t				m_unxEolCount;
 	Xeol::EolType	m_eolType;
 };
 
-static TestCase const k_testCases[] =
+static ScanFileTestCase const k_testCases[] =
 {
 	// input, dosOutput, macOutput, unxOutput, dosEolCount, macEolCount, unxEolCount, eolType
 	{
@@ -261,9 +220,9 @@ static TestCase const k_testCases[] =
 	}
 };
 
-static ::std::ostream& operator<<(::std::ostream& ostrm, TestCase const& tc)
+static ::std::ostream& operator<<(::std::ostream& ostrm, ScanFileTestCase const& tc)
 {
-	return ostrm << "Test case #" << (&tc - k_testCases);
+	return ostrm << "Test case with input \"" << tc.m_pInput << "\"";
 }
 
 static void dumpHex(string const& s)
@@ -282,7 +241,7 @@ static void dumpHex(string const& s)
 
 BOOST_DATA_TEST_CASE(scanFileTest, utd::make(k_testCases), tc)
 {
-	string input(tc.m_input);
+	string input(tc.m_pInput);
 	size_t numDosEols;
 	size_t numMacEols;
 	size_t numUnixEols;
@@ -308,7 +267,7 @@ BOOST_DATA_TEST_CASE(scanFileTest, utd::make(k_testCases), tc)
 		BOOST_CHECK_EQUAL(tc.m_dosEolCount + tc.m_macEolCount + tc.m_unxEolCount, totalEols);
 		BOOST_CHECK_EQUAL(static_cast<int>(tc.m_eolType), static_cast<int>(eolType));
 		dumpHex(out.str());
-		BOOST_CHECK_EQUAL(tc.m_dosOutput, out.str());
+		BOOST_CHECK_EQUAL(tc.m_pDosOutput, out.str());
 	}
 
 	{
@@ -322,7 +281,7 @@ BOOST_DATA_TEST_CASE(scanFileTest, utd::make(k_testCases), tc)
 		BOOST_CHECK_EQUAL(tc.m_dosEolCount + tc.m_macEolCount + tc.m_unxEolCount, totalEols);
 		BOOST_CHECK_EQUAL(static_cast<int>(tc.m_eolType), static_cast<int>(eolType));
 		dumpHex(out.str());
-		BOOST_CHECK_EQUAL(tc.m_macOutput, out.str());
+		BOOST_CHECK_EQUAL(tc.m_pMacOutput, out.str());
 	}
 
 	{
@@ -336,7 +295,7 @@ BOOST_DATA_TEST_CASE(scanFileTest, utd::make(k_testCases), tc)
 		BOOST_CHECK_EQUAL(tc.m_dosEolCount + tc.m_macEolCount + tc.m_unxEolCount, totalEols);
 		BOOST_CHECK_EQUAL(static_cast<int>(tc.m_eolType), static_cast<int>(eolType));
 		dumpHex(out.str());
-		BOOST_CHECK_EQUAL(tc.m_unxOutput, out.str());
+		BOOST_CHECK_EQUAL(tc.m_pUnxOutput, out.str());
 	}
 }
 
