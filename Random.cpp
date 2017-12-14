@@ -7,12 +7,14 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <string>
 
 namespace b = ::boost;
 
 using ::std::cout;
 using ::std::endl;
 using ::std::ostream;
+using ::std::string;
 
 #if !defined(CMDLINEUTIL_TEST_MODE)
 int main(int argCount, const char*const*const argList)
@@ -21,7 +23,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int Random::usage(ostream& out, const char* pMsg)
+int Random::usage(ostream& out, const string& progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')
@@ -30,7 +32,7 @@ int Random::usage(ostream& out, const char* pMsg)
 		out << endl << pMsg << endl;
 	}
 	out << "\n"
-		"Usage:  random <lower-bound> <upper-bound> [ <count> ]\n"
+		"Usage:  " << progName << " <lower-bound> <upper-bound> [ <count> ]\n"
 		"\n"
 		"Generates <count> uniformly distributed random integers\n"
 		"between <lower-bound> and <upper-bound>.  The two bounds\n"

@@ -14,7 +14,8 @@
 class FindFileExt
 {
 public:
-	static int usage(::std::ostream& strm, const char* pMsg);
+	static int usage(::std::ostream& strm, const ::std::string& progName,
+		const char* pMsg);
 
 	FindFileExt(::gsl::span<const char*const> args);
 	int run();

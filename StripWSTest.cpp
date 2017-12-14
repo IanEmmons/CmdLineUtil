@@ -21,6 +21,8 @@ namespace bfs = ::boost::filesystem;
 namespace ut = ::boost::unit_test;
 namespace utd = ::boost::unit_test::data;
 
+using ::std::begin;
+using ::std::end;
 using ::std::istringstream;
 using ::std::ostringstream;
 using ::std::string;
@@ -48,7 +50,7 @@ static CmdLineParseFailTestCase const k_testCases[] =
 
 BOOST_DATA_TEST_CASE(cmdLineParseFailTest, utd::make(k_testCases), tc)
 {
-	BOOST_CHECK_EXCEPTION(StripWS(tc.makeArgSpan()), CmdLineError,
+	BOOST_CHECK_EXCEPTION(StripWS(tc.m_args), CmdLineError,
 		[&tc](const CmdLineError& ex) { return tc.doesExMatch(ex); });
 }
 
@@ -65,7 +67,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 			const char*const(&fileList)[M]) noexcept :
 		CmdLineParseTestCase(args),
 		m_isInQueryMode(isInQueryMode),
-		m_fileList(::std::make_pair(fileList, M))
+		m_fileList(::gsl::make_span(fileList, M))
 		{}
 
 	bool			m_isInQueryMode;
@@ -101,11 +103,11 @@ static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
 
 BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 {
-	StripWS app(tc.makeArgSpan());
+	StripWS app(tc.m_args);
 	BOOST_CHECK_EQUAL(tc.m_isInQueryMode, app.m_isInQueryMode);
-	BOOST_CHECK_EQUAL(tc.m_fileList.second, app.m_fileEnumerator.numFileSpecs());
+	BOOST_CHECK_EQUAL(tc.m_fileList.size(), app.m_fileEnumerator.numFileSpecs());
 
-	PathList tcList(tc.m_fileList.first, tc.m_fileList.first + tc.m_fileList.second);
+	PathList tcList(begin(tc.m_fileList), end(tc.m_fileList));
 	b::sort(tcList);
 	PathList appList;
 	app.m_fileEnumerator.getFileSpecList(appList);

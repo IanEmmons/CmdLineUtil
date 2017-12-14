@@ -22,6 +22,8 @@ namespace bfs = ::boost::filesystem;
 namespace ut = ::boost::unit_test;
 namespace utd = ::boost::unit_test::data;
 
+using ::std::begin;
+using ::std::end;
 using ::std::istringstream;
 using ::std::ostringstream;
 using ::std::string;
@@ -59,7 +61,7 @@ static CmdLineParseFailTestCase const k_testCases[] =
 
 BOOST_DATA_TEST_CASE(cmdLineParseFailTest, utd::make(k_testCases), tc)
 {
-	BOOST_CHECK_EXCEPTION(RegExMove(tc.makeArgSpan()), CmdLineError,
+	BOOST_CHECK_EXCEPTION(RegExMove(tc.m_args), CmdLineError,
 		[&tc](const CmdLineError& ex) { return tc.doesExMatch(ex); });
 }
 
@@ -123,7 +125,7 @@ static CmdLineParseOkTestCase const k_testCases[] =
 
 BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 {
-	RegExMove app(tc.makeArgSpan());
+	RegExMove app(tc.m_args);
 	BOOST_CHECK_EQUAL(tc.m_caseSensitive, app.m_caseSensitive);
 	BOOST_CHECK_EQUAL(tc.m_renameDirectories, app.m_renameDirectories);
 	BOOST_CHECK_EQUAL(tc.m_renameFiles, app.m_renameFiles);

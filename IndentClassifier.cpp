@@ -26,7 +26,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int IndentClassifier::usage(ostream& out, const char* pMsg)
+int IndentClassifier::usage(ostream& out, const string& progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')
@@ -35,7 +35,7 @@ int IndentClassifier::usage(ostream& out, const char* pMsg)
 		out << endl << pMsg << endl;
 	}
 	out << "\n"
-		"Usage:  indents [-r] <file1> <file2> ...\n"
+		"Usage:  " << progName << " [-r] <file1> <file2> ...\n"
 		"\n"
 		"Lists the indent type of each file, in the following format:\n"
 		"\n"

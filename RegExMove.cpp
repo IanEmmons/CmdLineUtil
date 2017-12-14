@@ -23,7 +23,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int RegExMove::usage(ostream& out, const char* pMsg)
+int RegExMove::usage(ostream& out, const string& progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')
@@ -32,7 +32,7 @@ int RegExMove::usage(ostream& out, const char* pMsg)
 		out << endl << pMsg << endl;
 	}
 	out << "\n"
-	"Usage:  regexmv [-i] [-d] [-dd] [-r] [-v] [-y] <rootdir> <regex> <replacement>\n"
+	"Usage:  " << progName << " [-i] [-d] [-dd] [-r] [-v] [-y] <rootdir> <regex> <replacement>\n"
 	"\n"
 	"Renames a collection of files using a regular expression search-and-replace.\n"
 	"Uses Perl regular expression syntax, as implemented by Boost.Regex, see:\n"

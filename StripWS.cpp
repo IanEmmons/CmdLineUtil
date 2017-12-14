@@ -25,7 +25,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int StripWS::usage(ostream& out, const char* pMsg)
+int StripWS::usage(ostream& out, const string& progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')
@@ -34,7 +34,7 @@ int StripWS::usage(ostream& out, const char* pMsg)
 		out << endl << pMsg << endl;
 	}
 	out << "\n"
-		"Usage:  stripws [-s] [-r] <file1> <file2> ...\n"
+		"Usage:  " << progName << " [-s] [-r] <file1> <file2> ...\n"
 		"\n"
 		"Strips white space (tabs and spaces) from the ends of lines and\n"
 		"at the end of the file, if the file is not terminated by an\n"

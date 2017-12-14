@@ -4,6 +4,7 @@
 
 #include "Exceptions.h"
 
+#include <boost/filesystem.hpp>
 #include <cstdlib>
 #include <gsl/gsl>
 #include <iostream>
@@ -12,19 +13,21 @@
 template <typename T>
 int commonMain(size_t argCount, const char*const*const argList)
 {
+	using ::boost::filesystem::path;
+	using ::gsl::make_span;
 	using ::std::cout;
 	using ::std::endl;
 
-	int exitCode = EXIT_FAILURE;
+	auto exitCode{EXIT_FAILURE};
 	try
 	{
-		// Skip over the 0th element (program name):
-		T program(::gsl::make_span(argList + 1, argCount - 1));
+		// Pass the argument list, not including the program name (0th element):
+		T program{make_span(argList + 1, argCount - 1)};
 		exitCode = program.run();
 	}
 	catch (const CmdLineError& ex)
 	{
-		exitCode = T::usage(cout, ex.what());
+		exitCode = T::usage(cout, path{argList[0]}.stem().generic_string(), ex.what());
 	}
 	catch (const ::std::exception& ex)
 	{

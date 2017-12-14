@@ -7,7 +7,6 @@
 #include <gsl/gsl>
 #include <iosfwd>
 #include <string>
-#include <utility>
 
 // ===========================================================================
 // Boost-related conveniences:
@@ -50,18 +49,13 @@ private:
 //
 // ===========================================================================
 
-using ArgListPair = ::std::pair<const char*const*const, ::std::size_t>;
+using ArgListPair = ::gsl::span<const char*const>;
 
 struct CmdLineParseTestCase
 {
 	template<::std::size_t N>
-	CmdLineParseTestCase(const char*const(&args)[N]) noexcept : m_args(::std::make_pair(args, N)) {}
-
-	::gsl::span<const char*const> makeArgSpan() const
-	{
-		// Skip over the 0th element (program name):
-		return ::gsl::make_span(m_args.first + 1, m_args.second - 1);
-	}
+	CmdLineParseTestCase(const char*const(&args)[N]) noexcept
+		: m_args(::gsl::make_span(args + 1, N - 1)) {}
 
 	ArgListPair m_args;
 };

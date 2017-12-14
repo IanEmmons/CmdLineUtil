@@ -25,7 +25,6 @@ bool CmdLineParseFailTestCase::doesExMatch(CmdLineError const& ex) const
 
 ::std::ostream& operator<<(::std::ostream& ostrm, CmdLineParseTestCase const& tc)
 {
-	auto span = make_span(tc.m_args.first, tc.m_args.second);
 	return ostrm << "Test case with args \""
-		<< accumulate(span, string(), StringJoinOp(" ")) << "\"";
+		<< accumulate(tc.m_args, string(), StringJoinOp(" ")) << "\"";
 }

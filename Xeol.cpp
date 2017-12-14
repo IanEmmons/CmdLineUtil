@@ -28,7 +28,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int Xeol::usage(ostream& out, const char* pMsg)
+int Xeol::usage(ostream& out, const string& progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')
@@ -37,8 +37,8 @@ int Xeol::usage(ostream& out, const char* pMsg)
 		out << endl << pMsg << endl;
 	}
 	out << "\n"
-		"Usage 1:  xeol [-r] <file1> <file2> ...\n"
-		"Usage 2:  xeol {-d|-m|-u} [-f] [-r] <file1> <file2> ...\n"
+		"Usage 1:  " << progName << " [-r] <file1> <file2> ...\n"
+		"Usage 2:  " << progName << " {-d|-m|-u} [-f] [-r] <file1> <file2> ...\n"
 		"\n"
 		"The first usage lists the line ending convention of each file,\n"
 		"in the following format:\n"

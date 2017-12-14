@@ -41,7 +41,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int XformCvsStatus::usage(ostream& strm, const char* pMsg)
+int XformCvsStatus::usage(ostream& strm, const string& progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')
@@ -50,7 +50,7 @@ int XformCvsStatus::usage(ostream& strm, const char* pMsg)
 		strm << endl << pMsg << endl;
 	}
 	strm << "\n"
-	"Usage:  xformcvsstatus [-n] [-u] [-l]\n"
+	"Usage:  " << progName << " [-n] [-u] [-l]\n"
 	"\n"
 	"Takes the output of the \"cvs status\" command and transforms it\n"
 	"to a more succinct summary, with one file per line.  Options:\n"

@@ -13,7 +13,8 @@
 class IndentClassifier
 {
 public:
-	static int usage(::std::ostream& strm, const char* pMsg);
+	static int usage(::std::ostream& strm, const ::std::string& progName,
+		const char* pMsg);
 
 	IndentClassifier(::gsl::span<const char*const> args);
 	int run() const;
@@ -32,7 +33,7 @@ PRIVATE_EXCEPT_IN_TEST:
 	{
 		SPACE, ///< Indents consist entirely of spaces
 		TAB, ///< Indents consist entirely of tabs
-		MIXED, ///< Indents are mixed tabs and spaces, or some indents are tabs and others are spaces
+		MIXED, ///< Indents are mixed tabs and spaces, or some are tabs and others are spaces
 		INDETERMINATE ///< Refers to lines with no whitespace indent
 	};
 

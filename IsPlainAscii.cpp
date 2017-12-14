@@ -23,7 +23,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int IsPlainAscii::usage(ostream& out, const char* pMsg)
+int IsPlainAscii::usage(ostream& out, const string& progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')
@@ -32,7 +32,7 @@ int IsPlainAscii::usage(ostream& out, const char* pMsg)
 		out << endl << pMsg << endl;
 	}
 	out << "\n"
-		"Usage:  isplainascii [-r] <file1> <file2> ...\n"
+		"Usage:  " << progName << " [-r] <file1> <file2> ...\n"
 		"\n"
 		"Finds characters in the given files that are not strict 7-bit ASCII.\n"
 		"\n"

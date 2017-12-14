@@ -20,6 +20,9 @@ namespace bfs = ::boost::filesystem;
 namespace ut = ::boost::unit_test;
 namespace utd = ::boost::unit_test::data;
 
+using ::std::begin;
+using ::std::end;
+
 using PathList = ::std::vector<bfs::path>;
 
 
@@ -43,7 +46,7 @@ static CmdLineParseFailTestCase const k_testCases[] =
 
 BOOST_DATA_TEST_CASE(cmdLineParseFailTest, utd::make(k_testCases), tc)
 {
-	BOOST_CHECK_EXCEPTION(IsPlainAscii(tc.makeArgSpan()), CmdLineError,
+	BOOST_CHECK_EXCEPTION(IsPlainAscii(tc.m_args), CmdLineError,
 		[&tc](const CmdLineError& ex) { return tc.doesExMatch(ex); });
 }
 
@@ -59,7 +62,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 	CmdLineParseOkTestCase(const char*const(&args)[N],
 			const char*const(&fileList)[M]) noexcept :
 		CmdLineParseTestCase(args),
-		m_fileList(::std::make_pair(fileList, M))
+		m_fileList(::gsl::make_span(fileList, M))
 		{}
 
 	ArgListPair	m_fileList;
@@ -90,10 +93,10 @@ static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
 
 BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 {
-	IsPlainAscii app(tc.makeArgSpan());
-	BOOST_CHECK_EQUAL(tc.m_fileList.second, app.m_fileEnumerator.numFileSpecs());
+	IsPlainAscii app(tc.m_args);
+	BOOST_CHECK_EQUAL(tc.m_fileList.size(), app.m_fileEnumerator.numFileSpecs());
 
-	PathList tcList(tc.m_fileList.first, tc.m_fileList.first + tc.m_fileList.second);
+	PathList tcList(begin(tc.m_fileList), end(tc.m_fileList));
 	b::sort(tcList);
 
 	PathList appList;

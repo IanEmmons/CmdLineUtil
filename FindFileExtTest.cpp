@@ -19,6 +19,8 @@ namespace b = ::boost;
 namespace bfs = ::boost::filesystem;
 namespace utd = ::boost::unit_test::data;
 
+using ::std::begin;
+using ::std::end;
 using ::std::string;
 
 using PathList = ::std::vector<bfs::path>;
@@ -50,7 +52,7 @@ static CmdLineParseFailTestCase const k_testCases[] =
 
 BOOST_DATA_TEST_CASE(cmdLineParseFailTest, utd::make(k_testCases), tc)
 {
-	BOOST_CHECK_EXCEPTION(FindFileExt(tc.makeArgSpan()), CmdLineError,
+	BOOST_CHECK_EXCEPTION(FindFileExt(tc.m_args), CmdLineError,
 		[&tc](const CmdLineError& ex) { return tc.doesExMatch(ex); });
 }
 
@@ -70,7 +72,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 		m_isRecursive(isRecursive),
 		m_includeCounts(includeCounts),
 		m_outputAsWildcards(outputAsWildcards),
-		m_fileList(::std::make_pair(fileList, M))
+		m_fileList(::gsl::make_span(fileList, M))
 		{}
 
 	bool			m_isRecursive;
@@ -116,13 +118,13 @@ static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
 
 BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 {
-	FindFileExt app(tc.makeArgSpan());
+	FindFileExt app(tc.m_args);
 	BOOST_CHECK_EQUAL(tc.m_isRecursive, app.m_fileEnumerator.isRecursive());
 	BOOST_CHECK_EQUAL(tc.m_includeCounts, app.m_includeCounts);
 	BOOST_CHECK_EQUAL(tc.m_outputAsWildcards, app.m_outputAsWildcards);
-	BOOST_CHECK_EQUAL(tc.m_fileList.second, app.m_fileEnumerator.numFileSpecs());
+	BOOST_CHECK_EQUAL(tc.m_fileList.size(), app.m_fileEnumerator.numFileSpecs());
 
-	PathList tcList(tc.m_fileList.first, tc.m_fileList.first + tc.m_fileList.second);
+	PathList tcList(begin(tc.m_fileList), end(tc.m_fileList));
 	b::sort(tcList);
 
 	PathList appList;
@@ -191,7 +193,7 @@ BOOST_DATA_TEST_CASE(countFilesTest, utd::make(k_testCases), tc)
 	copyFile(cwDir, testDir2, "FileEnumeratorTest.cpp");
 	testDir.make_preferred();
 
-	FindFileExt app(tc.makeArgSpan());
+	FindFileExt app(tc.m_args);
 	BOOST_CHECK_EQUAL(tc.m_isRecursive, app.m_fileEnumerator.isRecursive());
 
 	app.countFiles();

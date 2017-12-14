@@ -56,6 +56,8 @@ exe isplainascii
 exe random
 	:	Random.cpp
 		/site-config//BoostHeaderOnlyLibraries
+		/site-config//BoostFileSystem/<link>static
+		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
 		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0

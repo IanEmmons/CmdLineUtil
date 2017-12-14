@@ -11,7 +11,8 @@
 class XformCvsStatus
 {
 public:
-	static int usage(::std::ostream& strm, const char* pMsg);
+	static int usage(::std::ostream& strm, const ::std::string& progName,
+		const char* pMsg);
 
 	XformCvsStatus(::gsl::span<const char*const> args);
 	int run();

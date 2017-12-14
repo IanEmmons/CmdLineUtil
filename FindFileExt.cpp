@@ -20,7 +20,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int FindFileExt::usage(ostream& out, const char* pMsg)
+int FindFileExt::usage(ostream& out, const string& progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')
@@ -29,7 +29,7 @@ int FindFileExt::usage(ostream& out, const char* pMsg)
 		out << endl << pMsg << endl;
 	}
 	out << "\n"
-		"Usage:  findext [-c] [-r] [-w] <dir1> <dir2> ...\n"
+		"Usage:  " << progName << " [-c] [-r] [-w] <dir1> <dir2> ...\n"
 		"\n"
 		"Compiles a list of all file extensions found within the indicated\n"
 		"directories.\n"

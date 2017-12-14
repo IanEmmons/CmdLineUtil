@@ -8,7 +8,8 @@
 class Random
 {
 public:
-	static int usage(::std::ostream& strm, const char* pMsg);
+	static int usage(::std::ostream& strm, const ::std::string& progName,
+		const char* pMsg);
 
 	Random(::gsl::span<const char*const> args);
 	int run() const;
