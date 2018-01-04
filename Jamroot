@@ -20,7 +20,6 @@ exe findext
 		/site-config//GSL
 	:	<include>.
 		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
-		#<os>LINUX:<threading>multi
 	:	# default build
 	:	# usage requirements
 	;
@@ -34,7 +33,6 @@ exe indents
 		/site-config//GSL
 	:	<include>.
 		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
-		#<os>LINUX:<threading>multi
 	:	# default build
 	:	# usage requirements
 	;
@@ -48,7 +46,6 @@ exe isplainascii
 		/site-config//GSL
 	:	<include>.
 		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
-		#<os>LINUX:<threading>multi
 	:	# default build
 	:	# usage requirements
 	;
@@ -61,7 +58,6 @@ exe random
 		/site-config//GSL
 	:	<include>.
 		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
-		#<os>LINUX:<threading>multi
 	:	# default build
 	:	# usage requirements
 	;
@@ -75,7 +71,6 @@ exe regexmv
 		/site-config//GSL
 	:	<include>.
 		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
-		#<os>LINUX:<threading>multi
 	:	# default build
 	:	# usage requirements
 	;
@@ -89,7 +84,6 @@ exe stripws
 		/site-config//GSL
 	:	<include>.
 		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
-		#<os>LINUX:<threading>multi
 	:	# default build
 	:	# usage requirements
 	;
@@ -103,7 +97,6 @@ exe xeol
 		/site-config//GSL
 	:	<include>.
 		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
-		#<os>LINUX:<threading>multi
 	:	# default build
 	:	# usage requirements
 	;
@@ -117,7 +110,6 @@ exe xformcvsstatus
 		/site-config//GSL
 	:	<include>.
 		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
-		#<os>LINUX:<threading>multi
 	:	# default build
 	:	# usage requirements
 	;
@@ -134,7 +126,6 @@ run	[ glob *.cpp ]
 	:	<include>.
 		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
 		<define>CMDLINEUTIL_TEST_MODE
-		#<os>LINUX:<threading>multi
 	:	CmdLineUtilTest
 	:	# default build
 	;
