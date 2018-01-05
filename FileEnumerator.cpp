@@ -9,6 +9,7 @@ namespace b = ::boost;
 namespace ba = ::boost::adaptors;
 
 using ::std::make_pair;
+using ::std::regex;
 using ::std::runtime_error;
 using ::std::string;
 
@@ -96,6 +97,6 @@ string FileEnumerator::combineRegexPatterns(const RootDirRng& rootRng)
 FileEnumerator::DirPlusRegex FileEnumerator::dirToDirPlusRegex(const Path& dir) const
 {
 	RootDirRng rootRng(m_fileSpecMap.equal_range(dir));
-	const b::regex rex(combineRegexPatterns(rootRng));
+	const regex rex(combineRegexPatterns(rootRng));
 	return make_pair(dir, rex);
 }

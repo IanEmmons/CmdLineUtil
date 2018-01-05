@@ -13,6 +13,8 @@ namespace bfs = ::boost::filesystem;
 using ::std::cout;
 using ::std::endl;
 using ::std::ostream;
+using ::std::regex;
+using ::std::regex_error;
 using ::std::string;
 using ::std::vector;
 
@@ -35,9 +37,7 @@ int RegExMove::usage(ostream& out, const string& progName, const char* pMsg)
 	"Usage:  " << progName << " [-i] [-d] [-dd] [-r] [-v] [-y] <rootdir> <regex> <replacement>\n"
 	"\n"
 	"Renames a collection of files using a regular expression search-and-replace.\n"
-	"Uses Perl regular expression syntax, as implemented by Boost.Regex, see:\n"
-	"\n"
-	"http://www.boost.org/doc/libs/1_49_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html\n"
+	"Uses ECMAScript regular expression syntax.\n"
 	"\n"
 	"   -i Perform a case-insensitive search.\n"
 	"\n"
@@ -73,6 +73,7 @@ RegExMove::RegExMove(::gsl::span<const char*const> args) :
 	m_verboseOutput(false),
 	m_allowOverwriteOnNameCollision(false),
 	m_rootDir(),
+	m_patternStr(),
 	m_pattern(),
 	m_replacement()
 {
@@ -138,21 +139,21 @@ RegExMove::RegExMove(::gsl::span<const char*const> args) :
 
 	try
 	{
-		string patStr = posArgs[1];
-		if (!balg::starts_with(patStr, "^"))
+		m_patternStr = posArgs[1];
+		if (!balg::starts_with(m_patternStr, "^"))
 		{
-			patStr = '^' + patStr;
+			m_patternStr = '^' + m_patternStr;
 		}
-		if (!balg::ends_with(patStr, "$"))
+		if (!balg::ends_with(m_patternStr, "$"))
 		{
-			patStr += '$';
+			m_patternStr += '$';
 		}
-		b::regex::flag_type flags = m_caseSensitive
-			? b::regex_constants::normal
-			: b::regex_constants::normal | b::regex_constants::icase;
-		m_pattern.assign(patStr, flags);
+		regex::flag_type flags = m_caseSensitive
+			? regex::ECMAScript
+			: regex::ECMAScript | regex::icase;
+		m_pattern.assign(m_patternStr, flags);
 	}
-	catch (b::regex_error const& ex)
+	catch (regex_error const& ex)
 	{
 		throw CmdLineError(b::format("\"%1%\" is not a valid regular expression (%2%)")
 			% posArgs[1] % ex.what());

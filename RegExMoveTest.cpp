@@ -133,7 +133,7 @@ BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 	BOOST_CHECK_EQUAL(tc.m_verboseOutput, app.m_verboseOutput);
 	BOOST_CHECK_EQUAL(tc.m_allowOverwriteOnNameCollision, app.m_allowOverwriteOnNameCollision);
 	BOOST_CHECK_EQUAL(tc.m_rootDir, app.m_rootDir);
-	BOOST_CHECK_EQUAL(tc.m_pattern, app.m_pattern.str());
+	BOOST_CHECK_EQUAL(tc.m_pattern, app.m_patternStr);
 	BOOST_CHECK_EQUAL(tc.m_replacement, app.m_replacement);
 }
 

@@ -5,9 +5,9 @@
 #include "Utils.h"
 
 #include <boost/filesystem.hpp>
-#include <boost/regex.hpp>
 #include <gsl/gsl>
 #include <iosfwd>
+#include <regex>
 #include <string>
 
 class RegExMove
@@ -38,7 +38,8 @@ PRIVATE_EXCEPT_IN_TEST:
 	bool				m_verboseOutput;
 	bool				m_allowOverwriteOnNameCollision;
 	Path				m_rootDir;
-	::boost::regex	m_pattern;
+	::std::string	m_patternStr;
+	::std::regex		m_pattern;
 	::std::string	m_replacement;
 };
 

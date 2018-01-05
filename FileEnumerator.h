@@ -9,8 +9,8 @@
 #include <boost/range/adaptor/uniqued.hpp>
 #include <boost/range/algorithm/for_each.hpp>
 #include <boost/range/iterator_range.hpp>
-#include <boost/regex.hpp>
 #include <map>
+#include <regex>
 #include <string>
 #include <utility>
 #if defined(CMDLINEUTIL_TEST_MODE)
@@ -82,7 +82,7 @@ public:
 private:
 	using FileSpecMap = ::std::multimap<Path, CmdLineFileSpec>;
 	using RootDirRng = ::boost::iterator_range<FileSpecMap::const_iterator>;
-	using DirPlusRegex = ::std::pair<Path, ::boost::regex>;
+	using DirPlusRegex = ::std::pair<Path, ::std::regex>;
 	using DirEntry = ::boost::filesystem::directory_entry;
 	using DirIter = ::boost::filesystem::directory_iterator;
 	using RecDirIter = ::boost::filesystem::recursive_directory_iterator;
@@ -96,7 +96,7 @@ private:
 	DirPlusRegex dirToDirPlusRegex(const Path& dir) const;
 	static bool isFile(const Path& p)	// canonical() resolves symlinks
 		{ return exists(p) && is_regular_file(canonical(p)); }
-	static bool matchesWildcard(const Path& p, const ::boost::regex& rex)
+	static bool matchesWildcard(const Path& p, const ::std::regex& rex)
 		{ return regex_match(p.filename().string(), rex); }
 
 	template<typename DirIterType, typename FileProcessingFunctor>

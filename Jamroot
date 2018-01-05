@@ -15,7 +15,6 @@ exe findext
 	:	FileEnumerator.cpp FindFileExt.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostRegex/<link>static
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
@@ -28,7 +27,6 @@ exe indents
 	:	FileEnumerator.cpp IndentClassifier.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostRegex/<link>static
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
@@ -41,7 +39,6 @@ exe isplainascii
 	:	FileEnumerator.cpp IsPlainAscii.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostRegex/<link>static
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
@@ -66,7 +63,6 @@ exe regexmv
 	:	RegExMove.cpp Utils.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostRegex/<link>static
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
@@ -79,7 +75,6 @@ exe stripws
 	:	FileEnumerator.cpp StripWS.cpp Utils.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostRegex/<link>static
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
@@ -92,7 +87,6 @@ exe xeol
 	:	FileEnumerator.cpp Utils.cpp Xeol.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostRegex/<link>static
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
@@ -105,7 +99,6 @@ exe xformcvsstatus
 	:	XformCvsStatus.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostRegex/<link>static
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
@@ -117,7 +110,6 @@ exe xformcvsstatus
 run	[ glob *.cpp ]
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostRegex/<link>static
 		/site-config//BoostSystem/<link>static
 		/site-config//BoostUnitTest/<link>static
 		/site-config//GSL
@@ -132,7 +124,9 @@ run	[ glob *.cpp ]
 
 install dist
 	:	findext indents isplainascii random regexmv stripws xeol xformcvsstatus
-	:	<location>dist
+	:	<address-model>64:<location>dist-64
+		<address-model>32:<location>dist-32
+		<address-model>32_64:<location>dist-32_64
 		<install-dependencies>on
 		<install-type>EXE
 		<install-type>SHARED_LIB

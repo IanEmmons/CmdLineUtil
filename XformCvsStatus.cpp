@@ -9,9 +9,9 @@
 #include <algorithm>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/format.hpp>
-#include <boost/regex.hpp>
 #include <cstdlib>
 #include <iostream>
+#include <regex>
 #include <stdexcept>
 #include <utility>
 
@@ -28,6 +28,8 @@ using ::std::endl;
 using ::std::getline;
 using ::std::ostream;
 using ::std::pair;
+using ::std::regex;
+using ::std::smatch;
 using ::std::string;
 
 static const char k_lastWorkingDirPattern[] = "^cvs (?:server|status): Examining (.*)$";
@@ -123,16 +125,16 @@ string XformCvsStatus::pathStringToConsoleString(const Path::string_type& str)
 
 int XformCvsStatus::run()
 {
-	b::regex lwdRegex(k_lastWorkingDirPattern);
-	b::regex newRegex(k_newFilePattern);
-	b::regex statusRegex(k_fileStatusPattern);
+	regex lwdRegex(k_lastWorkingDirPattern);
+	regex newRegex(k_newFilePattern);
+	regex statusRegex(k_fileStatusPattern);
 
 	while (cin)
 	{
 		string line;
 		getline(cin, line);
 
-		b::smatch match;
+		smatch match;
 		if (regex_match(line, match, lwdRegex))
 		{
 			m_lastWorkingDir = string(match[1]);
