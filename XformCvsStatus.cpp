@@ -149,14 +149,14 @@ int XformCvsStatus::run()
 		}
 	}
 
-	for (auto it = cBegin(m_map); it != cEnd(m_map); ++it)
+	for (auto const& mapEntry : m_map)
 	{
-		string st = it->second;
+		string st = mapEntry.second;
 		if ((!m_suppressNew || st != "? ")
 			&& (!m_suppressUpToDate || st != "  ")
 			&& (!m_suppressLocal || (st != "M " && st != "A " && st != "D ")))
 		{
-			cout << st << " " << pathStringToConsoleString(it->first.native()) << endl;
+			cout << st << " " << pathStringToConsoleString(mapEntry.first.native()) << endl;
 		}
 	}
 

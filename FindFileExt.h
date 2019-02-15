@@ -31,7 +31,7 @@ PRIVATE_EXCEPT_IN_TEST:
 	using PathList = ::std::vector<Path>;
 
 	void countFiles();
-	void reportExtensions();
+	void reportExtension(const StrToCountMap::value_type& extToCountMapping);
 
 	bool				m_includeCounts;
 	bool				m_outputAsWildcards;

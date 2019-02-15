@@ -28,6 +28,7 @@ PRIVATE_EXCEPT_IN_TEST:
 	using Path = ::boost::filesystem::path;
 	using DirEntry = ::boost::filesystem::directory_entry;
 
+	template <typename DirIter> void processDirectoryEntries() const;
 	void processDirectoryEntry(DirEntry const& dirEntry) const;
 	void renamePath(Path const& p) const;
 

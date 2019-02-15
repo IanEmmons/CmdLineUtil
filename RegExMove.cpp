@@ -162,23 +162,25 @@ RegExMove::RegExMove(::gsl::span<const char*const> args) :
 	m_replacement = posArgs[2];
 }
 
+template <typename DirIter>
+void RegExMove::processDirectoryEntries() const
+{
+	DirIter end;
+	for (DirIter it(m_rootDir); it != end; ++it)
+	{
+		processDirectoryEntry(*it);
+	}
+}
+
 int RegExMove::run() const
 {
 	if (m_recursiveSearch)
 	{
-		bfs::directory_iterator end;
-		for (bfs::directory_iterator it(m_rootDir); it != end; ++it)
-		{
-			processDirectoryEntry(*it);
-		}
+		processDirectoryEntries<bfs::directory_iterator>();
 	}
 	else
 	{
-		bfs::recursive_directory_iterator end;
-		for (bfs::recursive_directory_iterator it(m_rootDir); it != end; ++it)
-		{
-			processDirectoryEntry(*it);
-		}
+		processDirectoryEntries<bfs::recursive_directory_iterator>();
 	}
 	return EXIT_SUCCESS;
 }

@@ -98,7 +98,11 @@ int FindFileExt::run()
 	countFiles();
 
 	cout << endl;
-	reportExtensions();
+	b::for_each(m_extToCountMap,
+		[this](const StrToCountMap::value_type& extToCountMapping)
+		{
+			reportExtension(extToCountMapping);
+		});
 	cout << endl;
 
 	return EXIT_SUCCESS;
@@ -118,42 +122,39 @@ void FindFileExt::countFiles()
 	});
 }
 
-void FindFileExt::reportExtensions()
+void FindFileExt::reportExtension(const StrToCountMap::value_type& extToCountMapping)
 {
-	b::for_each(m_extToCountMap, [this] (const StrToCountMap::value_type& mapEntry)
+	const bool isNoExtensionEntry = extToCountMapping.first.empty();
+	string ext(isNoExtensionEntry
+		? "<no extension>"
+		: extToCountMapping.first);
+	if (m_includeCounts && m_outputAsWildcards)
 	{
-		const bool isNoExtensionEntry = mapEntry.first.empty();
-		string ext(isNoExtensionEntry
-			? "<no extension>"
-			: mapEntry.first);
-		if (m_includeCounts && m_outputAsWildcards)
+		if (!isNoExtensionEntry)
 		{
-			if (!isNoExtensionEntry)
+			cout << b::format("*%1% -- %2%\n") % ext % extToCountMapping.second;
+		}
+	}
+	else if (m_includeCounts)
+	{
+		cout << b::format("%1% -- %2%\n") % ext % extToCountMapping.second;
+		if (isNoExtensionEntry)
+		{
+			for (const auto& noExtPath : m_noExtList)
 			{
-				cout << b::format("*%1% -- %2%\n") % ext % mapEntry.second;
+				cout << b::format("   %1%\n") % noExtPath;
 			}
 		}
-		else if (m_includeCounts)
+	}
+	else if (m_outputAsWildcards)
+	{
+		if (!isNoExtensionEntry)
 		{
-			cout << b::format("%1% -- %2%\n") % ext % mapEntry.second;
-			if (isNoExtensionEntry)
-			{
-				for (const auto& noExtPath : m_noExtList)
-				{
-					cout << b::format("   %1%\n") % noExtPath;
-				}
-			}
+			cout << b::format("*%1%\n") % ext;
 		}
-		else if (m_outputAsWildcards)
-		{
-			if (!isNoExtensionEntry)
-			{
-				cout << b::format("*%1%\n") % ext;
-			}
-		}
-		else
-		{
-			cout << b::format("%1%\n") % ext;
-		}
-	});
+	}
+	else
+	{
+		cout << b::format("%1%\n") % ext;
+	}
 }
