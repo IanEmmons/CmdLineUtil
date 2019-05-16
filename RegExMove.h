@@ -40,7 +40,7 @@ PRIVATE_EXCEPT_IN_TEST:
 	bool				m_allowOverwriteOnNameCollision;
 	Path				m_rootDir;
 	::std::string	m_patternStr;
-	::std::regex		m_pattern;
+	::std::regex	m_pattern;
 	::std::string	m_replacement;
 };
 

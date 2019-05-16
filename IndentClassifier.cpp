@@ -5,6 +5,7 @@
 #include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
 #include <iostream>
+#include <regex>
 #include <stdexcept>
 
 namespace b = ::boost;
@@ -14,10 +15,30 @@ using ::std::cout;
 using ::std::endl;
 using ::std::istream;
 using ::std::invalid_argument;
-using ::std::ios_base;
-using ::std::logic_error;
 using ::std::ostream;
+using ::std::regex;
 using ::std::string;
+
+static const regex k_spacePattern{"^ +([^ \\t].*)?$"};
+static const regex k_tabPattern{"^\\t+([^ \\t].*)?$"};
+static const regex k_javadocTabPattern{"^\\t+ \\*.*$"};
+static const regex k_javadocLeftPattern{"^ \\*.*$"};
+static const regex k_indeterminatePattern{"^([^ \\t].*)?$"};
+
+static string getNextLine(istream& in)
+{
+	string line;
+	getline(in, line);
+	return line;
+}
+
+size_t get(const LineTypeCounts& lineTypeCounts, IndentType indentType)
+{
+	auto it{lineTypeCounts.find(indentType)};
+	return (it == end(lineTypeCounts))
+		? 0
+		: it->second;
+}
 
 #if !defined(CMDLINEUTIL_TEST_MODE)
 int main(int argCount, const char*const*const argList)
@@ -39,10 +60,14 @@ int IndentClassifier::usage(ostream& out, const string& progName, const char* pM
 		"\n"
 		"Lists the indent type of each file, in the following format:\n"
 		"\n"
-		"   <I> <file-path>\n"
+		"   X <file-path>\n"
 		"\n"
-		"where <I> is 'S' for spaces, 'T' for tabs, 'M' for mixed,\n"
-		"or 'I' for indeterminate (meaning lines are not indented).\n"
+		"where X is:\n"
+		"   * '" << indicatorLetter(IndentType::space) << "' for spaces,\n"
+		"   * '" << indicatorLetter(IndentType::tab) << "' for tabs,\n"
+		"   * '" << indicatorLetter(IndentType::javadocTab) << "' for tabs and tab-indented JavaDoc comment lines,\n"
+		"   * '" << indicatorLetter(IndentType::mixed) << "' for mixed, or\n"
+		"   * '" << indicatorLetter(IndentType::indeterminate) << "' for indeterminate (meaning no lines are indented).\n"
 		"\n"
 		"Options:\n"
 		"\n"
@@ -79,56 +104,45 @@ IndentClassifier::IndentClassifier(const ::gsl::span<const char*const> args) :
 
 int IndentClassifier::run() const
 {
-	m_fileEnumerator.enumerateFiles([this] (const Path& p) { queryFile(p); });
+	m_fileEnumerator.enumerateFiles([this] (const Path& p) { processFile(p); });
 	return EXIT_SUCCESS;
 }
 
-void IndentClassifier::queryFile(const Path& p) const
+void IndentClassifier::processFile(const Path& p) const
 {
-	size_t numSpaceLines = 0;
-	size_t numTabLines = 0;
-	size_t numMixedLines = 0;
-	size_t numIndLines = 0;
-	size_t totalLines = 0;
-	bfs::ifstream in(p, ios_base::in);
-	IndentType iType = scanFile(in, numSpaceLines, numTabLines, numMixedLines,
-		numIndLines, totalLines);
+	const auto lineTypeCounts{scanFile(p)};
+	auto fileType{classifyFile(lineTypeCounts)};
 
-	char iLetter = getIndicatorLetter(iType);
+	char iLetter = indicatorLetter(fileType);
 	string dispPath = displayPath(p);
-	if (iType == IndentType::MIXED)
+	cout << b::format("%1% %2%")
+			% iLetter
+			% dispPath
+		<< endl;
+	if (fileType == IndentType::mixed)
 	{
-		cout << b::format("%1% %2%\n"
-			"     (Mixed:  %3% space, %4% tab, %5% mixed, %6% indeterminate)")
-				% iLetter
-				% dispPath
-				% numSpaceLines
-				% numTabLines
-				% numMixedLines
-				% numIndLines
-			<< endl;
-	}
-	else
-	{
-		cout << b::format("%1% %2%")
-				% iLetter
-				% dispPath
+		cout << b::format("     (Mixed:  %1% space, %2% tab, %3% JavaDoc tab, %4% mixed, %5% indeterminate)")
+				% get(lineTypeCounts, IndentType::space)
+				% get(lineTypeCounts, IndentType::tab)
+				% (get(lineTypeCounts, IndentType::javadocTab) + get(lineTypeCounts, IndentType::javadocLeft))
+				% get(lineTypeCounts, IndentType::mixed)
+				% get(lineTypeCounts, IndentType::indeterminate)
 			<< endl;
 	}
 }
 
-IndentClassifier::IndentType IndentClassifier::scanFile(istream& in,
-	/* out */ size_t& numSpaceLines, /* out */ size_t& numTabLines,
-	/* out */ size_t& numMixedLines, /* out */ size_t& numIndLines,
-	/* out */ size_t& totalLines)
+LineTypeCounts IndentClassifier::scanFile(const Path& p)
 {
-	numSpaceLines = 0;
-	numTabLines = 0;
-	numMixedLines = 0;
-	numIndLines = 0;
-	totalLines = 0;
+	bool isJavaFile = isIEqual(p.extension().generic_string().c_str(), ".java");
+	bfs::ifstream in(p, ::std::ios_base::in);
+	return scanFile(in, isJavaFile);
+}
 
-	while (true)
+LineTypeCounts IndentClassifier::scanFile(istream& in, bool isJavaFile)
+{
+	LineTypeCounts lineTypeCounts;
+
+	for (;;)
 	{
 		if (in.eof())
 		{
@@ -139,79 +153,104 @@ IndentClassifier::IndentType IndentClassifier::scanFile(istream& in,
 			throw IOError("Error while reading input file");
 		}
 
-		string line;
-		getline(in, line);
-
-		size_t numSpaces = 0;
-		size_t numTabs = 0;
-		string::size_type firstNonWhiteSpace = line.find_first_not_of(" \t");
-		if (firstNonWhiteSpace == string::npos)
-		{
-			firstNonWhiteSpace = line.length();
-		}
-		for (string::size_type i = 0; i < firstNonWhiteSpace; ++i)
-		{
-			if (line[i] == ' ')
-			{
-				++numSpaces;
-			}
-			else if (line[i] == '\t')
-			{
-				++numTabs;
-			}
-		}
-
-		if (numSpaces == 0 && numTabs == 0)
-		{
-			++numIndLines;
-		}
-		else if (numSpaces > 0 && numTabs == 0)
-		{
-			++numSpaceLines;
-		}
-		else if (numSpaces == 0 && numTabs > 0)
-		{
-			++numTabLines;
-		}
-		else
-		{
-			++numMixedLines;
-		}
+		auto line{getNextLine(in)};
+		auto lineType{classifyLine(line, isJavaFile)};
+		++lineTypeCounts[lineType];
 	}
 
-	totalLines = numSpaceLines + numTabLines + numMixedLines + numIndLines;
-
-	IndentType iType = IndentType::MIXED;
-	if (numSpaceLines > 0 && numTabLines == 0 && numMixedLines == 0)
-	{
-		iType = IndentType::SPACE;
-	}
-	else if (numSpaceLines == 0 && numTabLines > 0 && numMixedLines == 0)
-	{
-		iType = IndentType::TAB;
-	}
-	else if (numSpaceLines == 0 && numTabLines == 0 && numMixedLines == 0)
-	{
-		iType = IndentType::INDETERMINATE;
-	}
-	return iType;
+	return lineTypeCounts;
 }
 
-char IndentClassifier::getIndicatorLetter(IndentType iType)
+IndentType IndentClassifier::classifyLine(const string& line, bool isJavaFile)
 {
-	switch (iType)
+	if (regex_match(line, k_indeterminatePattern))
 	{
-	case IndentType::SPACE:
+		return IndentType::indeterminate;
+	}
+	else if (isJavaFile && regex_match(line, k_javadocLeftPattern))
+	{
+		return IndentType::javadocLeft;
+	}
+	else if (regex_match(line, k_spacePattern))
+	{
+		return IndentType::space;
+	}
+	else if (regex_match(line, k_tabPattern))
+	{
+		return IndentType::tab;
+	}
+	else if (isJavaFile && regex_match(line, k_javadocTabPattern))
+	{
+		return IndentType::javadocTab;
+	}
+	else
+	{
+		return IndentType::mixed;
+	}
+}
+
+IndentType IndentClassifier::classifyFile(const LineTypeCounts& lineTypeCounts)
+{
+	if (get(lineTypeCounts, IndentType::space) > 0
+		&& get(lineTypeCounts, IndentType::tab)
+			+ get(lineTypeCounts, IndentType::javadocTab)
+			+ get(lineTypeCounts, IndentType::mixed) == 0)
+	{
+		return IndentType::space;
+	}
+	else if (get(lineTypeCounts, IndentType::tab) > 0
+		&& get(lineTypeCounts, IndentType::space)
+			+ get(lineTypeCounts, IndentType::javadocTab)
+			+ get(lineTypeCounts, IndentType::javadocLeft)
+			+ get(lineTypeCounts, IndentType::mixed) == 0)
+	{
+		return IndentType::tab;
+	}
+	else if (get(lineTypeCounts, IndentType::tab)
+			+ get(lineTypeCounts, IndentType::javadocTab) > 0
+		&& get(lineTypeCounts, IndentType::space)
+			+ get(lineTypeCounts, IndentType::mixed) == 0)
+	{
+		return IndentType::javadocTab;
+	}
+	else if (get(lineTypeCounts, IndentType::javadocLeft) > 0
+		&& get(lineTypeCounts, IndentType::space)
+			+ get(lineTypeCounts, IndentType::javadocTab)
+			+ get(lineTypeCounts, IndentType::mixed) == 0)
+	{
+		return IndentType::javadocTab;
+	}
+	else if (get(lineTypeCounts, IndentType::space)
+		+ get(lineTypeCounts, IndentType::tab)
+		+ get(lineTypeCounts, IndentType::javadocTab)
+		+ get(lineTypeCounts, IndentType::javadocLeft)
+		+ get(lineTypeCounts, IndentType::mixed) == 0)
+	{
+		return IndentType::indeterminate;
+	}
+	else
+	{
+		return IndentType::mixed;
+	}
+}
+
+char IndentClassifier::indicatorLetter(IndentType fileType)
+{
+	switch (fileType)
+	{
+	case IndentType::space:
 		return 'S';
-	case IndentType::TAB:
+	case IndentType::tab:
 		return 'T';
-	case IndentType::MIXED:
+	case IndentType::javadocTab:
+		return 'J';
+	case IndentType::mixed:
 		return 'M';
-	case IndentType::INDETERMINATE:
+	case IndentType::indeterminate:
 		return 'I';
 	default:
 		throw invalid_argument("Unrecognized IndentType enumeration value in "
-			"IndentClassifier::getIndicatorLetter");
+			"IndentClassifier::indicatorLetter");
 	}
 }
 

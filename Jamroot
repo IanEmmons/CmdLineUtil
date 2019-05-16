@@ -1,9 +1,3 @@
-
-# Note:  The "BOOST_RANGE_ENABLE_CONCEPT_ASSERT" compiler option
-# is included as a workaround to the Boost issue detailed in Boost
-# ticket #11228 and further described here:
-# http://stackoverflow.com/questions/29823931/compilation-issue-with-boost-range-copy-of-filesystem-path
-
 import testing ;
 
 project /CmdLineUtil
@@ -18,7 +12,6 @@ exe findext
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
-		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
 		<visibility>hidden
 	:	# default build
 	:	# usage requirements
@@ -31,7 +24,6 @@ exe indents
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
-		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
 		<visibility>hidden
 	:	# default build
 	:	# usage requirements
@@ -44,7 +36,6 @@ exe isplainascii
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
-		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
 		<visibility>hidden
 	:	# default build
 	:	# usage requirements
@@ -57,7 +48,6 @@ exe random
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
-		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
 		<visibility>hidden
 	:	# default build
 	:	# usage requirements
@@ -70,7 +60,6 @@ exe regexmv
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
-		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
 		<visibility>hidden
 	:	# default build
 	:	# usage requirements
@@ -83,7 +72,6 @@ exe stripws
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
-		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
 		<visibility>hidden
 	:	# default build
 	:	# usage requirements
@@ -96,7 +84,6 @@ exe xeol
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
-		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
 		<visibility>hidden
 	:	# default build
 	:	# usage requirements
@@ -109,7 +96,6 @@ exe xformcvsstatus
 		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
-		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
 		<visibility>hidden
 	:	# default build
 	:	# usage requirements
@@ -124,7 +110,6 @@ run	[ glob *.cpp ]
 	:	# arguments
 	:	# input files
 	:	<include>.
-		<define>BOOST_RANGE_ENABLE_CONCEPT_ASSERT=0
 		<define>CMDLINEUTIL_TEST_MODE
 		<visibility>hidden
 	:	CmdLineUtilTest

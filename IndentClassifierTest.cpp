@@ -13,19 +13,19 @@
 #include <boost/range/algorithm/sort.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
+#include <functional>
+#include <numeric>
 #include <string>
 #include <sstream>
 #include <vector>
 
 namespace b = ::boost;
 namespace bfs = ::boost::filesystem;
-namespace ut = ::boost::unit_test;
 namespace utd = ::boost::unit_test::data;
 
 using ::std::begin;
 using ::std::end;
 using ::std::istringstream;
-using ::std::ostringstream;
 using ::std::string;
 
 using PathList = ::std::vector<bfs::path>;
@@ -118,68 +118,72 @@ BOOST_AUTO_TEST_SUITE(ScanFileTestSuite)
 
 struct ScanFileTestCase
 {
-	char const*							m_pInput;
-	size_t									m_numSpaceLines;
-	size_t									m_numTabLines;
-	size_t									m_numMixedLines;
-	size_t									m_numIndLines;
-	IndentClassifier::IndentType	m_iType;
+	char const*const	m_pInput;
+	bool					m_isJavaFile;
+	size_t				m_numSpaceLines;
+	size_t				m_numTabLines;
+	size_t				m_numJavadocTabLines;
+	size_t				m_numJavadocLeftLines;
+	size_t				m_numMixedLines;
+	size_t				m_numIndLines;
+	IndentType			m_fileType;
 };
 
 static ScanFileTestCase const k_testCases[] =
 {
-	// input, numSpaceLines, numTabLines, numMixedLines, numIndLines, iType
+	// input, numSpaceLines, numTabLines, numMixedLines, numIndLines, fileType
 	{
 		"",
-		0, 0, 0, 1, IndentClassifier::IndentType::INDETERMINATE
+		false, 0, 0, 0, 0, 0, 1, IndentType::indeterminate
 	},
 	{
 		"This one has no whitespace at the beginning of the only line.",
-		0, 0, 0, 1, IndentClassifier::IndentType::INDETERMINATE
+		false, 0, 0, 0, 0, 0, 1, IndentType::indeterminate
 	},
 	{
 		"This one has no whitespace\n"
 		"at the beginning\n"
 		"of any of the lines.\n",
-		0, 0, 0, 4, IndentClassifier::IndentType::INDETERMINATE
+		false, 0, 0, 0, 0, 0, 4, IndentType::indeterminate
 	},
 	{
+		"   \n"
 		"   This one has spaces\n"
 		"      at the beginning\n"
 		" of all of the lines.\n",
-		3, 0, 0, 1, IndentClassifier::IndentType::SPACE
+		false, 4, 0, 0, 0, 0, 1, IndentType::space
 	},
 	{
 		"foo\n"
 		"   This one has spaces\n"
 		"      at the beginning\n"
-		" of all of the lines.\n",
-		3, 0, 0, 2, IndentClassifier::IndentType::SPACE
+		" of all of the lines but one.\n",
+		false, 3, 0, 0, 0, 0, 2, IndentType::space
 	},
 	{
 		"\tThis one has tabs\n"
 		"\t\t\tat the beginning\n"
 		"\tof all of the lines.\n",
-		0, 3, 0, 1, IndentClassifier::IndentType::TAB
+		false, 0, 3, 0, 0, 0, 1, IndentType::tab
 	},
 	{
 		"foo\n"
 		"\tThis one has tabs\n"
 		"\t\t\tat the beginning\n"
 		"\tof all of the lines.\n",
-		0, 3, 0, 2, IndentClassifier::IndentType::TAB
+		false, 0, 3, 0, 0, 0, 2, IndentType::tab
 	},
 	{
 		"\tThis one has tabs\n"
 		"   on some lines\n"
 		"\t\tand spaces on others.\n",
-		1, 2, 0, 1, IndentClassifier::IndentType::MIXED
+		false, 1, 2, 0, 0, 0, 1, IndentType::mixed
 	},
 	{
 		" \tThis one has tabs\n"
 		" \t\t and spaces\n"
 		"\t   \ton each line.\n",
-		0, 0, 3, 1, IndentClassifier::IndentType::MIXED
+		false, 0, 0, 0, 0, 3, 1, IndentType::mixed
 	},
 	{
 		"This one has no whitespace\n"
@@ -191,11 +195,48 @@ static ScanFileTestCase const k_testCases[] =
 		" \tThis one has tabs\n"
 		" \t\t and spaces\n"
 		"\t   \ton each line.\n",
-		1, 2, 3, 4, IndentClassifier::IndentType::MIXED
+		false, 1, 2, 0, 0, 3, 4, IndentType::mixed
+	},
+	{
+		"/**\n"
+		" * A comment\n"
+		" */\n"
+		"public interface Foo {\n"
+		"}",
+		false, 2, 0, 0, 0, 0, 3, IndentType::space
+	},
+	{
+		"/**\n"
+		" * A comment\n"
+		" */\n"
+		"public interface Foo {\n"
+		"}",
+		true, 0, 0, 0, 2, 0, 3, IndentType::javadocTab
+	},
+	{
+		"/**\n"
+		" * A comment\n"
+		" */\n"
+		"public interface Foo {\n"
+		"\tvoid aMethod();\n"
+		"}",
+		true, 0, 1, 0, 2, 0, 3, IndentType::javadocTab
+	},
+	{
+		"/**\n"
+		" * A comment\n"
+		" */\n"
+		"public interface Foo {\n"
+		"\t/**\n"
+		"\t * Another comment\n"
+		"\t */\n"
+		"\tvoid aMethod();\n"
+		"}",
+		true, 0, 2, 2, 2, 0, 3, IndentType::javadocTab
 	}
 };
 
-static ::std::ostream& operator<<(::std::ostream& ostrm, ScanFileTestCase const& tc)
+static ::std::ostream& operator<<(::std::ostream& ostrm, const ScanFileTestCase& tc)
 {
 	return ostrm << "Test case with input \"" << tc.m_pInput << "\"";
 }
@@ -207,26 +248,22 @@ BOOST_DATA_TEST_CASE(scanFileTest, utd::make(k_testCases), tc)
 	{
 		BOOST_TEST_MESSAGE(input);
 	}
-	size_t numSpaceLines;
-	size_t numTabLines;
-	size_t numMixedLines;
-	size_t numIndLines;
-	size_t totalEols;
-	{
-		istringstream in(input);
-		IndentClassifier::IndentType iType = IndentClassifier::IndentType::MIXED;
-		BOOST_CHECK_NO_THROW(
-			iType = IndentClassifier::scanFile(in, numSpaceLines, numTabLines, numMixedLines,
-				numIndLines, totalEols));
-		BOOST_CHECK_EQUAL(tc.m_numSpaceLines, numSpaceLines);
-		BOOST_CHECK_EQUAL(tc.m_numTabLines, numTabLines);
-		BOOST_CHECK_EQUAL(tc.m_numMixedLines, numMixedLines);
-		BOOST_CHECK_EQUAL(tc.m_numIndLines, numIndLines);
-		BOOST_CHECK_EQUAL(
-			tc.m_numSpaceLines + tc.m_numTabLines + tc.m_numMixedLines + tc.m_numIndLines,
-			totalEols);
-		BOOST_CHECK_EQUAL(static_cast<int>(tc.m_iType), static_cast<int>(iType));
-	}
+
+	istringstream in(input);
+	auto lineTypeCounts{IndentClassifier::scanFile(in, tc.m_isJavaFile)};
+	auto fileType{IndentClassifier::classifyFile(lineTypeCounts)};
+	BOOST_CHECK_EQUAL(tc.m_numSpaceLines, get(lineTypeCounts, IndentType::space));
+	BOOST_CHECK_EQUAL(tc.m_numTabLines, get(lineTypeCounts, IndentType::tab));
+	BOOST_CHECK_EQUAL(tc.m_numMixedLines, get(lineTypeCounts, IndentType::mixed));
+	BOOST_CHECK_EQUAL(tc.m_numIndLines, get(lineTypeCounts, IndentType::indeterminate));
+
+	auto totalLines{::std::accumulate(begin(lineTypeCounts), end(lineTypeCounts), size_t{0},
+		[](size_t value, const LineTypeCounts::value_type& mapEntry){ return value + mapEntry.second; })};
+	BOOST_CHECK_EQUAL(
+		tc.m_numSpaceLines + tc.m_numTabLines + tc.m_numJavadocTabLines
+			+ tc.m_numJavadocLeftLines + tc.m_numMixedLines + tc.m_numIndLines,
+		totalLines);
+	BOOST_CHECK_EQUAL(static_cast<int>(tc.m_fileType), static_cast<int>(fileType));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
