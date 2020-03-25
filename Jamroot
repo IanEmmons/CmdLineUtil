@@ -9,7 +9,6 @@ exe findext
 	:	FileEnumerator.cpp FindFileExt.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
@@ -21,7 +20,6 @@ exe indents
 	:	FileEnumerator.cpp IndentClassifier.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
@@ -33,7 +31,6 @@ exe isplainascii
 	:	FileEnumerator.cpp IsPlainAscii.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
@@ -45,7 +42,6 @@ exe random
 	:	Random.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
@@ -57,7 +53,6 @@ exe regexmv
 	:	RegExMove.cpp Utils.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
@@ -69,7 +64,6 @@ exe stripws
 	:	FileEnumerator.cpp StripWS.cpp Utils.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
@@ -81,7 +75,6 @@ exe xeol
 	:	FileEnumerator.cpp Utils.cpp Xeol.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
@@ -93,7 +86,6 @@ exe xformcvsstatus
 	:	XformCvsStatus.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostSystem/<link>static
 		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
@@ -104,7 +96,6 @@ exe xformcvsstatus
 run	[ glob *.cpp ]
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostFileSystem/<link>static
-		/site-config//BoostSystem/<link>static
 		/site-config//BoostUnitTest/<link>static
 		/site-config//GSL
 	:	# arguments
