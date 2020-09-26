@@ -6,42 +6,6 @@
 
 #include <gsl/gsl>
 #include <iosfwd>
-#include <string>
-
-// ===========================================================================
-// Boost-related conveniences:
-// ===========================================================================
-
-class StringJoinOp
-{
-public:
-	StringJoinOp() : m_separator() {}
-	StringJoinOp(const char* pSep) : m_separator(pSep) {}
-	StringJoinOp(const ::std::string& sep) : m_separator(sep) {}
-
-	::std::string operator()(::std::string lhs, const char* pRhs)
-	{
-		if (!lhs.empty())
-		{
-			lhs += m_separator;
-		}
-		return lhs += pRhs;
-	}
-
-	::std::string operator()(::std::string lhs, const ::std::string& rhs)
-	{
-		if (!lhs.empty())
-		{
-			lhs += m_separator;
-		}
-		return lhs += rhs;
-	}
-
-private:
-	::std::string m_separator;
-};
-
-
 
 // ===========================================================================
 //

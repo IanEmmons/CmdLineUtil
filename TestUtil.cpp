@@ -1,13 +1,12 @@
 
 #include "TestUtil.h"
 
-#include <boost/range/numeric.hpp>
 #include <boost/test/unit_test.hpp>
 #include <ostream>
 #include <regex>
 
-using ::boost::accumulate;
-using ::gsl::make_span;
+using ::std::cbegin;
+using ::std::cend;
 using ::std::regex;
 using ::std::string;
 
@@ -25,6 +24,17 @@ bool CmdLineParseFailTestCase::doesExMatch(CmdLineError const& ex) const
 
 ::std::ostream& operator<<(::std::ostream& ostrm, CmdLineParseTestCase const& tc)
 {
-	return ostrm << "Test case with args \""
-		<< accumulate(tc.m_args, string(), StringJoinOp(" ")) << "\"";
+	ostrm << "Test case with args \"";
+
+	auto begIt = cbegin(tc.m_args);
+	auto endIt = cend(tc.m_args);
+	for (auto argIt = begIt; argIt != endIt; ++argIt)
+	{
+		if (argIt != begIt)
+		{
+			ostrm << ' ';
+		}
+		ostrm << *argIt;
+	}
+	return ostrm << '\"';
 }
