@@ -5,16 +5,17 @@
 #include "Utils.h"
 
 #include <boost/algorithm/string/replace.hpp>
-#include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
+#include <fstream>
 
 namespace b = ::boost;
-namespace bfs = ::boost::filesystem;
 
 using ::std::cout;
 using ::std::endl;
+using ::std::ifstream;
 using ::std::istream;
 using ::std::ios_base;
+using ::std::ofstream;
 using ::std::ostream;
 using ::std::string;
 
@@ -95,7 +96,7 @@ void StripWS::queryFile(const Path& p) const
 	size_t numLinesAffected = 0;
 	size_t numSpacesStripped = 0;
 	size_t numTabsStripped = 0;
-	bfs::ifstream in(p, ios_base::in | ios_base::binary);
+	ifstream in(p, ios_base::in | ios_base::binary);
 	scanFile(in, numLinesAffected, numSpacesStripped, numTabsStripped);
 
 	if (numLinesAffected > 0)
@@ -115,11 +116,11 @@ void StripWS::translateFile(const Path& p) const
 	size_t numSpacesStripped = 0;
 	size_t numTabsStripped = 0;
 
-	bfs::ifstream in(p, ios_base::in | ios_base::binary);
+	ifstream in(p, ios_base::in | ios_base::binary);
 
 	Path tempPath(getTempPath(p));
 	PathDeleter tempPathDeleter(tempPath);
-	bfs::ofstream out(tempPath, ios_base::out | ios_base::trunc | ios_base::binary);
+	ofstream out(tempPath, ios_base::out | ios_base::trunc | ios_base::binary);
 
 	scanFile(in, numLinesAffected, numSpacesStripped, numTabsStripped, &out);
 

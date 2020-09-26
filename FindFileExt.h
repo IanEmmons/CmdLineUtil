@@ -4,7 +4,7 @@
 #include "FileEnumerator.h"
 #include "Utils.h"
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <gsl/gsl>
 #include <iosfwd>
 #include <map>
@@ -26,7 +26,7 @@ public:
 	FindFileExt& operator=(FindFileExt&&) = delete;
 
 PRIVATE_EXCEPT_IN_TEST:
-	using Path = ::boost::filesystem::path;
+	using Path = ::std::filesystem::path;
 	using StrToCountMap = ::std::map< ::std::string, size_t >;
 	using PathList = ::std::vector<Path>;
 

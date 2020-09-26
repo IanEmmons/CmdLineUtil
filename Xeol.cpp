@@ -4,20 +4,21 @@
 #include "main.h"
 #include "Utils.h"
 
-#include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
+#include <fstream>
 #include <iostream>
 #include <stdexcept>
 
 namespace b = ::boost;
-namespace bfs = ::boost::filesystem;
 
 using ::std::cout;
 using ::std::endl;
+using ::std::ifstream;
 using ::std::istream;
 using ::std::invalid_argument;
 using ::std::ios_base;
 using ::std::logic_error;
+using ::std::ofstream;
 using ::std::ostream;
 using ::std::string;
 
@@ -148,7 +149,7 @@ void Xeol::queryFile(const Path& p) const
 	size_t numMacEols = 0;
 	size_t numUnixEols = 0;
 	size_t totalEols = 0;
-	bfs::ifstream in(p, ios_base::in | ios_base::binary);
+	ifstream in(p, ios_base::in | ios_base::binary);
 	EolType eolType = scanFile(in, numDosEols, numMacEols, numUnixEols, totalEols);
 
 	char iLetter = getIndicatorLetter(eolType);
@@ -180,11 +181,11 @@ void Xeol::translateFile(const Path& p) const
 	size_t numUnixEols = 0;
 	size_t totalEols = 0;
 
-	bfs::ifstream in(p, ios_base::in | ios_base::binary);
+	ifstream in(p, ios_base::in | ios_base::binary);
 
 	Path tempPath(getTempPath(p));
 	PathDeleter tempPathDeleter(tempPath);
-	bfs::ofstream out(tempPath, ios_base::out | ios_base::trunc | ios_base::binary);
+	ofstream out(tempPath, ios_base::out | ios_base::trunc | ios_base::binary);
 
 	EolType eolType = scanFile(in, numDosEols, numMacEols, numUnixEols,
 		totalEols, &out, m_targetEolType);

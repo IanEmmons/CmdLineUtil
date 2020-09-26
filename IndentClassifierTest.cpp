@@ -20,7 +20,7 @@
 #include <vector>
 
 namespace b = ::boost;
-namespace bfs = ::boost::filesystem;
+namespace fs = ::std::filesystem;
 namespace utd = ::boost::unit_test::data;
 
 using ::std::begin;
@@ -28,7 +28,7 @@ using ::std::end;
 using ::std::istringstream;
 using ::std::string;
 
-using PathList = ::std::vector<bfs::path>;
+using PathList = ::std::vector<fs::path>;
 
 
 
@@ -89,7 +89,7 @@ static CmdLineParseOkTestCase const k_testCases[] =
 	{ k_args01, true, k_files01 },
 };
 
-static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
+static void checkEqual(const fs::path& tcPath, const fs::path& appPath)
 {
 	BOOST_CHECK_EQUAL(tcPath.generic_string(), appPath.generic_string());
 }

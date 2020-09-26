@@ -8,7 +8,7 @@
 
 namespace b = ::boost;
 namespace balg = ::boost::algorithm;
-namespace bfs = ::boost::filesystem;
+namespace fs = ::std::filesystem;
 
 using ::std::cout;
 using ::std::endl;
@@ -176,11 +176,11 @@ int RegExMove::run() const
 {
 	if (m_recursiveSearch)
 	{
-		processDirectoryEntries<bfs::directory_iterator>();
+		processDirectoryEntries<fs::directory_iterator>();
 	}
 	else
 	{
-		processDirectoryEntries<bfs::recursive_directory_iterator>();
+		processDirectoryEntries<fs::recursive_directory_iterator>();
 	}
 	return EXIT_SUCCESS;
 }
@@ -189,14 +189,14 @@ void RegExMove::processDirectoryEntry(DirEntry const& dirEntry) const
 {
 	switch (dirEntry.status().type())
 	{
-	case bfs::directory_file:
+	case fs::file_type::directory:
 		if (m_renameDirectories)
 		{
 			renamePath(dirEntry.path());
 		}
 		break;
 
-	case bfs::regular_file:
+	case fs::file_type::regular:
 		if (m_renameFiles)
 		{
 			renamePath(dirEntry.path());

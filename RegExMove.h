@@ -4,7 +4,7 @@
 
 #include "Utils.h"
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <gsl/gsl>
 #include <iosfwd>
 #include <regex>
@@ -25,8 +25,8 @@ public:
 	RegExMove& operator=(RegExMove&&) = delete;
 
 PRIVATE_EXCEPT_IN_TEST:
-	using Path = ::boost::filesystem::path;
-	using DirEntry = ::boost::filesystem::directory_entry;
+	using Path = ::std::filesystem::path;
+	using DirEntry = ::std::filesystem::directory_entry;
 
 	template <typename DirIter> void processDirectoryEntries() const;
 	void processDirectoryEntry(DirEntry const& dirEntry) const;

@@ -4,21 +4,21 @@
 
 #include <boost/format.hpp>
 
-namespace bfs = ::boost::filesystem;
+namespace fs = ::std::filesystem;
 
 using ::boost::format;
 using ::std::string;
 
-bfs::path getTempPath(const bfs::path& filePath)
+fs::path getTempPath(const fs::path& filePath)
 {
 	static const size_t k_maxIterations = 99999;
 
 	string stem = filePath.stem().string();
 	string ext = filePath.extension().string();
-	bfs::path dir(filePath.parent_path());
+	fs::path dir(filePath.parent_path());
 	for (size_t i = 0; i < k_maxIterations; ++i)
 	{
-		bfs::path tempPath(dir);
+		fs::path tempPath(dir);
 		tempPath /= str(format("%1%-%2$05d%3%") % stem % i % ext);
 		if (!exists(tempPath))
 		{

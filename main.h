@@ -4,8 +4,8 @@
 
 #include "Exceptions.h"
 
-#include <boost/filesystem.hpp>
 #include <cstdlib>
+#include <filesystem>
 #include <gsl/gsl>
 #include <iostream>
 #include <stdexcept>
@@ -13,7 +13,7 @@
 template <typename T>
 int commonMain(size_t argCount, const char*const*const argList)
 {
-	using ::boost::filesystem::path;
+	using ::std::filesystem::path;
 	using ::gsl::make_span;
 	using ::std::cout;
 	using ::std::endl;

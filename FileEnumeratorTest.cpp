@@ -13,7 +13,7 @@
 #include <functional>
 
 namespace b = ::boost;
-namespace bfs = ::boost::filesystem;
+namespace fs = ::std::filesystem;
 
 BOOST_AUTO_TEST_SUITE(FileEnumeratorTestSuite)
 
@@ -25,22 +25,22 @@ static char const*const k_matchList4[] = { "./FileEnumerator.cpp", "./FileEnumer
 	"./FileEnumeratorTest.cpp", "./TempTestDir/FileEnumerator.cpp",
 	"./TempTestDir/FileEnumerator.h", "./TempTestDir/FileEnumeratorTest.cpp" };
 
-static void copyFile(const bfs::path& fromDir, const bfs::path& toDir, const char* pFileName)
+static void copyFile(const fs::path& fromDir, const fs::path& toDir, const char* pFileName)
 {
 	copy_file(fromDir / pFileName, toDir / pFileName);
 }
 
-static void checkEqual(char const* tcPath, const bfs::path& appPath)
+static void checkEqual(char const* tcPath, const fs::path& appPath)
 {
 	BOOST_CHECK_EQUAL(tcPath, appPath.generic_string());
 }
 
-class PathListInserter : public ::std::unary_function<bfs::path, void>
+class PathListInserter : public ::std::unary_function<fs::path, void>
 {
 public:
 	PathListInserter(FileEnumerator::PathList& pathList)
 		: m_pPathList(&pathList) {}
-	void operator()(const bfs::path& path) const
+	void operator()(const fs::path& path) const
 		{ m_pPathList->push_back(path); }
 
 private:
@@ -51,8 +51,8 @@ private:
 BOOST_AUTO_TEST_CASE(ExpandWildCardTest)
 {
 	// Setup:
-	bfs::path cwDir(".");
-	bfs::path testDir = cwDir / "TempTestDir";
+	fs::path cwDir(".");
+	fs::path testDir = cwDir / "TempTestDir";
 	PathDeleter testPathDeleter(testDir);
 	create_directories(testDir);
 	copyFile(cwDir, testDir, "FileEnumerator.cpp");

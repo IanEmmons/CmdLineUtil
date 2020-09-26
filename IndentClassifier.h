@@ -5,7 +5,7 @@
 #include "FileEnumerator.h"
 #include "Utils.h"
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <gsl/gsl>
 #include <iosfwd>
 #include <map>
@@ -43,7 +43,7 @@ public:
 	IndentClassifier& operator=(IndentClassifier&&) = delete;
 
 PRIVATE_EXCEPT_IN_TEST:
-	using Path = ::boost::filesystem::path;
+	using Path = ::std::filesystem::path;
 
 	void processFile(const Path& p) const;
 	static char indicatorLetter(IndentType iType);

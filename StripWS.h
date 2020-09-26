@@ -5,7 +5,7 @@
 #include "FileEnumerator.h"
 #include "Utils.h"
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <gsl/gsl>
 #include <iosfwd>
 #include <string>
@@ -25,7 +25,7 @@ public:
 	StripWS& operator=(StripWS&&) = delete;
 
 PRIVATE_EXCEPT_IN_TEST:
-	using Path = ::boost::filesystem::path;
+	using Path = ::std::filesystem::path;
 
 	void queryFile(const Path& p) const;
 	void translateFile(const Path& p) const;

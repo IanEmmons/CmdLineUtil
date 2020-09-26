@@ -2,17 +2,17 @@
 #include "IndentClassifier.h"
 #include "main.h"
 
-#include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
+#include <fstream>
 #include <iostream>
 #include <regex>
 #include <stdexcept>
 
 namespace b = ::boost;
-namespace bfs = ::boost::filesystem;
 
 using ::std::cout;
 using ::std::endl;
+using ::std::ifstream;
 using ::std::istream;
 using ::std::invalid_argument;
 using ::std::ostream;
@@ -134,7 +134,7 @@ void IndentClassifier::processFile(const Path& p) const
 LineTypeCounts IndentClassifier::scanFile(const Path& p)
 {
 	bool isJavaFile = isIEqual(p.extension().generic_string().c_str(), ".java");
-	bfs::ifstream in(p, ::std::ios_base::in);
+	ifstream in(p, ::std::ios_base::in);
 	return scanFile(in, isJavaFile);
 }
 

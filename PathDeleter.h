@@ -2,14 +2,14 @@
 #if !defined(FILEDELETER_H_INCLUDED)
 #define FILEDELETER_H_INCLUDED
 
-#include <boost/filesystem.hpp>
 #include <boost/format.hpp>
+#include <filesystem>
 #include <iostream>
 
 class PathDeleter
 {
 public:
-	using Path = ::boost::filesystem::path;
+	using Path = ::std::filesystem::path;
 
 	PathDeleter(const Path& p)
 		: m_path(p), m_ownershipReleased(false) {}
@@ -29,9 +29,9 @@ public:
 					remove(m_path);
 				}
 			}
-			catch (const ::boost::filesystem::filesystem_error& ex)
+			catch (const ::std::filesystem::filesystem_error& ex)
 			{
-				if (ex.code().value() != ::boost::system::errc::no_such_file_or_directory)
+				if (ex.code() != make_error_code(::std::errc::no_such_file_or_directory))
 				{
 					::boost::format fmt("Unable to delete \"%1%\":  %2% (%3%)");
 					fmt % m_path.string() % ex.what() % ex.code().value();

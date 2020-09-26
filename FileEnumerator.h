@@ -2,13 +2,13 @@
 #if !defined(FILEENUMERATOR_H_INCLUDED)
 #define FILEENUMERATOR_H_INCLUDED
 
-#include <boost/filesystem.hpp>
 #include <boost/range/adaptor/filtered.hpp>
 #include <boost/range/adaptor/map.hpp>
 #include <boost/range/adaptor/transformed.hpp>
 #include <boost/range/adaptor/uniqued.hpp>
 #include <boost/range/algorithm/for_each.hpp>
 #include <boost/range/iterator_range.hpp>
+#include <filesystem>
 #include <map>
 #include <regex>
 #include <string>
@@ -20,7 +20,7 @@
 class CmdLineFileSpec
 {
 public:
-	using Path = ::boost::filesystem::path;
+	using Path = ::std::filesystem::path;
 
 	CmdLineFileSpec(const char* pFileSpecStr) : m_path(pFileSpecStr) {}
 	CmdLineFileSpec(const ::std::string& fileSpecStr) : m_path(fileSpecStr) {}
@@ -43,7 +43,7 @@ private:
 class FileEnumerator
 {
 public:
-	using Path = ::boost::filesystem::path;
+	using Path = ::std::filesystem::path;
 
 	FileEnumerator()
 		: m_isRecursive(false), m_fileSpecMap() {}
@@ -61,7 +61,7 @@ public:
 		{ return m_fileSpecMap.size(); }
 
 	// FileProcessingFunctor takes a single parameter of type
-	// "const boost::filesystem::path&" and returns "void".
+	// "const std::filesystem::path&" and returns "void".
 	template<typename FileProcessingFunctor>
 	void enumerateFiles(FileProcessingFunctor functor) const
 		{
@@ -83,9 +83,9 @@ private:
 	using FileSpecMap = ::std::multimap<Path, CmdLineFileSpec>;
 	using RootDirRng = ::boost::iterator_range<FileSpecMap::const_iterator>;
 	using DirPlusRegex = ::std::pair<Path, ::std::regex>;
-	using DirEntry = ::boost::filesystem::directory_entry;
-	using DirIter = ::boost::filesystem::directory_iterator;
-	using RecDirIter = ::boost::filesystem::recursive_directory_iterator;
+	using DirEntry = ::std::filesystem::directory_entry;
+	using DirIter = ::std::filesystem::directory_iterator;
+	using RecDirIter = ::std::filesystem::recursive_directory_iterator;
 
 	// If the wildcard patterns for the FileSpecs in the range are
 	// pattern1, pattern2, pattern3, then this method produces a

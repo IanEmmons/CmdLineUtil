@@ -2,7 +2,7 @@
 #if !defined(XFORMCVSSTATUS_H_INCLUDED)
 #define XFORMCVSSTATUS_H_INCLUDED
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <gsl/gsl>
 #include <iosfwd>
 #include <map>
@@ -23,7 +23,7 @@ public:
 	XformCvsStatus& operator=(XformCvsStatus&&) = delete;
 
 private:
-	using Path = ::boost::filesystem::path;
+	using Path = ::std::filesystem::path;
 	using FileToStatusMap = ::std::map<Path, ::std::string>;
 
 	void insertInMap(const ::std::string& file, const ::std::string& status);

@@ -16,14 +16,14 @@
 #include <vector>
 
 namespace b = ::boost;
-namespace bfs = ::boost::filesystem;
+namespace fs = ::std::filesystem;
 namespace utd = ::boost::unit_test::data;
 
 using ::std::begin;
 using ::std::end;
 using ::std::string;
 
-using PathList = ::std::vector<bfs::path>;
+using PathList = ::std::vector<fs::path>;
 
 BOOST_AUTO_TEST_SUITE(FindFileExtTestSuite)
 
@@ -111,7 +111,7 @@ static CmdLineParseOkTestCase const k_testCases[] =
 	{ k_args10, true,  false, false, k_files01 },
 };
 
-static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
+static void checkEqual(const fs::path& tcPath, const fs::path& appPath)
 {
 	BOOST_CHECK_EQUAL(tcPath.generic_string(), appPath.generic_string());
 }
@@ -165,7 +165,7 @@ static CountFilesTestCase const k_testCases[] =
 	{ k_args01, true,  2, 4 },
 };
 
-static void copyFile(const bfs::path& fromDir, const bfs::path& toDir, const char* pFileName)
+static void copyFile(const fs::path& fromDir, const fs::path& toDir, const char* pFileName)
 {
 	copy_file(fromDir / pFileName, toDir / pFileName);
 }
@@ -180,9 +180,9 @@ static void checkEqual(const FindFileExt::StrToCountMap::value_type& expMapEntry
 BOOST_DATA_TEST_CASE(countFilesTest, utd::make(k_testCases), tc)
 {
 	// Setup:
-	bfs::path cwDir(".");
-	bfs::path testDir = cwDir / "TempTestDir";
-	bfs::path testDir2 = testDir / "dir2";
+	fs::path cwDir(".");
+	fs::path testDir = cwDir / "TempTestDir";
+	fs::path testDir2 = testDir / "dir2";
 	PathDeleter testPathDeleter(testDir);
 	create_directories(testDir2);
 	copyFile(cwDir, testDir, "FileEnumerator.cpp");

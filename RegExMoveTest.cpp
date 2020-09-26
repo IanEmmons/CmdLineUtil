@@ -18,7 +18,6 @@
 #include <vector>
 
 namespace b = ::boost;
-namespace bfs = ::boost::filesystem;
 namespace ut = ::boost::unit_test;
 namespace utd = ::boost::unit_test::data;
 

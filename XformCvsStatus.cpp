@@ -179,7 +179,7 @@ XformCvsStatus::Path XformCvsStatus::buildPath(const string& file) const
 {
 	string trFile = b::trim_copy(file);
 	return (m_lastWorkingDir.empty() || m_lastWorkingDir == ".")
-		? trFile
+		? Path{trFile}
 		: m_lastWorkingDir / trFile;
 }
 

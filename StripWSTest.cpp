@@ -17,7 +17,7 @@
 #include <vector>
 
 namespace b = ::boost;
-namespace bfs = ::boost::filesystem;
+namespace fs = ::std::filesystem;
 namespace ut = ::boost::unit_test;
 namespace utd = ::boost::unit_test::data;
 
@@ -27,7 +27,7 @@ using ::std::istringstream;
 using ::std::ostringstream;
 using ::std::string;
 
-using PathList = ::std::vector<bfs::path>;
+using PathList = ::std::vector<fs::path>;
 
 BOOST_AUTO_TEST_SUITE(StripWSTestSuite)
 
@@ -96,7 +96,7 @@ static CmdLineParseOkTestCase const k_testCases[] =
 	{ k_args05, true, k_files03 },
 };
 
-static void checkEqual(const bfs::path& tcPath, const bfs::path& appPath)
+static void checkEqual(const fs::path& tcPath, const fs::path& appPath)
 {
 	BOOST_CHECK_EQUAL(tcPath.generic_string(), appPath.generic_string());
 }

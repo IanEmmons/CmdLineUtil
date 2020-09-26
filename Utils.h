@@ -3,8 +3,8 @@
 #define UTILS_H_INCLUDED
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/filesystem.hpp>
 #include <cstddef>
+#include <filesystem>
 #include <gsl/gsl>
 #include <iterator>
 #include <memory>
@@ -29,6 +29,6 @@ inline bool isIEqual(const char* pStr1, const char* pStr2)
 	return ::boost::algorithm::iequals(pStr1, pStr2);
 }
 
-::boost::filesystem::path getTempPath(const ::boost::filesystem::path& filePath);
+::std::filesystem::path getTempPath(const ::std::filesystem::path& filePath);
 
 #endif // UTILS_H_INCLUDED

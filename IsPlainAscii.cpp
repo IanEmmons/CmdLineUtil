@@ -2,15 +2,15 @@
 #include "IsPlainAscii.h"
 #include "main.h"
 
-#include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
+#include <fstream>
 #include <iostream>
 
 namespace b = ::boost;
-namespace bfs = ::boost::filesystem;
 
 using ::std::cout;
 using ::std::endl;
+using ::std::ifstream;
 using ::std::istream;
 using ::std::ios_base;
 using ::std::ostream;
@@ -77,7 +77,7 @@ int IsPlainAscii::run() const
 
 void IsPlainAscii::scanFile(const Path& filePath)
 {
-	bfs::ifstream in(filePath, ios_base::in | ios_base::binary);
+	ifstream in(filePath, ios_base::in | ios_base::binary);
 	scanFile2(filePath, in, cout);
 	in.close();
 }
