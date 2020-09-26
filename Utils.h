@@ -3,14 +3,7 @@
 #define UTILS_H_INCLUDED
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <cstddef>
 #include <filesystem>
-#include <gsl/gsl>
-#include <iterator>
-#include <memory>
-#include <utility>
-
-
 
 #if defined(CMDLINEUTIL_TEST_MODE)
 #	define PRIVATE_EXCEPT_IN_TEST public
