@@ -2,8 +2,15 @@
 #if !defined(UTILS_H_INCLUDED)
 #define UTILS_H_INCLUDED
 
-#include <boost/algorithm/string/predicate.hpp>
+#include <algorithm>
+//#include <boost/algorithm/string/predicate.hpp>
 #include <filesystem>
+//#include <cstddef>
+#include <gsl/gsl>
+//#include <iterator>
+#include <locale>
+//#include <memory>
+//#include <utility>
 
 #if defined(CMDLINEUTIL_TEST_MODE)
 #	define PRIVATE_EXCEPT_IN_TEST public
@@ -19,7 +26,21 @@ constexpr ::std::size_t arrayLen(T(&)[N]) noexcept
 
 inline bool isIEqual(const char* pStr1, const char* pStr2)
 {
-	return ::boost::algorithm::iequals(pStr1, pStr2);
+	//return ::boost::algorithm::iequals(pStr1, pStr2);
+
+	::std::locale loc;
+	auto isIEqual = [&loc](char c1, char c2)
+	{
+		return ::std::tolower(c1, loc) == ::std::tolower(c2, loc);
+	};
+
+	auto span1 = ::gsl::ensure_z(pStr1);
+	auto span2 = ::gsl::ensure_z(pStr2);
+
+	return ::std::equal(
+		::std::cbegin(span1), ::std::cend(span1),
+		::std::cbegin(span2), ::std::cend(span2),
+		isIEqual);
 }
 
 ::std::filesystem::path getTempPath(const ::std::filesystem::path& filePath);
