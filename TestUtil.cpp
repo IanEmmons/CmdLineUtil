@@ -5,6 +5,13 @@
 #include <ostream>
 #include <regex>
 
+#define USE_OSTREAM_JOINER_CODE
+
+#if defined(USE_OSTREAM_JOINER_CODE)
+#	include <algorithm>
+#	include <experimental/iterator>
+#endif
+
 using ::std::cbegin;
 using ::std::cend;
 using ::std::regex;
@@ -26,6 +33,10 @@ bool CmdLineParseFailTestCase::doesExMatch(CmdLineError const& ex) const
 {
 	ostrm << "Test case with args \"";
 
+#if defined(USE_OSTREAM_JOINER_CODE)
+	::std::copy(cbegin(tc.m_args), cend(tc.m_args),
+		::std::experimental::make_ostream_joiner(ostrm, ' '));
+#else
 	auto begIt = cbegin(tc.m_args);
 	auto endIt = cend(tc.m_args);
 	for (auto argIt = begIt; argIt != endIt; ++argIt)
@@ -36,5 +47,7 @@ bool CmdLineParseFailTestCase::doesExMatch(CmdLineError const& ex) const
 		}
 		ostrm << *argIt;
 	}
+#endif
+
 	return ostrm << '\"';
 }
