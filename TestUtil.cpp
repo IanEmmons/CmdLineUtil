@@ -13,7 +13,9 @@
 #endif
 
 using ::std::cbegin;
+using ::std::copy;
 using ::std::cend;
+using ::std::experimental::make_ostream_joiner;
 using ::std::regex;
 using ::std::string;
 
@@ -34,8 +36,7 @@ bool CmdLineParseFailTestCase::doesExMatch(CmdLineError const& ex) const
 	ostrm << "Test case with args \"";
 
 #if defined(USE_OSTREAM_JOINER_CODE)
-	::std::copy(cbegin(tc.m_args), cend(tc.m_args),
-		::std::experimental::make_ostream_joiner(ostrm, ' '));
+	copy(cbegin(tc.m_args), cend(tc.m_args), make_ostream_joiner(ostrm, ' '));
 #else
 	auto begIt = cbegin(tc.m_args);
 	auto endIt = cend(tc.m_args);

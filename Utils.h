@@ -3,14 +3,9 @@
 #define UTILS_H_INCLUDED
 
 #include <algorithm>
-//#include <boost/algorithm/string/predicate.hpp>
 #include <filesystem>
-//#include <cstddef>
 #include <gsl/gsl>
-//#include <iterator>
 #include <locale>
-//#include <memory>
-//#include <utility>
 
 #if defined(CMDLINEUTIL_TEST_MODE)
 #	define PRIVATE_EXCEPT_IN_TEST public
@@ -26,8 +21,6 @@ constexpr ::std::size_t arrayLen(T(&)[N]) noexcept
 
 inline bool isIEqual(const char* pStr1, const char* pStr2)
 {
-	//return ::boost::algorithm::iequals(pStr1, pStr2);
-
 	::std::locale loc;
 	auto isIEqual = [&loc](char c1, char c2)
 	{
