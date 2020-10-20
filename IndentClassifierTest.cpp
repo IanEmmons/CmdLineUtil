@@ -13,7 +13,6 @@
 #include <boost/range/algorithm/sort.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
-#include <functional>
 #include <numeric>
 #include <string>
 #include <sstream>
