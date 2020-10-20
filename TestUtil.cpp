@@ -7,7 +7,9 @@
 #include <ostream>
 #include <regex>
 
-#define USE_OSTREAM_JOINER_CODE
+#if !defined(_WIN32)
+#	define USE_OSTREAM_JOINER_CODE
+#endif
 
 #if defined(USE_OSTREAM_JOINER_CODE)
 #	include <algorithm>
@@ -17,7 +19,9 @@
 using ::std::cbegin;
 using ::std::copy;
 using ::std::cend;
+#if defined(USE_OSTREAM_JOINER_CODE)
 using ::std::experimental::make_ostream_joiner;
+#endif
 using ::std::regex;
 using ::std::string;
 

@@ -112,7 +112,7 @@ void FindFileExt::countFiles()
 {
 	m_fileEnumerator.enumerateFiles([this](const Path& file)
 	{
-		string ext = file.extension();
+		string ext = file.extension().generic_string();
 		auto result = m_extToCountMap.insert(make_pair(ext, 0));
 		result.first->second += 1;
 		if (ext.empty())

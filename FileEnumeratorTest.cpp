@@ -10,7 +10,6 @@
 #include <boost/range/algorithm_ext/for_each.hpp>
 #include <boost/range/algorithm/sort.hpp>
 #include <boost/test/unit_test.hpp>
-#include <functional>
 
 namespace b = ::boost;
 namespace fs = ::std::filesystem;
@@ -35,19 +34,6 @@ static void checkEqual(char const* tcPath, const fs::path& appPath)
 	BOOST_CHECK_EQUAL(tcPath, appPath.generic_string());
 }
 
-class PathListInserter : public ::std::unary_function<fs::path, void>
-{
-public:
-	PathListInserter(FileEnumerator::PathList& pathList)
-		: m_pPathList(&pathList) {}
-	void operator()(const fs::path& path) const
-		{ m_pPathList->push_back(path); }
-
-private:
-	// Note that PathListInserter instances do not own their path list!!!
-	FileEnumerator::PathList* m_pPathList;
-};
-
 BOOST_AUTO_TEST_CASE(ExpandWildCardTest)
 {
 	// Setup:
@@ -65,7 +51,7 @@ BOOST_AUTO_TEST_CASE(ExpandWildCardTest)
 		fe.insert("FileEnumerator.cpp");
 
 		FileEnumerator::PathList fileList;
-		fe.enumerateFiles(PathListInserter(fileList));
+		fe.enumerateFiles([&fileList] (const fs::path& path) { fileList.push_back(path); });
 
 		BOOST_CHECK_EQUAL(arrayLen(k_matchList1), fileList.size());
 		b::sort(fileList);
@@ -78,7 +64,7 @@ BOOST_AUTO_TEST_CASE(ExpandWildCardTest)
 		fe.insert("FileEn*.cpp");
 
 		FileEnumerator::PathList fileList;
-		fe.enumerateFiles(PathListInserter(fileList));
+		fe.enumerateFiles([&fileList] (const fs::path& path) { fileList.push_back(path); });
 
 		BOOST_CHECK_EQUAL(arrayLen(k_matchList2), fileList.size());
 		b::sort(fileList);
@@ -93,7 +79,7 @@ BOOST_AUTO_TEST_CASE(ExpandWildCardTest)
 		fe.insert("FileEnumerator.h");
 
 		FileEnumerator::PathList fileList;
-		fe.enumerateFiles(PathListInserter(fileList));
+		fe.enumerateFiles([&fileList] (const fs::path& path) { fileList.push_back(path); });
 
 		BOOST_CHECK_EQUAL(arrayLen(k_matchList3), fileList.size());
 		b::sort(fileList);
@@ -108,7 +94,7 @@ BOOST_AUTO_TEST_CASE(ExpandWildCardTest)
 		fe.insert("FileEn*.h");
 
 		FileEnumerator::PathList fileList;
-		fe.enumerateFiles(PathListInserter(fileList));
+		fe.enumerateFiles([&fileList] (const fs::path& path) { fileList.push_back(path); });
 
 		BOOST_CHECK_EQUAL(arrayLen(k_matchList4), fileList.size());
 		b::sort(fileList);
