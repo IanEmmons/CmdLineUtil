@@ -4,8 +4,8 @@
 
 #include <algorithm>
 #include <filesystem>
-#include <gsl/gsl>
 #include <locale>
+#include <string_view>
 
 #if defined(CMDLINEUTIL_TEST_MODE)
 #	define PRIVATE_EXCEPT_IN_TEST public
@@ -27,12 +27,12 @@ inline bool isIEqual(const char* pStr1, const char* pStr2)
 		return ::std::tolower(c1, loc) == ::std::tolower(c2, loc);
 	};
 
-	auto span1 = ::gsl::ensure_z(pStr1);
-	auto span2 = ::gsl::ensure_z(pStr2);
+	auto str1 = ::std::string_view{pStr1};
+	auto str2 = ::std::string_view{pStr2};
 
 	return ::std::equal(
-		::std::cbegin(span1), ::std::cend(span1),
-		::std::cbegin(span2), ::std::cend(span2),
+		::std::cbegin(str1), ::std::cend(str1),
+		::std::cbegin(str2), ::std::cend(str2),
 		isIEqual);
 }
 
