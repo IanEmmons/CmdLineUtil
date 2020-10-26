@@ -20,11 +20,11 @@ public:
 	Random& operator=(Random&&) = delete;
 
 private:
-	static int getRandomInteger(int low, int high);
+	static long getRandomInteger(long low, long high);
 
-	int			m_lowerBound;
-	int			m_upperBound;
-	unsigned	m_count;
+	long	m_lowerBound;
+	long	m_upperBound;
+	long	m_count;
 };
 
 #endif // RANDOM_H_INCLUDED

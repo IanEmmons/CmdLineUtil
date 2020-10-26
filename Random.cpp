@@ -2,19 +2,53 @@
 #include "Random.h"
 #include "main.h"
 
-#include <boost/lexical_cast.hpp>
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <random>
+#include <stdexcept>
 #include <string>
 
-namespace b = ::boost;
-
 using ::std::cout;
+using ::std::default_random_engine;
 using ::std::endl;
+using ::std::invalid_argument;
 using ::std::ostream;
+using ::std::out_of_range;
 using ::std::string;
+using ::std::uniform_int_distribution;
+
+long fromCString(const char* pStr)
+{
+	string str{pStr};
+	try
+	{
+		size_t endIndex;
+		auto result = stol(str, &endIndex);
+		if (endIndex != str.size())
+		{
+			throw invalid_argument(
+				"Numeric argument with trailing non-numeric characters");
+		}
+		return result;
+	}
+	catch(const invalid_argument& ex)
+	{
+		string msg{"Invalid numeric format ('"};
+		msg += str;
+		msg += "'): ";
+		msg += ex.what();
+		throw CmdLineError(msg);
+	}
+	catch(const out_of_range& ex)
+	{
+		string msg{"Out-of-range number ('"};
+		msg += str;
+		msg += "')";
+		throw CmdLineError(msg);
+	}
+}
 
 #if !defined(CMDLINEUTIL_TEST_MODE)
 int main(int argCount, const char*const*const argList)
@@ -45,7 +79,7 @@ int Random::usage(ostream& out, const string& progName, const char* pMsg)
 Random::Random(::gsl::span<const char*const> args) :
 	m_lowerBound(0),
 	m_upperBound(0),
-	m_count(0)
+	m_count(1)
 {
 	if (args.size() < 3)
 	{
@@ -57,18 +91,11 @@ Random::Random(::gsl::span<const char*const> args) :
 	}
 	else
 	{
-		try
+		m_lowerBound = fromCString(args[1]);
+		m_upperBound = fromCString(args[2]);
+		if (args.size() == 4)
 		{
-			m_lowerBound = b::lexical_cast<int>(args[1]);
-			m_upperBound = b::lexical_cast<int>(args[2]);
-			if (args.size() == 4)
-			{
-				m_count = b::lexical_cast<unsigned>(args[3]);
-			}
-		}
-		catch(const b::bad_lexical_cast&)
-		{
-			throw CmdLineError("Invalid numeric format");
+			m_count = fromCString(args[3]);
 		}
 	}
 
@@ -80,7 +107,6 @@ Random::Random(::gsl::span<const char*const> args) :
 
 int Random::run() const
 {
-	srand(static_cast<unsigned int>(time(nullptr)));
 	for (unsigned i = 0; i < m_count; ++i)
 	{
 		cout << getRandomInteger(m_lowerBound, m_upperBound) << endl;
@@ -88,9 +114,9 @@ int Random::run() const
 	return EXIT_SUCCESS;
 }
 
-int Random::getRandomInteger(int low, int high)
+long Random::getRandomInteger(long low, long high)
 {
-	double r = static_cast<double>(rand()) / static_cast<double>(RAND_MAX);
-	r *= static_cast<double>(high - low + 1);
-	return low + static_cast<int>(floor(r));
+	default_random_engine generator;
+	uniform_int_distribution<long> distribution(low, high);
+	return distribution(generator);
 }
