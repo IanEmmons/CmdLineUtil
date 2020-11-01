@@ -73,7 +73,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 		{}
 
 	bool			m_isRecursive;
-	ArgListPair	m_fileList;
+	ArgSpan	m_fileList;
 };
 
 static char const*const k_args00[] = { "indents", "IndentClassifier.cpp" };

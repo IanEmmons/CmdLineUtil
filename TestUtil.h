@@ -13,7 +13,7 @@
 //
 // ===========================================================================
 
-using ArgListPair = ::gsl::span<const char*const>;
+using ArgSpan = ::gsl::span<const char*const>;
 
 struct CmdLineParseTestCase
 {
@@ -21,7 +21,7 @@ struct CmdLineParseTestCase
 	CmdLineParseTestCase(const char*const(&args)[N]) noexcept
 		: m_args(::gsl::make_span(args + 1, N - 1)) {}
 
-	ArgListPair m_args;
+	ArgSpan m_args;
 };
 
 struct CmdLineParseFailTestCase : public CmdLineParseTestCase

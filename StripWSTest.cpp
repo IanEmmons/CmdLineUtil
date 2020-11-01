@@ -71,7 +71,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 		{}
 
 	bool			m_isInQueryMode;
-	ArgListPair	m_fileList;
+	ArgSpan	m_fileList;
 };
 
 static char const*const k_args00[] = { "stripws", "StripWS.cpp" };

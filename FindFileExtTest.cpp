@@ -78,7 +78,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 	bool			m_isRecursive;
 	bool			m_includeCounts;
 	bool			m_outputAsWildcards;
-	ArgListPair	m_fileList;
+	ArgSpan	m_fileList;
 };
 
 static char const*const k_args00[] = { "findext", "." };

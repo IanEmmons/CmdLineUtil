@@ -65,7 +65,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 		m_fileList(::gsl::make_span(fileList, M))
 		{}
 
-	ArgListPair	m_fileList;
+	ArgSpan	m_fileList;
 };
 
 static char const*const k_args00[] = { "isplainascii", "IsPlainAscii.cpp" };

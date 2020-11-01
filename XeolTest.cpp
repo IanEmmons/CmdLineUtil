@@ -101,7 +101,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 	bool				m_isInQueryMode;
 	Xeol::EolType	m_targetEolType;
 	bool				m_forceTranslation;
-	ArgListPair		m_fileList;
+	ArgSpan		m_fileList;
 };
 
 static char const*const k_args00[] = { "xeol", "Xeol.cpp" };
