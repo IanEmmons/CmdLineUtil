@@ -4,6 +4,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/format.hpp>
 #include <boost/range/algorithm_ext/push_back.hpp>
+#include <string_view>
 
 namespace b = ::boost;
 namespace ba = ::boost::adaptors;
@@ -12,6 +13,7 @@ using ::std::make_pair;
 using ::std::regex;
 using ::std::runtime_error;
 using ::std::string;
+using ::std::string_view;
 
 static const char k_wildcardSeparator[] = ")|(?:";
 
@@ -51,12 +53,6 @@ void FileEnumerator::insert(const char* pFileSpecStr)
 	m_fileSpecMap.insert(make_pair(fs.dir(), fs));
 }
 
-void FileEnumerator::insert(const string& fileSpecStr)
-{
-	CmdLineFileSpec fs(fileSpecStr);
-	m_fileSpecMap.insert(make_pair(fs.dir(), fs));
-}
-
 void FileEnumerator::insert(const Path& fileSpecPath)
 {
 	CmdLineFileSpec fs(fileSpecPath);
@@ -80,7 +76,7 @@ string FileEnumerator::combineRegexPatterns(const RootDirRng& rootRng)
 	b::for_each(rootRng
 			| ba::map_values
 			| ba::transformed([] (const CmdLineFileSpec& clfs) { return clfs.wildcard(); }),
-		[&] (const string& str)
+		[&] (string_view str)
 		{
 			if (numStringsConcatenated > 0)
 			{

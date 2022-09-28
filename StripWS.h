@@ -9,12 +9,12 @@
 #include <gsl/gsl>
 #include <iosfwd>
 #include <string>
+#include <string_view>
 
 class StripWS
 {
 public:
-	static int usage(::std::ostream& strm, const ::std::string& progName,
-		const char* pMsg);
+	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
 
 	StripWS(::gsl::span<const char*const> args);
 	int run() const;

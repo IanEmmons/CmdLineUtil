@@ -4,5 +4,10 @@
         "string": "cpp",
         "random": "cpp",
         "algorithm": "cpp"
-    }
+    },
+    "editor.tabSize": 3,
+    "editor.renderWhitespace": "all",
+    "C_Cpp.default.includePath": [
+        "/Users/iemmons/dev/boost_1_78_0"
+    ]
 }

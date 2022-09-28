@@ -16,6 +16,7 @@ using ::std::ostream;
 using ::std::regex;
 using ::std::regex_error;
 using ::std::string;
+using ::std::string_view;
 using ::std::vector;
 
 #if !defined(CMDLINEUTIL_TEST_MODE)
@@ -25,7 +26,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int RegExMove::usage(ostream& out, const string& progName, const char* pMsg)
+int RegExMove::usage(ostream& out, string_view progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')

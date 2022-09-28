@@ -4,12 +4,12 @@
 
 #include <gsl/gsl>
 #include <iosfwd>
+#include <string_view>
 
 class Random
 {
 public:
-	static int usage(::std::ostream& strm, const ::std::string& progName,
-		const char* pMsg);
+	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
 
 	Random(::gsl::span<const char*const> args);
 	int run() const;

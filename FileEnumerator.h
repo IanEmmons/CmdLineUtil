@@ -23,7 +23,6 @@ public:
 	using Path = ::std::filesystem::path;
 
 	CmdLineFileSpec(const char* pFileSpecStr) : m_path(pFileSpecStr) {}
-	CmdLineFileSpec(const ::std::string& fileSpecStr) : m_path(fileSpecStr) {}
 	CmdLineFileSpec(const Path& fileSpecPath) : m_path(fileSpecPath) {}
 
 	bool hasWildcard() const
@@ -52,7 +51,6 @@ public:
 		{ m_isRecursive = newRecursiveValue; }
 
 	void insert(const char* pFileSpecStr);
-	void insert(const ::std::string& fileSpecStr);
 	void insert(const Path& fileSpecPath);
 
 	bool isRecursive() const

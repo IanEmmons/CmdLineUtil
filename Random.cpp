@@ -17,6 +17,7 @@ using ::std::invalid_argument;
 using ::std::ostream;
 using ::std::out_of_range;
 using ::std::string;
+using ::std::string_view;
 using ::std::uniform_int_distribution;
 
 long fromCString(const char* pStr)
@@ -57,7 +58,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int Random::usage(ostream& out, const string& progName, const char* pMsg)
+int Random::usage(ostream& out, string_view progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')

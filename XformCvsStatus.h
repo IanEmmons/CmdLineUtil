@@ -7,12 +7,12 @@
 #include <iosfwd>
 #include <map>
 #include <string>
+#include <string_view>
 
 class XformCvsStatus
 {
 public:
-	static int usage(::std::ostream& strm, const ::std::string& progName,
-		const char* pMsg);
+	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
 
 	XformCvsStatus(::gsl::span<const char*const> args);
 	int run();
@@ -35,7 +35,7 @@ private:
 	bool					m_suppressUpToDate;
 	bool					m_suppressLocal;
 	Path					m_lastWorkingDir;
-	FileToStatusMap		m_map;
+	FileToStatusMap	m_map;
 };
 
 #endif // XFORMCVSSTATUS_H_INCLUDED

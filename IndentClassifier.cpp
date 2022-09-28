@@ -18,6 +18,7 @@ using ::std::invalid_argument;
 using ::std::ostream;
 using ::std::regex;
 using ::std::string;
+using ::std::string_view;
 
 static const regex k_spacePattern{"^ +([^ \\t].*)?$"};
 static const regex k_tabPattern{"^\\t+([^ \\t].*)?$"};
@@ -47,7 +48,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int IndentClassifier::usage(ostream& out, const string& progName, const char* pMsg)
+int IndentClassifier::usage(ostream& out, string_view progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')

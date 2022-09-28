@@ -3,5 +3,12 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"editor.tabSize": 3,
+		"files.associations": {
+			"string_view": "cpp",
+			"regex": "cpp"
+		}
+	}
 }

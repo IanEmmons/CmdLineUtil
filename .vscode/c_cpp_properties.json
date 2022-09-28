@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/Users/iemmons/dev/3rdparty/GSL/include",
-                "/Users/iemmons/dev/boost_1_74_0"
+                "/Users/iemmons/dev/boost_1_78_0"
             ],
             "defines": [],
             "macFrameworkPath": [

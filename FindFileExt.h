@@ -9,13 +9,13 @@
 #include <iosfwd>
 #include <map>
 #include <string>
+#include <string_view>
 #include <vector>
 
 class FindFileExt
 {
 public:
-	static int usage(::std::ostream& strm, const ::std::string& progName,
-		const char* pMsg);
+	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
 
 	FindFileExt(::gsl::span<const char*const> args);
 	int run();

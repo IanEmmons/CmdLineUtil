@@ -31,6 +31,7 @@ using ::std::pair;
 using ::std::regex;
 using ::std::smatch;
 using ::std::string;
+using ::std::string_view;
 
 static const char k_lastWorkingDirPattern[] = "^cvs (?:server|status): Examining (.*)$";
 static const char k_newFilePattern[] = "^(\\?) (.*)$";
@@ -43,7 +44,7 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int XformCvsStatus::usage(ostream& strm, const string& progName, const char* pMsg)
+int XformCvsStatus::usage(ostream& strm, string_view progName, const char* pMsg)
 {
 	int exitCode = EXIT_SUCCESS;
 	if (pMsg != nullptr && *pMsg != '\0')
