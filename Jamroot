@@ -35,6 +35,16 @@ exe isplainascii
 	:	# usage requirements
 	;
 
+exe jsonpp
+	:	FileEnumerator.cpp JsonParserImpl.cpp JsonPP.cpp
+		/site-config//BoostHeaderOnlyLibraries
+		/site-config//GSL
+	:	<include>.
+		<visibility>hidden
+	:	# default build
+	:	# usage requirements
+	;
+
 exe random
 	:	Random.cpp
 		/site-config//BoostHeaderOnlyLibraries
@@ -99,7 +109,7 @@ run	[ glob *.cpp ]
 	;
 
 install dist
-	:	findext indents isplainascii random regexmv stripws xeol xformcvsstatus
+	:	findext indents isplainascii jsonpp random regexmv stripws xeol xformcvsstatus
 	:	<address-model>64:<location>dist-64
 		<address-model>32:<location>dist-32
 		<address-model>32_64:<location>dist-32_64
