@@ -42,7 +42,7 @@ long fromCString(const char* pStr)
 		msg += ex.what();
 		throw CmdLineError(msg);
 	}
-	catch(const out_of_range& ex)
+	catch(const out_of_range&)
 	{
 		string msg{"Out-of-range number ('"};
 		msg += str;
@@ -108,7 +108,7 @@ Random::Random(::gsl::span<const char*const> args) :
 
 int Random::run() const
 {
-	for (unsigned i = 0; i < m_count; ++i)
+	for (long i = 0; i < m_count; ++i)
 	{
 		cout << getRandomInteger(m_lowerBound, m_upperBound) << endl;
 	}

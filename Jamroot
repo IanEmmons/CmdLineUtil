@@ -40,6 +40,7 @@ exe jsonpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//GSL
 	:	<include>.
+		<define>BOOST_JSON_NO_LIB
 		<visibility>hidden
 	:	# default build
 	:	# usage requirements
