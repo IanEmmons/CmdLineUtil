@@ -35,9 +35,11 @@ exe isplainascii
 	:	# usage requirements
 	;
 
+# BoostContainer is included because it is used by Boost.JSON
 exe jsonpp
 	:	FileEnumerator.cpp JsonParserImpl.cpp JsonPP.cpp
 		/site-config//BoostHeaderOnlyLibraries
+		/site-config//BoostContainer/<link>static
 		/site-config//GSL
 	:	<include>.
 		<define>BOOST_JSON_NO_LIB
@@ -96,14 +98,18 @@ exe xformcvsstatus
 	:	# usage requirements
 	;
 
-run	[ glob *.cpp ]
+# BoostContainer is included because it is used by Boost.JSON
+
+run [ glob *.cpp ]
 		/site-config//BoostHeaderOnlyLibraries
+		/site-config//BoostContainer/<link>static
 		/site-config//BoostUnitTest/<link>static
 		/site-config//GSL
 	:	# arguments
 	:	# input files
 	:	<include>.
 		<define>CMDLINEUTIL_TEST_MODE
+		<define>BOOST_JSON_NO_LIB
 		<visibility>hidden
 	:	CmdLineUtilTest
 	:	# default build

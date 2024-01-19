@@ -124,7 +124,7 @@ JsonPP::JValue JsonPP::parseFile(const Path& path)
 	{
 		char buffer[4096];
 		in.read(buffer, arrayLen(buffer));
-		p.write(buffer, in.gcount());
+		p.write(buffer, static_cast<size_t>(in.gcount()));
 	} while(in && !in.eof());
 
 	if (!in && !in.eof())

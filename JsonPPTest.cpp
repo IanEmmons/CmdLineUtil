@@ -152,7 +152,7 @@ static ::std::ostream& operator<<(::std::ostream& ostrm, PrettyPrintTestCase con
 
 static string readFile(const JsonPP::Path& path)
 {
-	ifstream in(path, ios_base::in | ios_base::binary);
+	ifstream in(path, ios_base::in);
 	if (!in)
 	{
 		throw ::std::ios_base::failure(str(b::format("Unable to open file '%1%'")
@@ -164,7 +164,7 @@ static string readFile(const JsonPP::Path& path)
 	{
 		char buffer[4096];
 		in.read(buffer, arrayLen(buffer));
-		contents += string_view(buffer, in.gcount());
+		contents += string_view(buffer, static_cast<size_t>(in.gcount()));
 	}
 
 	if (!in && !in.eof())
