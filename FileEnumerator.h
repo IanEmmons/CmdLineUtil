@@ -68,7 +68,7 @@ public:
 					| ::boost::adaptors::uniqued
 					| ::boost::adaptors::transformed(
 						[this] (const Path& dir) { return dirToDirPlusRegex(dir); }),
-				[=] (const DirPlusRegex& dirPlusRegex) { processRootDir(dirPlusRegex, functor); });
+				[this, functor] (const DirPlusRegex& dirPlusRegex) { processRootDir(dirPlusRegex, functor); });
 		}
 
 #if defined(CMDLINEUTIL_TEST_MODE)
@@ -105,8 +105,8 @@ private:
 				| ::boost::adaptors::transformed(
 					[] (const DirEntry& de) { return de.path(); })
 				| ::boost::adaptors::filtered(
-					[&] (const Path& p)
-						{ return isFile(p) && matchesWildcard(p, dirPlusRegex.second); }),
+					[regex = dirPlusRegex.second] (const Path& p)
+						{ return isFile(p) && matchesWildcard(p, regex); }),
 			functor);
 	}
 
