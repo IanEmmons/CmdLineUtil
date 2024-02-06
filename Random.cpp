@@ -77,7 +77,7 @@ int Random::usage(ostream& out, string_view progName, const char* pMsg)
 	return exitCode;
 }
 
-Random::Random(::gsl::span<const char*const> args) :
+Random::Random(::std::span<const char*const> args) :
 	m_lowerBound(0),
 	m_upperBound(0),
 	m_count(1)

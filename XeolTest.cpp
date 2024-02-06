@@ -95,7 +95,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 		m_isInQueryMode(isInQueryMode),
 		m_targetEolType(targetEolType),
 		m_forceTranslation(forceTranslation),
-		m_fileList(::gsl::make_span(fileList, M))
+		m_fileList(::std::span{fileList, M})
 		{}
 
 	bool				m_isInQueryMode;

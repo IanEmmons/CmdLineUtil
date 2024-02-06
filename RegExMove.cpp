@@ -66,7 +66,7 @@ int RegExMove::usage(ostream& out, string_view progName, const char* pMsg)
 	return exitCode;
 }
 
-RegExMove::RegExMove(::gsl::span<const char*const> args) :
+RegExMove::RegExMove(::std::span<const char*const> args) :
 	m_caseSensitive(true),
 	m_renameDirectories(false),
 	m_renameFiles(true),

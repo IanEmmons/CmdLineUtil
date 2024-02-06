@@ -67,7 +67,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 			const char*const(&fileList)[M]) noexcept :
 		CmdLineParseTestCase(args),
 		m_isInQueryMode(isInQueryMode),
-		m_fileList(::gsl::make_span(fileList, M))
+		m_fileList(::std::span{fileList, M})
 		{}
 
 	bool			m_isInQueryMode;

@@ -2,8 +2,8 @@
 #if !defined(RANDOM_H_INCLUDED)
 #define RANDOM_H_INCLUDED
 
-#include <gsl/gsl>
 #include <iosfwd>
+#include <span>
 #include <string_view>
 
 class Random
@@ -11,7 +11,7 @@ class Random
 public:
 	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
 
-	Random(::gsl::span<const char*const> args);
+	Random(::std::span<const char*const> args);
 	int run() const;
 
 	Random(const Random&) = delete;

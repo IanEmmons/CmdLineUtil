@@ -55,7 +55,7 @@ int StripWS::usage(ostream& out, string_view progName, const char* pMsg)
 	return exitCode;
 }
 
-StripWS::StripWS(::gsl::span<const char*const> args) :
+StripWS::StripWS(::std::span<const char*const> args) :
 	m_isInQueryMode(true),
 	m_fileEnumerator()
 {

@@ -69,7 +69,7 @@ int XformCvsStatus::usage(ostream& strm, string_view progName, const char* pMsg)
 	return exitCode;
 }
 
-XformCvsStatus::XformCvsStatus(::gsl::span<const char*const> args) :
+XformCvsStatus::XformCvsStatus(::std::span<const char*const> args) :
 	m_suppressNew(false),
 	m_suppressUpToDate(false),
 	m_suppressLocal(false),

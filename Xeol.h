@@ -6,8 +6,8 @@
 #include "Utils.h"
 
 #include <filesystem>
-#include <gsl/gsl>
 #include <iosfwd>
+#include <span>
 #include <string>
 #include <string_view>
 
@@ -16,7 +16,7 @@ class Xeol
 public:
 	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
 
-	Xeol(::gsl::span<const char*const> args);
+	Xeol(::std::span<const char*const> args);
 	int run() const;
 
 	Xeol(const Xeol&) = delete;

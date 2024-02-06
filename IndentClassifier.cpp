@@ -78,7 +78,7 @@ int IndentClassifier::usage(ostream& out, string_view progName, const char* pMsg
 	return exitCode;
 }
 
-IndentClassifier::IndentClassifier(const ::gsl::span<const char*const> args) :
+IndentClassifier::IndentClassifier(const ::std::span<const char*const> args) :
 	m_fileEnumerator()
 {
 	for (auto pArg : args)

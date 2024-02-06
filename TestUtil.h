@@ -4,8 +4,8 @@
 
 #include "Exceptions.h"
 
-#include <gsl/gsl>
 #include <iosfwd>
+#include <span>
 
 // ===========================================================================
 //
@@ -13,13 +13,13 @@
 //
 // ===========================================================================
 
-using ArgSpan = ::gsl::span<const char*const>;
+using ArgSpan = ::std::span<const char*const>;
 
 struct CmdLineParseTestCase
 {
 	template<::std::size_t N>
 	CmdLineParseTestCase(const char*const(&args)[N]) noexcept
-		: m_args(::gsl::make_span(args + 1, N - 1)) {}
+		: m_args(::std::span{args + 1, N - 1}) {}
 
 	ArgSpan m_args;
 };

@@ -47,7 +47,7 @@ int FindFileExt::usage(ostream& out, string_view progName, const char* pMsg)
 	return exitCode;
 }
 
-FindFileExt::FindFileExt(const ::gsl::span<const char*const> args) :
+FindFileExt::FindFileExt(const ::std::span<const char*const> args) :
 	m_includeCounts(false),
 	m_outputAsWildcards(false),
 	m_fileEnumerator(),

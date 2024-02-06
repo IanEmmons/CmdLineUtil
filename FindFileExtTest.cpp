@@ -72,7 +72,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 		m_isRecursive(isRecursive),
 		m_includeCounts(includeCounts),
 		m_outputAsWildcards(outputAsWildcards),
-		m_fileList(::gsl::make_span(fileList, M))
+		m_fileList(::std::span{fileList, M})
 		{}
 
 	bool			m_isRecursive;

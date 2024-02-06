@@ -69,7 +69,7 @@ int Xeol::usage(ostream& out, string_view progName, const char* pMsg)
 	return exitCode;
 }
 
-Xeol::Xeol(::gsl::span<const char*const> args) :
+Xeol::Xeol(::std::span<const char*const> args) :
 	m_isInQueryMode(true),
 	m_targetEolType(EolType::INDETERMINATE),
 	m_forceTranslation(false),

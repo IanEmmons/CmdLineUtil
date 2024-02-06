@@ -6,15 +6,15 @@
 
 #include <cstdlib>
 #include <filesystem>
-#include <gsl/gsl>
 #include <iostream>
+#include <span>
 #include <stdexcept>
 
 template <typename T>
 int commonMain(size_t argCount, const char*const*const argList)
 {
 	using ::std::filesystem::path;
-	using ::gsl::make_span;
+	using ::std::span;
 	using ::std::cout;
 	using ::std::endl;
 
@@ -22,7 +22,7 @@ int commonMain(size_t argCount, const char*const*const argList)
 	try
 	{
 		// Pass the argument list, not including the program name (0th element):
-		T program{make_span(argList + 1, argCount - 1)};
+		T program{span{argList + 1, argCount - 1}};
 		exitCode = program.run();
 	}
 	catch (const CmdLineError& ex)

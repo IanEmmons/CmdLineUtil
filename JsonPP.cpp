@@ -52,7 +52,7 @@ int JsonPP::usage(ostream& out, string_view progName, const char* pMsg)
 	return exitCode;
 }
 
-JsonPP::JsonPP(::gsl::span<const char*const> args) :
+JsonPP::JsonPP(::std::span<const char*const> args) :
 	m_inPlaceMode(false),
 	m_minifyMode(false),
 	m_fileEnumerator()

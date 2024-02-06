@@ -45,7 +45,7 @@ int IsPlainAscii::usage(ostream& out, string_view progName, const char* pMsg)
 	return exitCode;
 }
 
-IsPlainAscii::IsPlainAscii(::gsl::span<const char*const> args) :
+IsPlainAscii::IsPlainAscii(::std::span<const char*const> args) :
 	m_fileEnumerator()
 {
 	for (auto pArg : args)

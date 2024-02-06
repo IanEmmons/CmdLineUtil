@@ -73,7 +73,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 		m_inPlaceMode(inPlaceMode),
 		m_minifyMode(minifyMode),
 		m_isRecursive(isRecursive),
-		m_fileList(::gsl::make_span(fileList, M))
+		m_fileList(::std::span{fileList, M})
 		{}
 
 	bool		m_inPlaceMode;

@@ -69,7 +69,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 			const char*const(&fileList)[M]) noexcept :
 		CmdLineParseTestCase(args),
 		m_isRecursive(isRecursive),
-		m_fileList(::gsl::make_span(fileList, M))
+		m_fileList(::std::span{fileList, M})
 		{}
 
 	bool			m_isRecursive;

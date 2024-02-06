@@ -6,8 +6,8 @@
 #include "Utils.h"
 
 #include <filesystem>
-#include <gsl/gsl>
 #include <iosfwd>
+#include <span>
 #include <string>
 #include <string_view>
 
@@ -16,7 +16,7 @@ class IsPlainAscii
 public:
 	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
 
-	IsPlainAscii(::gsl::span<const char*const> args);
+	IsPlainAscii(::std::span<const char*const> args);
 	int run() const;
 
 	IsPlainAscii(const IsPlainAscii&) = delete;

@@ -7,8 +7,8 @@
 
 #include <boost/json.hpp>
 #include <filesystem>
-#include <gsl/gsl>
 #include <iosfwd>
+#include <span>
 #include <string_view>
 
 class JsonPP
@@ -16,7 +16,7 @@ class JsonPP
 public:
 	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
 
-	JsonPP(::gsl::span<const char*const> args);
+	JsonPP(::std::span<const char*const> args);
 	int run() const;
 
 	JsonPP(const JsonPP&) = delete;

@@ -62,7 +62,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 	CmdLineParseOkTestCase(const char*const(&args)[N],
 			const char*const(&fileList)[M]) noexcept :
 		CmdLineParseTestCase(args),
-		m_fileList(::gsl::make_span(fileList, M))
+		m_fileList(::std::span{fileList, M})
 		{}
 
 	ArgSpan	m_fileList;

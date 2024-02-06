@@ -6,9 +6,9 @@
 #include "Utils.h"
 
 #include <filesystem>
-#include <gsl/gsl>
 #include <iosfwd>
 #include <map>
+#include <span>
 #include <string>
 #include <string_view>
 
@@ -35,7 +35,7 @@ class IndentClassifier
 public:
 	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
 
-	IndentClassifier(::gsl::span<const char*const> args);
+	IndentClassifier(::std::span<const char*const> args);
 	int run() const;
 
 	IndentClassifier(const IndentClassifier&) = delete;

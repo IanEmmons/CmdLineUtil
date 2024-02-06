@@ -8,7 +8,6 @@ project /CmdLineUtil
 exe findext
 	:	FileEnumerator.cpp FindFileExt.cpp
 		/site-config//BoostHeaderOnlyLibraries
-		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
 	:	# default build
@@ -18,7 +17,6 @@ exe findext
 exe indents
 	:	FileEnumerator.cpp IndentClassifier.cpp
 		/site-config//BoostHeaderOnlyLibraries
-		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
 	:	# default build
@@ -28,7 +26,6 @@ exe indents
 exe isplainascii
 	:	FileEnumerator.cpp IsPlainAscii.cpp
 		/site-config//BoostHeaderOnlyLibraries
-		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
 	:	# default build
@@ -40,7 +37,6 @@ exe jsonpp
 	:	FileEnumerator.cpp JsonParserImpl.cpp JsonPP.cpp
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostContainer/<link>static
-		/site-config//GSL
 	:	<include>.
 		<define>BOOST_JSON_NO_LIB
 		<visibility>hidden
@@ -51,7 +47,6 @@ exe jsonpp
 exe random
 	:	Random.cpp
 		/site-config//BoostHeaderOnlyLibraries
-		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
 	:	# default build
@@ -61,7 +56,6 @@ exe random
 exe regexmv
 	:	RegExMove.cpp Utils.cpp
 		/site-config//BoostHeaderOnlyLibraries
-		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
 	:	# default build
@@ -71,7 +65,6 @@ exe regexmv
 exe stripws
 	:	FileEnumerator.cpp StripWS.cpp Utils.cpp
 		/site-config//BoostHeaderOnlyLibraries
-		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
 	:	# default build
@@ -81,7 +74,6 @@ exe stripws
 exe xeol
 	:	FileEnumerator.cpp Utils.cpp Xeol.cpp
 		/site-config//BoostHeaderOnlyLibraries
-		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
 	:	# default build
@@ -91,7 +83,6 @@ exe xeol
 exe xformcvsstatus
 	:	XformCvsStatus.cpp
 		/site-config//BoostHeaderOnlyLibraries
-		/site-config//GSL
 	:	<include>.
 		<visibility>hidden
 	:	# default build
@@ -104,7 +95,6 @@ run [ glob *.cpp ]
 		/site-config//BoostHeaderOnlyLibraries
 		/site-config//BoostContainer/<link>static
 		/site-config//BoostUnitTest/<link>static
-		/site-config//GSL
 	:	# arguments
 	:	# input files
 	:	<include>.

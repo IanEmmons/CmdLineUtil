@@ -3,9 +3,9 @@
 #define XFORMCVSSTATUS_H_INCLUDED
 
 #include <filesystem>
-#include <gsl/gsl>
 #include <iosfwd>
 #include <map>
+#include <span>
 #include <string>
 #include <string_view>
 
@@ -14,7 +14,7 @@ class XformCvsStatus
 public:
 	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
 
-	XformCvsStatus(::gsl::span<const char*const> args);
+	XformCvsStatus(::std::span<const char*const> args);
 	int run();
 
 	XformCvsStatus(const XformCvsStatus&) = delete;
