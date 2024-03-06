@@ -8,8 +8,8 @@
 
 #include <algorithm>
 #include <boost/algorithm/string/trim.hpp>
-#include <boost/format.hpp>
 #include <cstdlib>
+#include <format>
 #include <iostream>
 #include <regex>
 #include <stdexcept>
@@ -25,6 +25,7 @@ namespace b = ::boost;
 using ::std::cin;
 using ::std::cout;
 using ::std::endl;
+using ::std::format;
 using ::std::getline;
 using ::std::ostream;
 using ::std::pair;
@@ -96,7 +97,7 @@ XformCvsStatus::XformCvsStatus(::std::span<const char*const> args) :
 		}
 		else
 		{
-			throw CmdLineError(b::format("Unrecognized option \"%1%\"") % pArg);
+			throw CmdLineError(format("Unrecognized option '{0}'", pArg));
 		}
 	}
 }
@@ -107,16 +108,16 @@ string XformCvsStatus::pathStringToConsoleString(const Path::string_type& str)
 	int bufSize = ::WideCharToMultiByte(CP_OEMCP, 0, str.c_str(), -1, 0, 0, 0, 0);
 	if (bufSize == 0 && ::GetLastError() != ERROR_SUCCESS)
 	{
-		throw WindowsError(b::format("WideCharToMultiByte failure, 1st call, error code %1%")
-			% ::GetLastError());
+		throw WindowsError(format("WideCharToMultiByte failure, 1st call, error code {0}",
+			::GetLastError()));
 	}
 	bufSize += 2;
 	::std::vector<char> buffer(bufSize);
 	if (::WideCharToMultiByte(CP_OEMCP, 0, str.c_str(), -1, &(buffer[0]), bufSize, 0, 0) == 0
 		&& ::GetLastError() != ERROR_SUCCESS)
 	{
-		throw WindowsError(b::format("WideCharToMultiByte failure, 2nd call, error code %1%")
-			% ::GetLastError());
+		throw WindowsError(format("WideCharToMultiByte failure, 2nd call, error code {0}",
+			::GetLastError()));
 	}
 	return &(buffer[0]);
 #else

@@ -52,10 +52,10 @@ static CmdLineParseFailTestCase const k_testCases[] =
 	{ k_args04, "^All of the arguments .* are required$" },
 	{ k_args05, "^All of the arguments .* are required$" },
 	{ k_args06, "^All of the arguments .* are required$" },
-	{ k_args07, "^The directory \"foo\" does not exist$" },
-	{ k_args08, "^\"Xeol.h\" is not a directory$" },
-	{ k_args09, "^\".*\" is not a valid regular expression \\(.*\\)$" },
-	{ k_args10, "^\".*\" is not a valid regular expression \\(.*\\)$" },
+	{ k_args07, "^The directory 'foo' does not exist$" },
+	{ k_args08, "^'Xeol.h' is not a directory$" },
+	{ k_args09, "^'.*' is not a valid regular expression \\(.*\\)$" },
+	{ k_args10, "^'.*' is not a valid regular expression \\(.*\\)$" },
 };
 
 BOOST_DATA_TEST_CASE(cmdLineParseFailTest, utd::make(k_testCases), tc)

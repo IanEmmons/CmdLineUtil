@@ -2,14 +2,13 @@
 #include "IsPlainAscii.h"
 #include "main.h"
 
-#include <boost/format.hpp>
+#include <format>
 #include <fstream>
 #include <iostream>
 
-namespace b = ::boost;
-
 using ::std::cout;
 using ::std::endl;
+using ::std::format;
 using ::std::ifstream;
 using ::std::istream;
 using ::std::ios_base;
@@ -145,15 +144,14 @@ void IsPlainAscii::reportNonAsciiRun(const Path& filePath, unsigned long lineNum
 {
 	if (!nonAsciiRun.empty())
 	{
-		out << b::format("%1%, line %2%, approx. column %3%:  \"%4%\" (\"")
-				% filePath
-				% lineNum
-				% approxColNum
-				% nonAsciiRun;
+		out << format("'{0}', line {1}, approx. column {2}:  \"{3}\" (\"",
+				filePath.generic_string(),
+				lineNum,
+				approxColNum,
+				nonAsciiRun);
 		for (auto ch : nonAsciiRun)
 		{
-			out << b::format("\\x%1$02x")
-				% static_cast<unsigned int>(static_cast<unsigned char>(ch));
+			out << format("\\x{0:02x}", static_cast<unsigned int>(static_cast<unsigned char>(ch)));
 		}
 		out << "\")" << endl;
 		nonAsciiRun.clear();

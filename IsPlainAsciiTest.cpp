@@ -135,7 +135,7 @@ static ScanFileTestCase const k_testCases[] =
 	},
 	{
 		"\xef\xbb\xbfThis one has a UTF-8 BOM",
-		"\"TestInputStream\", line 1, approx. column 1:  \"\xef\xbb\xbf\" (\"\\xef\\xbb\\xbf\")\n"
+		"'TestInputStream', line 1, approx. column 1:  \"\xef\xbb\xbf\" (\"\\xef\\xbb\\xbf\")\n"
 	},
 	{
 		"Line 1\n"
@@ -144,10 +144,10 @@ static ScanFileTestCase const k_testCases[] =
 		"We often start by saying \xe2\x80\x9cHello world!\xe2\x80\x9d, even "
 		"though that\xe2\x80\x99s silly\xe2\x80\xa6",
 
-		"\"TestInputStream\", line 4, approx. column 26:  \"\xe2\x80\x9c\" (\"\\xe2\\x80\\x9c\")\n"
-		"\"TestInputStream\", line 4, approx. column 41:  \"\xe2\x80\x9d\" (\"\\xe2\\x80\\x9d\")\n"
-		"\"TestInputStream\", line 4, approx. column 62:  \"\xe2\x80\x99\" (\"\\xe2\\x80\\x99\")\n"
-		"\"TestInputStream\", line 4, approx. column 72:  \"\xe2\x80\xa6\" (\"\\xe2\\x80\\xa6\")\n"
+		"'TestInputStream', line 4, approx. column 26:  \"\xe2\x80\x9c\" (\"\\xe2\\x80\\x9c\")\n"
+		"'TestInputStream', line 4, approx. column 41:  \"\xe2\x80\x9d\" (\"\\xe2\\x80\\x9d\")\n"
+		"'TestInputStream', line 4, approx. column 62:  \"\xe2\x80\x99\" (\"\\xe2\\x80\\x99\")\n"
+		"'TestInputStream', line 4, approx. column 72:  \"\xe2\x80\xa6\" (\"\\xe2\\x80\\xa6\")\n"
 	},
 };
 

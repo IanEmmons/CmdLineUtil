@@ -1,5 +1,6 @@
 .DS_Store
 /bb-bin/
+/dist/
 /dist-32/
 /dist-64/
 /dist-32_64/

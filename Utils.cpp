@@ -2,11 +2,11 @@
 #include "Utils.h"
 #include "Exceptions.h"
 
-#include <boost/format.hpp>
+#include <format>
 
 namespace fs = ::std::filesystem;
 
-using ::boost::format;
+using ::std::format;
 using ::std::string;
 
 fs::path getTempPath(const fs::path& filePath)
@@ -19,11 +19,12 @@ fs::path getTempPath(const fs::path& filePath)
 	for (size_t i = 0; i < k_maxIterations; ++i)
 	{
 		fs::path tempPath(dir);
-		tempPath /= str(format("%1%-%2$05d%3%") % stem % i % ext);
+		tempPath /= format("{0}-{1:05}{2}", stem, i,  ext);
 		if (!exists(tempPath))
 		{
 			return tempPath;
 		}
 	}
-	throw IOError(format("Unable to create temporary file for \"%1%\"") % filePath);
+	throw IOError(format("Unable to create temporary file for '{0}'",
+		filePath.generic_string()));
 }

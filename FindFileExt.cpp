@@ -3,13 +3,14 @@
 #include "main.h"
 #include "Utils.h"
 
-#include <boost/format.hpp>
+#include <format>
 #include <iostream>
 
 namespace b = ::boost;
 
 using ::std::cout;
 using ::std::endl;
+using ::std::format;
 using ::std::ostream;
 using ::std::string;
 using ::std::string_view;
@@ -77,11 +78,11 @@ FindFileExt::FindFileExt(const ::std::span<const char*const> args) :
 			auto p = Path{pArg};
 			if (!exists(p))
 			{
-				throw CmdLineError(b::format("%1% does not exist") % pArg);
+				throw CmdLineError(format("'{0}' does not exist", pArg));
 			}
 			else if (!is_directory(p))
 			{
-				throw CmdLineError(b::format("%1% is not a directory") % pArg);
+				throw CmdLineError(format("'{0}' is not a directory", pArg));
 			}
 			p /= "*";
 			m_fileEnumerator.insert(p);
@@ -133,17 +134,17 @@ void FindFileExt::reportExtension(const StrToCountMap::value_type& extToCountMap
 	{
 		if (!isNoExtensionEntry)
 		{
-			cout << b::format("*%1% -- %2%\n") % ext % extToCountMapping.second;
+			cout << format("*{0} -- {1}", ext, extToCountMapping.second) << endl;
 		}
 	}
 	else if (m_includeCounts)
 	{
-		cout << b::format("%1% -- %2%\n") % ext % extToCountMapping.second;
+		cout << format("{0} -- {1}", ext, extToCountMapping.second) << endl;
 		if (isNoExtensionEntry)
 		{
 			for (const auto& noExtPath : m_noExtList)
 			{
-				cout << b::format("   %1%\n") % noExtPath;
+				cout << format("   {0}", noExtPath.generic_string()) << endl;
 			}
 		}
 	}
@@ -151,11 +152,11 @@ void FindFileExt::reportExtension(const StrToCountMap::value_type& extToCountMap
 	{
 		if (!isNoExtensionEntry)
 		{
-			cout << b::format("*%1%\n") % ext;
+			cout << format("*{0}", ext) << endl;
 		}
 	}
 	else
 	{
-		cout << b::format("%1%\n") % ext;
+		cout << ext << endl;
 	}
 }
