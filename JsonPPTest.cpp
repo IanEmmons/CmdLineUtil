@@ -190,4 +190,28 @@ BOOST_DATA_TEST_CASE(translateFileTest, utd::make(k_testCases), tc)
 
 BOOST_AUTO_TEST_SUITE_END()
 
+
+
+BOOST_AUTO_TEST_SUITE(TranslateFailTestSuite)
+
+BOOST_AUTO_TEST_CASE(translateFailTestCase)
+{
+	bool caughtException = false;
+	string errMsg;
+	try
+	{
+		JsonPP::translateFile("JsonPPTestInputInvalid.json", false, false);
+	}
+	catch (const SyntaxError& ex)
+	{
+		caughtException = true;
+		errMsg = ex.what();
+	}
+
+	BOOST_CHECK_EQUAL(true, caughtException);
+	BOOST_CHECK(errMsg.find("line 77:") != string::npos);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
 BOOST_AUTO_TEST_SUITE_END()
