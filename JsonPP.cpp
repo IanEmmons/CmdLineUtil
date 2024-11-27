@@ -10,6 +10,7 @@ namespace b = ::boost;
 namespace json = ::boost::json;
 
 using ::std::endl;
+using ::std::error_code;
 using ::std::ifstream;
 using ::std::ios_base;
 using ::std::ofstream;
@@ -119,12 +120,21 @@ JsonPP::JValue JsonPP::parseFile(const Path& path)
 			% path.generic_string()));
 	}
 
+	string line;
 	json::stream_parser p;
+	error_code ec;
+	unsigned long lineNum = 0;
 	do
 	{
-		char buffer[4096];
-		in.read(buffer, arrayLen(buffer));
-		p.write(buffer, static_cast<size_t>(in.gcount()));
+		++lineNum;
+		getline(in, line);
+		line += '\n';	// ensure equivalent whitespace
+		p.write(line, ec);
+		if (ec)
+		{
+			throw SyntaxError(b::format("Parse error near line %1%: %2% (%3%:%4%)")
+				% lineNum % ec.message() % ec.category().name() % ec.value());
+		}
 	} while(in && !in.eof());
 
 	if (!in && !in.eof())

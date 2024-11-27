@@ -22,6 +22,14 @@ public:
 	IOError(const ::boost::format& what) : ::std::runtime_error(what.str()) {}
 };
 
+class SyntaxError : public ::std::runtime_error
+{
+public:
+	SyntaxError() : ::std::runtime_error("") {}
+	SyntaxError(const ::std::string& what) : ::std::runtime_error(what) {}
+	SyntaxError(const ::boost::format& what) : ::std::runtime_error(what.str()) {}
+};
+
 class WindowsError : public ::std::runtime_error
 {
 public:
