@@ -2,15 +2,15 @@
 #include "JsonPP.h"
 #include "main.h"
 
-#include <boost/format.hpp>
+#include <format>
 #include <fstream>
 #include <string>
 
-namespace b = ::boost;
 namespace json = ::boost::json;
 
 using ::std::endl;
 using ::std::error_code;
+using ::std::format;
 using ::std::ifstream;
 using ::std::ios_base;
 using ::std::ofstream;
@@ -116,8 +116,8 @@ JsonPP::JValue JsonPP::parseFile(const Path& path)
 	ifstream in(path, ios_base::in | ios_base::binary);
 	if (!in)
 	{
-		throw ::std::ios_base::failure(str(b::format("Unable to open file '%1%'")
-			% path.generic_string()));
+		throw ::std::ios_base::failure(
+			format("Unable to open file '{0}'", path.generic_string()));
 	}
 
 	string line;
@@ -132,15 +132,15 @@ JsonPP::JValue JsonPP::parseFile(const Path& path)
 		p.write(line, ec);
 		if (ec)
 		{
-			throw SyntaxError(b::format("Parse error near line %1%: %2% (%3%:%4%)")
-				% lineNum % ec.message() % ec.category().name() % ec.value());
+			throw SyntaxError(format("Parse error near line {0}: {1} ({2}:{3})",
+				lineNum, ec.message(), ec.category().name(), ec.value()));
 		}
 	} while(in && !in.eof());
 
 	if (!in && !in.eof())
 	{
-		throw ::std::ios_base::failure(str(b::format("Unable to read file '%1%'")
-			% path.generic_string()));
+		throw ::std::ios_base::failure(
+			format("Unable to read file '{0}'", path.generic_string()));
 	}
 
 	p.finish();
@@ -244,6 +244,6 @@ JsonPP::Path JsonPP::getOutputPath(const Path& filePath, bool minifyMode)
 	auto stem = filePath.stem().string();
 	auto ext = filePath.extension().string();
 	auto dir = filePath.parent_path();
-	auto fmt = (minifyMode ? "%1%-minified%2%" : "%1%-pretty%2%");
-	return dir /= str(b::format(fmt) % stem % ext);
+	auto minifyModeStr = (minifyMode ? "minified" : "pretty");
+	return dir /= format("{0}-{1}{2}", stem, minifyModeStr, ext);
 }

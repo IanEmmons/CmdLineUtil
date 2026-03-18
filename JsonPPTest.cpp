@@ -12,6 +12,7 @@
 #include <boost/range/algorithm/sort.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
+#include <format>
 #include <fstream>
 #include <string>
 #include <string_view>
@@ -22,6 +23,7 @@ namespace utd = ::boost::unit_test::data;
 
 using ::std::begin;
 using ::std::end;
+using ::std::format;
 using ::std::ifstream;
 using ::std::ios_base;
 using ::std::string;
@@ -155,8 +157,8 @@ static string readFile(const JsonPP::Path& path)
 	ifstream in(path, ios_base::in);
 	if (!in)
 	{
-		throw ::std::ios_base::failure(str(b::format("Unable to open file '%1%'")
-			% path.generic_string()));
+		throw ::std::ios_base::failure(
+			format("Unable to open file '{0}'", path.generic_string()));
 	}
 
 	string contents;
@@ -169,8 +171,8 @@ static string readFile(const JsonPP::Path& path)
 
 	if (!in && !in.eof())
 	{
-		throw ::std::ios_base::failure(str(b::format("Unable to read file '%1%'")
-			% path.generic_string()));
+		throw ::std::ios_base::failure(
+			format("Unable to read file '{0}'", path.generic_string()));
 	}
 
 	return contents;

@@ -5,13 +5,12 @@
 #include "Utils.h"
 
 #include <boost/algorithm/string/replace.hpp>
-#include <boost/format.hpp>
+#include <format>
 #include <fstream>
-
-namespace b = ::boost;
 
 using ::std::cout;
 using ::std::endl;
+using ::std::format;
 using ::std::ifstream;
 using ::std::istream;
 using ::std::ios_base;
@@ -102,11 +101,11 @@ void StripWS::queryFile(const Path& p) const
 
 	if (numLinesAffected > 0)
 	{
-		cout << b::format("   %1% -- %4% lines end in %2% spaces and %3% tabs")
-				% p
-				% numSpacesStripped
-				% numTabsStripped
-				% numLinesAffected
+		cout << format("   {0} -- {3} lines end in {1} spaces and {2} tabs",
+				p.generic_string(),
+				numSpacesStripped,
+				numTabsStripped,
+				numLinesAffected)
 			<< endl;
 	}
 }
@@ -131,11 +130,11 @@ void StripWS::translateFile(const Path& p) const
 	if (numLinesAffected > 0)
 	{
 		replaceOriginalFileWithTemp(p, tempPath);
-		cout << b::format("   %1% -- %2% spaces and %3% tabs stripped from %4% lines")
-				% p
-				% numSpacesStripped
-				% numTabsStripped
-				% numLinesAffected
+		cout << format("   {0} -- {1} spaces and {2} tabs stripped from {3} lines",
+				p.generic_string(),
+				numSpacesStripped,
+				numTabsStripped,
+				numLinesAffected)
 			<< endl;
 	}
 }

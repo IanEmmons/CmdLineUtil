@@ -2,20 +2,22 @@
 #include "FileEnumerator.h"
 
 #include <boost/algorithm/string/replace.hpp>
-#include <boost/format.hpp>
 #include <boost/range/algorithm_ext/push_back.hpp>
+#include <format>
 #include <string_view>
 
 namespace b = ::boost;
-namespace ba = ::boost::adaptors;
+namespace bad = ::boost::adaptors;
+namespace balg = ::boost::algorithm;
 
+using ::std::format;
 using ::std::make_pair;
 using ::std::regex;
 using ::std::runtime_error;
 using ::std::string;
 using ::std::string_view;
 
-static const char k_wildcardSeparator[] = ")|(?:";
+static constexpr auto k_wildcardSeparator = string_view{")|(?:"};
 
 // ============================ CmdLineFileSpec ============================
 
@@ -24,23 +26,22 @@ string CmdLineFileSpec::wildcard() const
 	string name = fname();
 	if (name.empty())
 	{
-		throw runtime_error(str(b::format("The path \"%1%\" does not contain a file name")
-			% m_path.string()));
+		throw runtime_error(format("No file name in path '{0}'", m_path.string()));
 	}
 
-	b::algorithm::replace_all(name, "\\", "\\\\");
-	b::algorithm::replace_all(name, ".", "\\.");
-	b::algorithm::replace_all(name, "[", "\\[");
-	b::algorithm::replace_all(name, "{", "\\{");
-	b::algorithm::replace_all(name, "}", "\\}");
-	b::algorithm::replace_all(name, "(", "\\(");
-	b::algorithm::replace_all(name, ")", "\\)");
-	b::algorithm::replace_all(name, "+", "\\+");
-	b::algorithm::replace_all(name, "|", "\\|");
-	b::algorithm::replace_all(name, "^", "\\^");
-	b::algorithm::replace_all(name, "$", "\\$");
-	b::algorithm::replace_all(name, "*", ".*");
-	b::algorithm::replace_all(name, "?", ".");
+	balg::replace_all(name, "\\", "\\\\");
+	balg::replace_all(name, ".", "\\.");
+	balg::replace_all(name, "[", "\\[");
+	balg::replace_all(name, "{", "\\{");
+	balg::replace_all(name, "}", "\\}");
+	balg::replace_all(name, "(", "\\(");
+	balg::replace_all(name, ")", "\\)");
+	balg::replace_all(name, "+", "\\+");
+	balg::replace_all(name, "|", "\\|");
+	balg::replace_all(name, "^", "\\^");
+	balg::replace_all(name, "$", "\\$");
+	balg::replace_all(name, "*", ".*");
+	balg::replace_all(name, "?", ".");
 	//name = '^' + name + '$';
 	return name;
 }
@@ -63,8 +64,8 @@ void FileEnumerator::insert(const Path& fileSpecPath)
 void FileEnumerator::getFileSpecList(PathList& fileSpecList) const
 {
 	b::push_back(fileSpecList, m_fileSpecMap
-		| ba::map_values
-		| ba::transformed([] (const CmdLineFileSpec& clfs) { return clfs.filePath(); }));
+		| bad::map_values
+		| bad::transformed([] (const CmdLineFileSpec& clfs) { return clfs.filePath(); }));
 }
 #endif
 
@@ -74,8 +75,8 @@ string FileEnumerator::combineRegexPatterns(const RootDirRng& rootRng)
 	string result;
 	size_t numStringsConcatenated = 0;
 	b::for_each(rootRng
-			| ba::map_values
-			| ba::transformed([] (const CmdLineFileSpec& clfs) { return clfs.wildcard(); }),
+			| bad::map_values
+			| bad::transformed([] (const CmdLineFileSpec& clfs) { return clfs.wildcard(); }),
 		[&] (string_view str)
 		{
 			if (numStringsConcatenated > 0)

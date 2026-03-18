@@ -2,8 +2,8 @@
 #if !defined(FILEDELETER_H_INCLUDED)
 #define FILEDELETER_H_INCLUDED
 
-#include <boost/format.hpp>
 #include <filesystem>
+#include <format>
 #include <iostream>
 
 class PathDeleter
@@ -33,9 +33,8 @@ public:
 			{
 				if (ex.code() != make_error_code(::std::errc::no_such_file_or_directory))
 				{
-					::boost::format fmt("Unable to delete \"%1%\":  %2% (%3%)");
-					fmt % m_path.string() % ex.what() % ex.code().value();
-					::std::cout << fmt << ::std::endl;
+					::std::cout << ::std::format("Unable to delete \"{0}\":  {1} ({2})",
+						m_path.string(), ex.what(), ex.code().value()) << ::std::endl;
 				}
 			}
 		}

@@ -2,16 +2,15 @@
 #include "IndentClassifier.h"
 #include "main.h"
 
-#include <boost/format.hpp>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <regex>
 #include <stdexcept>
 
-namespace b = ::boost;
-
 using ::std::cout;
 using ::std::endl;
+using ::std::format;
 using ::std::ifstream;
 using ::std::istream;
 using ::std::invalid_argument;
@@ -116,18 +115,15 @@ void IndentClassifier::processFile(const Path& p) const
 
 	char iLetter = indicatorLetter(fileType);
 	string dispPath = displayPath(p);
-	cout << b::format("%1% %2%")
-			% iLetter
-			% dispPath
-		<< endl;
+	cout << format("{0} {1}", iLetter, dispPath) << endl;
 	if (fileType == IndentType::mixed)
 	{
-		cout << b::format("     (Mixed:  %1% space, %2% tab, %3% JavaDoc tab, %4% mixed, %5% indeterminate)")
-				% get(lineTypeCounts, IndentType::space)
-				% get(lineTypeCounts, IndentType::tab)
-				% (get(lineTypeCounts, IndentType::javadocTab) + get(lineTypeCounts, IndentType::javadocLeft))
-				% get(lineTypeCounts, IndentType::mixed)
-				% get(lineTypeCounts, IndentType::indeterminate)
+		cout << format("     (Mixed:  {0} space, {1} tab, {2} JavaDoc tab, {3} mixed, {4} indeterminate)",
+				get(lineTypeCounts, IndentType::space),
+				get(lineTypeCounts, IndentType::tab),
+				get(lineTypeCounts, IndentType::javadocTab) + get(lineTypeCounts, IndentType::javadocLeft),
+				get(lineTypeCounts, IndentType::mixed),
+				get(lineTypeCounts, IndentType::indeterminate))
 			<< endl;
 	}
 }

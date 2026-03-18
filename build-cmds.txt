@@ -1,7 +1,9 @@
-Mac OS:     b2 -q release address-model=64 architecture=arm+x86 toolset=clang
-Windows 32: b2 -q release address-model=32 toolset=msvc
-Windows 64: b2 -q release address-model=64 toolset=msvc
-Linux:      b2 -q release address-model=64 architecture=arm toolset=gcc
+Mac OS:      b2 -q release address-model=64 architecture=arm+x86 toolset=clang
+Windows x32: b2 -q release address-model=32 architecture=x86 toolset=msvc
+Windows x64: b2 -q release address-model=64 architecture=x86 toolset=msvc
+Windows a64: b2 -q release address-model=64 architecture=arm toolset=msvc
+Linux x86:   b2 -q release address-model=64 architecture=x86 toolset=gcc
+Linux ARM:   b2 -q release address-model=64 architecture=arm toolset=gcc
 
 rm -r dist-64 bb-bin
 rd /s/q dist-32 dist-64 bb-bin

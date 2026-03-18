@@ -4,15 +4,14 @@
 #include "main.h"
 #include "Utils.h"
 
-#include <boost/format.hpp>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 
-namespace b = ::boost;
-
 using ::std::cout;
 using ::std::endl;
+using ::std::format;
 using ::std::ifstream;
 using ::std::istream;
 using ::std::invalid_argument;
@@ -157,20 +156,19 @@ void Xeol::queryFile(const Path& p) const
 	string dispPath = displayPath(p);
 	if (eolType == EolType::MIXED)
 	{
-		cout << b::format("%1% %2%\n"
-			"     (Mixed:  %3% DOS, %4% Mac, %5% Unix)")
-				% iLetter
-				% dispPath
-				% numDosEols
-				% numMacEols
-				% numUnixEols
+		cout << format("{0} {1}\n     (Mixed:  {2} DOS, {3} Mac, {4} Unix)",
+				iLetter,
+				dispPath,
+				numDosEols,
+				numMacEols,
+				numUnixEols)
 			<< endl;
 	}
 	else
 	{
-		cout << b::format("%1% %2%")
-				% iLetter
-				% dispPath
+		cout << format("{0} {1}",
+				iLetter,
+				dispPath)
 			<< endl;
 	}
 }
@@ -200,12 +198,11 @@ void Xeol::translateFile(const Path& p) const
 	}
 	else if (eolType == EolType::MIXED && !m_forceTranslation)
 	{
-		cout << b::format("---- %1%\n"
-			"        (Skipped, possibly binary:  %2% DOS, %3% Mac, %4% Unix)")
-				% p
-				% numDosEols
-				% numMacEols
-				% numUnixEols
+		cout << format("---- {0}\n        (Skipped, possibly binary:  {1} DOS, {2} Mac, {3} Unix)",
+				p.generic_string(),
+				numDosEols,
+				numMacEols,
+				numUnixEols)
 			<< endl;
 	}
 	else
@@ -219,10 +216,10 @@ void Xeol::translateFile(const Path& p) const
 		}
 
 		replaceOriginalFileWithTemp(p, tempPath);
-		cout << b::format("%1%->%2% %3%")
-				% getIndicatorLetter(eolType)
-				% getIndicatorLetter(m_targetEolType)
-				% p
+		cout << format("{0}->{1} {2}",
+				getIndicatorLetter(eolType),
+				getIndicatorLetter(m_targetEolType),
+				p.generic_string())
 			<< endl;
 	}
 }

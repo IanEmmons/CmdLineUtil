@@ -3,15 +3,15 @@
 #include "main.h"
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost/format.hpp>
+#include <format>
 #include <vector>
 
-namespace b = ::boost;
 namespace balg = ::boost::algorithm;
 namespace fs = ::std::filesystem;
 
 using ::std::cout;
 using ::std::endl;
+using ::std::format;
 using ::std::ostream;
 using ::std::regex;
 using ::std::regex_error;
@@ -130,12 +130,11 @@ RegExMove::RegExMove(::std::span<const char*const> args) :
 	m_rootDir = posArgs[0];
 	if (!exists(m_rootDir))
 	{
-		throw CmdLineError(b::format("The directory \"%1%\" does not exist")
-			% posArgs[0]);
+		throw CmdLineError(format("The directory '{0}' does not exist", posArgs[0]));
 	}
 	else if (!is_directory(m_rootDir))
 	{
-		throw CmdLineError(b::format("\"%1%\" is not a directory") % posArgs[0]);
+		throw CmdLineError(format("'{0}' is not a directory", posArgs[0]));
 	}
 
 	try
@@ -156,8 +155,8 @@ RegExMove::RegExMove(::std::span<const char*const> args) :
 	}
 	catch (regex_error const& ex)
 	{
-		throw CmdLineError(b::format("\"%1%\" is not a valid regular expression (%2%)")
-			% posArgs[1] % ex.what());
+		throw CmdLineError(format("'{0}' is not a valid regular expression ({1})",
+			posArgs[1], ex.what()));
 	}
 
 	m_replacement = posArgs[2];
@@ -223,17 +222,17 @@ void RegExMove::renamePath(Path const& p) const
 			rename(p, newPath);
 			if (m_verboseOutput)
 			{
-				cout << b::format("\"%1%\" --> \"%2%\"") % p % result << endl;
+				cout << format("'{0}' --> '{1}'", p.generic_string(), result) << endl;
 			}
 		}
 		else if (m_allowOverwriteOnNameCollision)
 		{
 			rename(p, newPath);
-			cout << b::format("\"%1%\" overwrote \"%2%\"") % p % result << endl;
+			cout << format("'{0}' overwrote '{1}'", p.generic_string(), result) << endl;
 		}
 		else
 		{
-			cout << b::format("\"%1%\" skipped -- \"%2%\" exists") % p % result << endl;
+			cout << format("'{0}' skipped -- '{1}' exists", p.generic_string(), result) << endl;
 		}
 	}
 }
