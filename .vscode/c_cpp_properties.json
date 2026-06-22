@@ -4,7 +4,7 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/Users/iemmons/dev/boost_1_84_0"
+                "${env:BOOST_ROOT}"
             ],
             "defines": [],
             "macFrameworkPath": [
@@ -13,7 +13,7 @@
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",
             "cppStandard": "c++20",
-            "intelliSenseMode": "clang-x64"
+            "intelliSenseMode": "clang-arm64"
         }
     ],
     "version": 4

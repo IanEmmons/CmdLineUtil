@@ -4,7 +4,6 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/range/algorithm_ext/push_back.hpp>
 #include <format>
-#include <string_view>
 
 namespace b = ::boost;
 namespace bad = ::boost::adaptors;
@@ -47,12 +46,6 @@ string CmdLineFileSpec::wildcard() const
 }
 
 // ============================ FileEnumerator ============================
-
-void FileEnumerator::insert(const char* pFileSpecStr)
-{
-	CmdLineFileSpec fs(pFileSpecStr);
-	m_fileSpecMap.insert(make_pair(fs.dir(), fs));
-}
 
 void FileEnumerator::insert(const Path& fileSpecPath)
 {

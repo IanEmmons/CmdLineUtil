@@ -10,26 +10,29 @@
 #include <boost/range/algorithm_ext/for_each.hpp>
 #include <boost/range/algorithm/sort.hpp>
 #include <boost/test/unit_test.hpp>
+#include <string_view>
 
 namespace b = ::boost;
 namespace fs = ::std::filesystem;
 
+using ::std::string_view;
+
 BOOST_AUTO_TEST_SUITE(FileEnumeratorTestSuite)
 
-static char const*const k_matchList1[] = { "./FileEnumerator.cpp" };
-static char const*const k_matchList2[] = { "./FileEnumerator.cpp", "./FileEnumeratorTest.cpp" };
-static char const*const k_matchList3[] = { "./FileEnumerator.cpp", "./FileEnumerator.h",
+static constexpr string_view k_matchList1[] = { "./FileEnumerator.cpp" };
+static constexpr string_view k_matchList2[] = { "./FileEnumerator.cpp", "./FileEnumeratorTest.cpp" };
+static constexpr string_view k_matchList3[] = { "./FileEnumerator.cpp", "./FileEnumerator.h",
 	"./TempTestDir/FileEnumerator.cpp", "./TempTestDir/FileEnumerator.h" };
-static char const*const k_matchList4[] = { "./FileEnumerator.cpp", "./FileEnumerator.h",
+static constexpr string_view k_matchList4[] = { "./FileEnumerator.cpp", "./FileEnumerator.h",
 	"./FileEnumeratorTest.cpp", "./TempTestDir/FileEnumerator.cpp",
 	"./TempTestDir/FileEnumerator.h", "./TempTestDir/FileEnumeratorTest.cpp" };
 
-static void copyFile(const fs::path& fromDir, const fs::path& toDir, const char* pFileName)
+static void copyFile(const fs::path& fromDir, const fs::path& toDir, string_view fileName)
 {
-	copy_file(fromDir / pFileName, toDir / pFileName);
+	copy_file(fromDir / fileName, toDir / fileName);
 }
 
-static void checkEqual(char const* tcPath, const fs::path& appPath)
+static void checkEqual(string_view tcPath, const fs::path& appPath)
 {
 	BOOST_CHECK_EQUAL(tcPath, appPath.generic_string());
 }

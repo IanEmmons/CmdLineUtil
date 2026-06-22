@@ -19,16 +19,13 @@ constexpr ::std::size_t arrayLen(T(&)[N]) noexcept
 	return N;
 }
 
-inline bool isIEqual(const char* pStr1, const char* pStr2)
+inline bool isIEqual(::std::string_view str1, ::std::string_view str2)
 {
 	::std::locale loc;
 	auto isIEqual = [&loc](char c1, char c2)
 	{
 		return ::std::tolower(c1, loc) == ::std::tolower(c2, loc);
 	};
-
-	auto str1 = ::std::string_view{pStr1};
-	auto str2 = ::std::string_view{pStr2};
 
 	return ::std::equal(
 		::std::cbegin(str1), ::std::cend(str1),
