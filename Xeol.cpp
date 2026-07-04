@@ -29,41 +29,38 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int Xeol::usage(ostream& out, string_view progName, const char* pMsg)
+static constexpr string_view k_usageMsg = R"(
+Usage 1:  {0} [-r] <file1> <file2> ...
+Usage 2:  {0} {{-d|-m|-u}} [-f] [-r] <file1> <file2> ...
+
+The first usage lists the line ending convention of each file,
+in the following format:
+
+   <L> <file-path>
+
+where <L> is 'D' for DOS, 'M' for Macintosh, 'U' for Unix,
+'I' for indeterminate (meaning the file has no line endings),
+or 'X' for mixed.
+
+The second usage changes the line endings to the indicated type.
+
+Options:
+   -d Change to DOS line endings
+   -m Change to pre-System X Macintosh line endings
+   -u Change to Unix line endings (also Linux and MacOS X)
+   -f Force translation of files with mixed line endings
+   -r Search for files in sub-directories recursively
+)";
+
+int Xeol::usage(ostream& out, string_view progName, string_view msg)
 {
 	int exitCode = EXIT_SUCCESS;
-	if (pMsg != nullptr && *pMsg != '\0')
+	if (msg.size() > 0)
 	{
 		exitCode = EXIT_FAILURE;
-		out << endl << pMsg << endl;
+		out << endl << msg << endl;
 	}
-	out << "\n"
-		"Usage 1:  " << progName << " [-r] <file1> <file2> ...\n"
-		"Usage 2:  " << progName << " {-d|-m|-u} [-f] [-r] <file1> <file2> ...\n"
-		"\n"
-		"The first usage lists the line ending convention of each file,\n"
-		"in the following format:\n"
-		"\n"
-		"   <L> <file-path>\n"
-		"\n"
-		"where <L> is 'D' for DOS, 'M' for Macintosh, 'U' for Unix,\n"
-		"'I' for indeterminate (meaning the file has no line endings),\n"
-		"or 'X' for mixed.\n"
-		"\n"
-		"The second usage changes the line endings to the indicated type.\n"
-		"\n"
-		"Options:\n"
-		"\n"
-		"   -d Change to DOS line endings\n"
-		"\n"
-		"   -m Change to pre-System X Macintosh line endings\n"
-		"\n"
-		"   -u Change to Unix line endings (also Linux and MacOS X)\n"
-		"\n"
-		"   -f Force translation of files with mixed line endings\n"
-		"\n"
-		"   -r Search for files in sub-directories recursively\n"
-		<< endl;
+	out << format(k_usageMsg, progName) << endl;
 
 	return exitCode;
 }

@@ -25,30 +25,29 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int JsonPP::usage(ostream& out, string_view progName, const char* pMsg)
+static constexpr string_view k_usageMsg = R"(
+Usage:  {0} [-ip] [-m] [-r] <json-file1> <json-file2> ...
+
+Pretty-prints each JSON input file, indenting with tab characters. The
+output is placed in a file whose name is the same as the original with
+"-pretty" or "-minified" appended to it, unless the -ip option is given.
+
+Options:
+   -ip Pretty-prints the file in-place, i.e., overwrites the original
+       file with the pretty-printed version.
+   -m  Minifies the JSON, instead of pretty-printing it.
+   -r  Search for files in sub-directories recursively.
+)";
+
+int JsonPP::usage(ostream& out, string_view progName, string_view msg)
 {
 	int exitCode = EXIT_SUCCESS;
-	if (pMsg != nullptr && *pMsg != '\0')
+	if (msg.size() > 0)
 	{
 		exitCode = EXIT_FAILURE;
-		out << endl << pMsg << endl;
+		out << endl << msg << endl;
 	}
-	out << "\n"
-		"Usage:  " << progName << " [-ip] [-m] [-r] <json-file1> <json-file2> ...\n"
-		"\n"
-		"Pretty-prints each JSON input file, indenting with tab characters. The\n"
-		"output is placed in a file whose name is the same as the original with\n"
-		"\"-pretty\" or \"-minified\" appended to it, unless the -ip option is given.\n"
-		"\n"
-		"Options:\n"
-		"\n"
-		"   -ip Pretty-prints the file in-place, i.e., overwrites the\n"
-		"       original file with the pretty-printed version.\n"
-		"\n"
-		"   -m  Minifies the JSON, instead of pretty-printing it.\n"
-		"\n"
-		"   -r  Search for files in sub-directories recursively.\n"
-		<< endl;
+	out << format(k_usageMsg, progName) << endl;
 
 	return exitCode;
 }

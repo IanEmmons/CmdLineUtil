@@ -26,42 +26,34 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int RegExMove::usage(ostream& out, string_view progName, const char* pMsg)
+static constexpr string_view k_usageMsg = R"(
+Usage:  {0} [-i] [-d] [-dd] [-r] [-v] [-y] <rootdir> <regex> <replacement>
+
+Renames a collection of files using a regular expression search-and-replace.
+Uses ECMAScript regular expression syntax. Options:
+   -i  Perform a case-insensitive search.
+   -d  Rename directories as well as files.
+   -dd Rename only directories.
+   -r  Search recursively in subdirectories of <rootdir> for matching files.
+   -v  Verbose output.
+   -y  (Potentially Dangerous) Causes renamed files to overwrite existing
+       files of the same name without prompting.
+   <rootdir> The directory to search for files to rename.
+   <regex> The regular expression that selects the files whose name is
+       to be changed.
+   <replacement> The substitution expression that gives the files their
+       new names.
+)";
+
+int RegExMove::usage(ostream& out, string_view progName, string_view msg)
 {
 	int exitCode = EXIT_SUCCESS;
-	if (pMsg != nullptr && *pMsg != '\0')
+	if (msg.size() > 0)
 	{
 		exitCode = EXIT_FAILURE;
-		out << endl << pMsg << endl;
+		out << endl << msg << endl;
 	}
-	out << "\n"
-	"Usage:  " << progName << " [-i] [-d] [-dd] [-r] [-v] [-y] <rootdir> <regex> <replacement>\n"
-	"\n"
-	"Renames a collection of files using a regular expression search-and-replace.\n"
-	"Uses ECMAScript regular expression syntax.\n"
-	"\n"
-	"   -i Perform a case-insensitive search.\n"
-	"\n"
-	"   -d Rename directories as well as files.\n"
-	"\n"
-	"   -dd Rename only directories.\n"
-	"\n"
-	"   -r Search recursively within subdirectories of <rootdir> for\n"
-	"      matching files.\n"
-	"\n"
-	"   -v Verbose output.\n"
-	"\n"
-	"   -y (Potentially Dangerous) Causes renamed files to overwrite existing\n"
-	"      files of the same name without prompting.\n"
-	"\n"
-	"   <rootdir> The directory to search for files to rename.\n"
-	"\n"
-	"   <regex> The regular expression that selects the files whose name is\n"
-	"      to be changed.\n"
-	"\n"
-	"   <replacement> The substitution expression that gives the files their\n"
-	"      new names.\n"
-	<< endl;
+	out << format(k_usageMsg, progName) << endl;
 
 	return exitCode;
 }

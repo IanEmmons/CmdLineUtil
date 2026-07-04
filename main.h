@@ -9,14 +9,16 @@
 #include <iostream>
 #include <span>
 #include <stdexcept>
+#include <string_view>
 
 template <typename T>
 int commonMain(size_t argCount, const char*const*const argList)
 {
-	using ::std::filesystem::path;
-	using ::std::span;
 	using ::std::cout;
 	using ::std::endl;
+	using ::std::filesystem::path;
+	using ::std::span;
+	using ::std::string_view;
 
 	auto exitCode{EXIT_FAILURE};
 	try
@@ -27,7 +29,11 @@ int commonMain(size_t argCount, const char*const*const argList)
 	}
 	catch (const CmdLineError& ex)
 	{
-		exitCode = T::usage(cout, path{argList[0]}.stem().generic_string(), ex.what());
+		auto progName = path{argList[0]}.stem().generic_string();
+		auto msg = (ex.what() == nullptr)
+			? string_view{}
+			: string_view{ex.what()};
+		exitCode = T::usage(cout, progName, msg);
 	}
 	catch (const ::std::exception& ex)
 	{

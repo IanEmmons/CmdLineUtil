@@ -23,23 +23,24 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int IsPlainAscii::usage(ostream& out, string_view progName, const char* pMsg)
+static constexpr string_view k_usageMsg = R"(
+Usage:  {0} [-r] <file1> <file2> ...
+
+Finds characters in the given files that are not strict 7-bit ASCII.
+
+Options:
+   -r Search for files in sub-directories recursively
+)";
+
+int IsPlainAscii::usage(ostream& out, string_view progName, string_view msg)
 {
 	int exitCode = EXIT_SUCCESS;
-	if (pMsg != nullptr && *pMsg != '\0')
+	if (msg.size() > 0)
 	{
 		exitCode = EXIT_FAILURE;
-		out << endl << pMsg << endl;
+		out << endl << msg << endl;
 	}
-	out << "\n"
-		"Usage:  " << progName << " [-r] <file1> <file2> ...\n"
-		"\n"
-		"Finds characters in the given files that are not strict 7-bit ASCII.\n"
-		"\n"
-		"Options:\n"
-		"\n"
-		"   -r Search for files in sub-directories recursively\n"
-	<< endl;
+	out << format(k_usageMsg, progName) << endl;
 
 	return exitCode;
 }

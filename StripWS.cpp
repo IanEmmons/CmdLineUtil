@@ -26,30 +26,30 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int StripWS::usage(ostream& out, string_view progName, const char* pMsg)
+static constexpr string_view k_usageMsg = R"(
+Usage:  {0} [-s] [-r] <file1> <file2> ...
+
+Strips white space (tabs and spaces) from the ends of lines and
+at the end of the file, if the file is not terminated by an
+end-of-line character.
+
+With no options operates in query-only mode, i.e., reports on the
+white space that could be stripped, but does not change the file.
+
+Options:
+   -s Strip white space, i.e., actually alter the file
+   -r Search for files in sub-directories recursively
+)";
+
+int StripWS::usage(ostream& out, string_view progName, string_view msg)
 {
 	int exitCode = EXIT_SUCCESS;
-	if (pMsg != nullptr && *pMsg != '\0')
+	if (msg.size() > 0)
 	{
 		exitCode = EXIT_FAILURE;
-		out << endl << pMsg << endl;
+		out << endl << msg << endl;
 	}
-	out << "\n"
-		"Usage:  " << progName << " [-s] [-r] <file1> <file2> ...\n"
-		"\n"
-		"Strips white space (tabs and spaces) from the ends of lines and\n"
-		"at the end of the file, if the file is not terminated by an\n"
-		"end-of-line character.\n"
-		"\n"
-		"With no options operates in query-only mode, i.e., report on the\n"
-		"white space that could be stripped, but do not change the file.\n"
-		"\n"
-		"Options:\n"
-		"\n"
-		"   -s Strip white space, i.e., actually alter the file\n"
-		"\n"
-		"   -r Search for files in sub-directories recursively\n"
-		<< endl;
+	out << format(k_usageMsg, progName) << endl;
 
 	return exitCode;
 }

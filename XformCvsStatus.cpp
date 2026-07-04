@@ -45,27 +45,28 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int XformCvsStatus::usage(ostream& strm, string_view progName, const char* pMsg)
+static constexpr string_view k_usageMsg = R"(
+Usage:  {0} [-n] [-u] [-l]
+
+Takes the output of the "cvs status" command and transforms it
+to a more succinct summary, with one file per line.
+
+Options:
+   -n Suppresses new (unknown) files from the listing
+   -u Suppresses up-to-date files from the listing
+   -l Suppresses locally modified, locally added, and locally
+      removed files from the listing
+)";
+
+int XformCvsStatus::usage(ostream& out, string_view progName, string_view msg)
 {
 	int exitCode = EXIT_SUCCESS;
-	if (pMsg != nullptr && *pMsg != '\0')
+	if (msg.size() > 0)
 	{
 		exitCode = EXIT_FAILURE;
-		strm << endl << pMsg << endl;
+		out << endl << msg << endl;
 	}
-	strm << "\n"
-	"Usage:  " << progName << " [-n] [-u] [-l]\n"
-	"\n"
-	"Takes the output of the \"cvs status\" command and transforms it\n"
-	"to a more succinct summary, with one file per line.  Options:\n"
-	"\n"
-	"   -n Suppresses new (unknown) files from the listing\n"
-	"\n"
-	"   -u Suppresses up-to-date files from the listing\n"
-	"\n"
-	"   -l Suppresses locally modified, locally added, and locally\n"
-	"      removed files from the listing\n"
-	<< endl;
+	out << format(k_usageMsg, progName) << endl;
 
 	return exitCode;
 }

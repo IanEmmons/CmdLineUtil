@@ -22,28 +22,26 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int FindFileExt::usage(ostream& out, string_view progName, const char* pMsg)
+static constexpr string_view k_usageMsg = R"(
+Usage:  {0} [-c] [-r] [-w] <dir1> <dir2> ...
+
+Lists all file extensions found within the indicated directories.
+
+Options:
+   -c Includes counts in the output
+   -r Search in sub-directories recursively
+   -w Report extensions as wildcards
+)";
+
+int FindFileExt::usage(ostream& out, string_view progName, string_view msg)
 {
 	int exitCode = EXIT_SUCCESS;
-	if (pMsg != nullptr && *pMsg != '\0')
+	if (msg.size() > 0)
 	{
 		exitCode = EXIT_FAILURE;
-		out << endl << pMsg << endl;
+		out << endl << msg << endl;
 	}
-	out << "\n"
-		"Usage:  " << progName << " [-c] [-r] [-w] <dir1> <dir2> ...\n"
-		"\n"
-		"Compiles a list of all file extensions found within the indicated\n"
-		"directories.\n"
-		"\n"
-		"Options:\n"
-		"\n"
-		"   -c Includes counts in the output\n"
-		"\n"
-		"   -r Search in sub-directories recursively\n"
-		"\n"
-		"   -w Report extensions as wildcards\n"
-		<< endl;
+	out << format(k_usageMsg, progName) << endl;
 
 	return exitCode;
 }

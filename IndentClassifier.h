@@ -33,7 +33,7 @@ size_t get(const LineTypeCounts& lineTypeCounts, IndentType indentType);
 class IndentClassifier
 {
 public:
-	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
+	static int usage(::std::ostream& strm, ::std::string_view progName, ::std::string_view msg);
 
 	IndentClassifier(::std::span<const char*const> args);
 	int run() const;

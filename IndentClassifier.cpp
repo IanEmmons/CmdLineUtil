@@ -47,32 +47,39 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int IndentClassifier::usage(ostream& out, string_view progName, const char* pMsg)
+static constexpr string_view k_usageMsg = R"(
+Usage:  {0} [-r] <file1> <file2> ...
+
+Lists the indention style of each file, in the following format:
+
+   X <file-path>
+
+where X is:
+   - '{1}' for spaces,
+   - '{2}' for tabs,
+   - '{3}' for tabs and tab-indented JavaDoc comment lines,
+   - '{4}' for mixed, or
+   - '{5}' for indeterminate (meaning no lines are indented).
+
+Options:
+   -r Search for files in sub-directories recursively
+)";
+
+int IndentClassifier::usage(ostream& out, string_view progName, string_view msg)
 {
 	int exitCode = EXIT_SUCCESS;
-	if (pMsg != nullptr && *pMsg != '\0')
+	if (msg.size() > 0)
 	{
 		exitCode = EXIT_FAILURE;
-		out << endl << pMsg << endl;
+		out << endl << msg << endl;
 	}
-	out << "\n"
-		"Usage:  " << progName << " [-r] <file1> <file2> ...\n"
-		"\n"
-		"Lists the indent type of each file, in the following format:\n"
-		"\n"
-		"   X <file-path>\n"
-		"\n"
-		"where X is:\n"
-		"   * '" << indicatorLetter(IndentType::space) << "' for spaces,\n"
-		"   * '" << indicatorLetter(IndentType::tab) << "' for tabs,\n"
-		"   * '" << indicatorLetter(IndentType::javadocTab) << "' for tabs and tab-indented JavaDoc comment lines,\n"
-		"   * '" << indicatorLetter(IndentType::mixed) << "' for mixed, or\n"
-		"   * '" << indicatorLetter(IndentType::indeterminate) << "' for indeterminate (meaning no lines are indented).\n"
-		"\n"
-		"Options:\n"
-		"\n"
-		"   -r Search for files in sub-directories recursively\n"
-		<< endl;
+	out << format(k_usageMsg, progName,
+		indicatorLetter(IndentType::space),
+		indicatorLetter(IndentType::tab),
+		indicatorLetter(IndentType::javadocTab),
+		indicatorLetter(IndentType::mixed),
+		indicatorLetter(IndentType::indeterminate)
+		) << endl;
 
 	return exitCode;
 }

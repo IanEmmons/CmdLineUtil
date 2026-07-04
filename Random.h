@@ -9,7 +9,7 @@
 class Random
 {
 public:
-	static int usage(::std::ostream& strm, ::std::string_view progName, const char* pMsg);
+	static int usage(::std::ostream& strm, ::std::string_view progName, ::std::string_view msg);
 
 	Random(::std::span<const char*const> args);
 	int run() const;

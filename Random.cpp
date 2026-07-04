@@ -58,21 +58,23 @@ int main(int argCount, const char*const*const argList)
 }
 #endif
 
-int Random::usage(ostream& out, string_view progName, const char* pMsg)
+static constexpr string_view k_usageMsg = R"(
+Usage:  {0} <lower-bound> <upper-bound> [ <count> ]
+
+Generates <count> uniformly distributed random integers
+between <lower-bound> and <upper-bound>.  The two bounds
+are required, and <count> defaults to one.
+)";
+
+int Random::usage(ostream& out, string_view progName, string_view msg)
 {
 	int exitCode = EXIT_SUCCESS;
-	if (pMsg != nullptr && *pMsg != '\0')
+	if (msg.size() > 0)
 	{
 		exitCode = EXIT_FAILURE;
-		out << endl << pMsg << endl;
+		out << endl << msg << endl;
 	}
-	out << "\n"
-		"Usage:  " << progName << " <lower-bound> <upper-bound> [ <count> ]\n"
-		"\n"
-		"Generates <count> uniformly distributed random integers\n"
-		"between <lower-bound> and <upper-bound>.  The two bounds\n"
-		"are required, and <count> defaults to one.\n"
-		<< endl;
+	out << format(k_usageMsg, progName) << endl;
 
 	return exitCode;
 }
