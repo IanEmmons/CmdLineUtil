@@ -3,29 +3,34 @@
 #define CMDLINEUTIL_TEST_MODE
 #endif
 
-#include "Exceptions.h"
 #include "PathDeleter.h"
-#include "Utils.h"
 #include "TestUtil.h"
 #include "RegExMove.h"
 
-#include <boost/range/algorithm_ext/for_each.hpp>
-#include <boost/range/algorithm/sort.hpp>
+#include <algorithm>
+#include <array>
 #include <boost/test/data/test_case.hpp>
 #include <boost/test/unit_test.hpp>
-#include <sstream>
+#include <filesystem>
+#include <fstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
-namespace b = ::boost;
-namespace ut = ::boost::unit_test;
-namespace utd = ::boost::unit_test::data;
+using namespace ::std::literals;
 
+namespace utd = ::boost::unit_test::data;
+namespace fs = ::std::filesystem;
+
+using ::std::array;
 using ::std::begin;
 using ::std::end;
-using ::std::istringstream;
-using ::std::ostringstream;
+using ::std::endl;
+using ::std::ofstream;
+using ::std::sort;
 using ::std::string;
+using ::std::string_view;
+using ::std::vector;
 
 BOOST_AUTO_TEST_SUITE(RegExMoveTestSuite)
 
@@ -140,146 +145,87 @@ BOOST_AUTO_TEST_SUITE_END()
 
 
 
-//BOOST_AUTO_TEST_SUITE(ScanFileTestSuite)
-//
-//struct TestCase
-//{
-//	char const*		m_pInput;
-//	char const*		m_pDosOutput;
-//	char const*		m_pMacOutput;
-//	char const*		m_pUnxOutput;
-//	size_t				m_dosEolCount;
-//	size_t				m_macEolCount;
-//	size_t				m_unxEolCount;
-//	Xeol::EolType	m_eolType;
-//};
-//
-//static TestCase const k_testCases[] =
-//{
-//	// input, dosOutput, macOutput, unxOutput, dosEolCount, macEolCount, unxEolCount, eolType
-//	{
-//		"",
-//		"",
-//		"",
-//		"",
-//		0, 0, 0, Xeol::EolType::INDETERMINATE
-//	},
-//	{
-//		"This one has no newlines at all",
-//		"This one has no newlines at all",
-//		"This one has no newlines at all",
-//		"This one has no newlines at all",
-//		0, 0, 0, Xeol::EolType::INDETERMINATE
-//	},
-//	{
-//		"\nHere we see\nthree UNIX newlines\n",
-//		"\r\nHere we see\r\nthree UNIX newlines\r\n",
-//		"\rHere we see\rthree UNIX newlines\r",
-//		"\nHere we see\nthree UNIX newlines\n",
-//		0, 0, 3, Xeol::EolType::UNIX
-//	},
-//	{
-//		"\rHere we see\rthree Macintosh newlines\r",
-//		"\r\nHere we see\r\nthree Macintosh newlines\r\n",
-//		"\rHere we see\rthree Macintosh newlines\r",
-//		"\nHere we see\nthree Macintosh newlines\n",
-//		0, 3, 0, Xeol::EolType::MACINTOSH
-//	},
-//	{
-//		"\r\nHere we see\r\nthree DOS newlines\r\n",
-//		"\r\nHere we see\r\nthree DOS newlines\r\n",
-//		"\rHere we see\rthree DOS newlines\r",
-//		"\nHere we see\nthree DOS newlines\n",
-//		3, 0, 0, Xeol::EolType::DOS
-//	},
-//	{
-//		"z\nz\rz\r\nz\n\rz\r\rz\n\nz\r\r\rz\r\r\nz\r\n\rz\n\r\rz\r\n\nz\n\r\nz\n\n\rz\n\n\nz",
-//		"z\r\nz\r\nz\r\nz\r\n\r\nz\r\n\r\nz\r\n\r\nz\r\n\r\n\r\nz\r\n\r\nz\r\n\r\nz\r\n\r\n\r\nz\r\n\r\nz\r\n\r\nz\r\n\r\n\r\nz\r\n\r\n\r\nz",
-//		"z\rz\rz\rz\r\rz\r\rz\r\rz\r\r\rz\r\rz\r\rz\r\r\rz\r\rz\r\rz\r\r\rz\r\r\rz",
-//		"z\nz\nz\nz\n\nz\n\nz\n\nz\n\n\nz\n\nz\n\nz\n\n\nz\n\nz\n\nz\n\n\nz\n\n\nz",
-//		5, 12, 12, Xeol::EolType::MIXED
-//	}
-//};
-//
-//static ::std::ostream& operator<<(::std::ostream& ostrm, TestCase const& tc)
-//{
-//	return ostrm << "Test case with input \"" << tc.m_pInput << "\"";
-//}
-//
-//static void dumpHex(string const& s)
-//{
-//	if (false)
-//	{
-//		ostringstream strm;
-//		strm << "Output: ";
-//		for (auto ch : s)
-//		{
-//			strm << ' ' << static_cast<unsigned int>(static_cast<unsigned char>(ch));
-//		}
-//		BOOST_TEST_MESSAGE(strm.str());
-//	}
-//}
-//
-//BOOST_DATA_TEST_CASE(scanFileTest, utd::make(k_testCases), tc)
-//{
-//	string input(tc.m_pInput);
-//	size_t numDosEols;
-//	size_t numMacEols;
-//	size_t numUnixEols;
-//	size_t totalEols;
-//	{
-//		istringstream in(input);
-//		Xeol::EolType eolType = Xeol::scanFile(in, numDosEols, numMacEols, numUnixEols, totalEols);
-//		BOOST_CHECK_EQUAL(tc.m_dosEolCount, numDosEols);
-//		BOOST_CHECK_EQUAL(tc.m_macEolCount, numMacEols);
-//		BOOST_CHECK_EQUAL(tc.m_unxEolCount, numUnixEols);
-//		BOOST_CHECK_EQUAL(tc.m_dosEolCount + tc.m_macEolCount + tc.m_unxEolCount, totalEols);
-//		BOOST_CHECK_EQUAL(static_cast<int>(tc.m_eolType), static_cast<int>(eolType));
-//	}
-//
-//	{
-//		istringstream in(input);
-//		ostringstream out;
-//		Xeol::EolType eolType = Xeol::scanFile(in, numDosEols, numMacEols, numUnixEols, totalEols,
-//			&out, Xeol::EolType::DOS);
-//		BOOST_CHECK_EQUAL(tc.m_dosEolCount, numDosEols);
-//		BOOST_CHECK_EQUAL(tc.m_macEolCount, numMacEols);
-//		BOOST_CHECK_EQUAL(tc.m_unxEolCount, numUnixEols);
-//		BOOST_CHECK_EQUAL(tc.m_dosEolCount + tc.m_macEolCount + tc.m_unxEolCount, totalEols);
-//		BOOST_CHECK_EQUAL(static_cast<int>(tc.m_eolType), static_cast<int>(eolType));
-//		dumpHex(out.str());
-//		BOOST_CHECK_EQUAL(tc.m_pDosOutput, out.str());
-//	}
-//
-//	{
-//		istringstream in(input);
-//		ostringstream out;
-//		Xeol::EolType eolType = Xeol::scanFile(in, numDosEols, numMacEols, numUnixEols, totalEols,
-//			&out, Xeol::EolType::MACINTOSH);
-//		BOOST_CHECK_EQUAL(tc.m_dosEolCount, numDosEols);
-//		BOOST_CHECK_EQUAL(tc.m_macEolCount, numMacEols);
-//		BOOST_CHECK_EQUAL(tc.m_unxEolCount, numUnixEols);
-//		BOOST_CHECK_EQUAL(tc.m_dosEolCount + tc.m_macEolCount + tc.m_unxEolCount, totalEols);
-//		BOOST_CHECK_EQUAL(static_cast<int>(tc.m_eolType), static_cast<int>(eolType));
-//		dumpHex(out.str());
-//		BOOST_CHECK_EQUAL(tc.m_pMacOutput, out.str());
-//	}
-//
-//	{
-//		istringstream in(input);
-//		ostringstream out;
-//		Xeol::EolType eolType = Xeol::scanFile(in, numDosEols, numMacEols, numUnixEols, totalEols,
-//			&out, Xeol::EolType::UNIX);
-//		BOOST_CHECK_EQUAL(tc.m_dosEolCount, numDosEols);
-//		BOOST_CHECK_EQUAL(tc.m_macEolCount, numMacEols);
-//		BOOST_CHECK_EQUAL(tc.m_unxEolCount, numUnixEols);
-//		BOOST_CHECK_EQUAL(tc.m_dosEolCount + tc.m_macEolCount + tc.m_unxEolCount, totalEols);
-//		BOOST_CHECK_EQUAL(static_cast<int>(tc.m_eolType), static_cast<int>(eolType));
-//		dumpHex(out.str());
-//		BOOST_CHECK_EQUAL(tc.m_pUnxOutput, out.str());
-//	}
-//}
-//
-//BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE(FileMoveTestSuite)
+
+static constexpr array k_testCases =
+{
+	"regexmvtest/file0.tex"sv,
+	"regexmvtest/file0.txt"sv,
+	"regexmvtest/file1.txt"sv,
+	"regexmvtest/file2.txt"sv,
+	"regexmvtest/File3.txt"sv,
+	"regexmvtest/file4.txt"sv,
+	"regexmvtest/subdir/File5.tex"sv,
+	"regexmvtest/subdir/file5.txt"sv,
+	"regexmvtest/subdir/file6.txt"sv,
+	"regexmvtest/subdir/file7.txt"sv,
+	"regexmvtest/subdir/file8.txt"sv,
+	"regexmvtest/file9.txt"sv,
+	"regexmvtest/file10.txt"sv,
+	"regexmvtest/file11.txt"sv,
+	"regexmvtest/file12.txt"sv,
+};
+
+static constexpr string_view k_expectedResults = R"(
+regexmvtest/file0.tex
+regexmvtest/file00.txt
+regexmvtest/file01.txt
+regexmvtest/file02.txt
+regexmvtest/file03.txt
+regexmvtest/file04.txt
+regexmvtest/file09.txt
+regexmvtest/file10.txt
+regexmvtest/file11.txt
+regexmvtest/file12.txt
+regexmvtest/subdir
+regexmvtest/subdir/File5.tex
+regexmvtest/subdir/file05.txt
+regexmvtest/subdir/file06.txt
+regexmvtest/subdir/file07.txt
+regexmvtest/subdir/file08.txt
+)";
+
+static char const*const k_cmdLineArgs[] = { "-i", "-r", "regexmvtest", "file([0-9])\\.txt", "file0$1.txt" };
+
+BOOST_AUTO_TEST_CASE(fileMoveTest)
+{
+	// Assumes top-level dir of all test cases is the same:
+	auto firstTC = k_testCases.front();
+	auto firstSlashPos = firstTC.find('/');
+	BOOST_CHECK(firstSlashPos != string_view::npos);
+	auto rootDir = fs::path{firstTC.substr(0, firstSlashPos)};
+	PathDeleter deleter(rootDir);
+
+	for (auto const& tc : k_testCases)
+	{
+		auto tcPath = fs::path{tc};
+		create_directories(tcPath.parent_path());
+		auto stream = ofstream{tcPath};
+		stream << tc << endl;
+	}
+
+	RegExMove app(k_cmdLineArgs);
+	app.run();
+
+	auto firstEntry = fs::recursive_directory_iterator{rootDir};
+	auto lastEntry = fs::recursive_directory_iterator{};
+	vector<string> actualResultsVec;
+	for (auto it = firstEntry; it != lastEntry; ++it)
+	{
+		auto pathStr = it->path().generic_string();
+		actualResultsVec.push_back(pathStr);
+		BOOST_TEST_MESSAGE("Found file: " << pathStr);
+	}
+	sort(begin(actualResultsVec), end(actualResultsVec));
+	auto actualResults = string{"\n"};
+	for (auto const& result : actualResultsVec)
+	{
+		actualResults += result;
+		actualResults += "\n";
+	}
+	BOOST_CHECK_EQUAL(k_expectedResults, actualResults);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

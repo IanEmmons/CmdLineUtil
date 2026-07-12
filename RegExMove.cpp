@@ -168,11 +168,11 @@ int RegExMove::run() const
 {
 	if (m_recursiveSearch)
 	{
-		processDirectoryEntries<fs::directory_iterator>();
+		processDirectoryEntries<fs::recursive_directory_iterator>();
 	}
 	else
 	{
-		processDirectoryEntries<fs::recursive_directory_iterator>();
+		processDirectoryEntries<fs::directory_iterator>();
 	}
 	return EXIT_SUCCESS;
 }

@@ -1,6 +1,6 @@
 
-#if !defined(FILEDELETER_H_INCLUDED)
-#define FILEDELETER_H_INCLUDED
+#if !defined(PATHDELETER_H_INCLUDED)
+#define PATHDELETER_H_INCLUDED
 
 #include <filesystem>
 #include <format>
@@ -53,4 +53,4 @@ private:
 	bool			m_ownershipReleased;
 };
 
-#endif // FILEDELETER_H_INCLUDED
+#endif // PATHDELETER_H_INCLUDED
