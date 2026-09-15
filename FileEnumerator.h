@@ -2,20 +2,15 @@
 #if !defined(FILEENUMERATOR_H_INCLUDED)
 #define FILEENUMERATOR_H_INCLUDED
 
-#include <boost/range/adaptor/filtered.hpp>
-#include <boost/range/adaptor/map.hpp>
-#include <boost/range/adaptor/transformed.hpp>
-#include <boost/range/adaptor/uniqued.hpp>
-#include <boost/range/algorithm/for_each.hpp>
-#include <boost/range/iterator_range.hpp>
+#include <algorithm>
 #include <filesystem>
 #include <map>
+#include <ranges>
 #include <regex>
+#include <set>
 #include <string>
 #include <utility>
-#if defined(CMDLINEUTIL_TEST_MODE)
 #include <vector>
-#endif
 
 class CmdLineFileSpec
 {
@@ -42,6 +37,7 @@ class FileEnumerator
 {
 public:
 	using Path = ::std::filesystem::path;
+	using PathList = ::std::vector<Path>;
 
 	FileEnumerator()
 		: m_isRecursive(false), m_fileSpecMap() {}
@@ -55,29 +51,25 @@ public:
 		{ return m_isRecursive; }
 	size_t numFileSpecs() const
 		{ return m_fileSpecMap.size(); }
+	PathList getSortedFileSpecList() const;
 
 	// FileProcessingFunctor takes a single parameter of type
 	// "const std::filesystem::path&" and returns "void".
 	template<typename FileProcessingFunctor>
 	void enumerateFiles(FileProcessingFunctor functor) const
 		{
-			::boost::for_each(m_fileSpecMap
-					| ::boost::adaptors::map_keys
-					| ::boost::adaptors::uniqued
-					| ::boost::adaptors::transformed(
+			auto filePathView = m_fileSpecMap
+				| ::std::views::keys;
+			::std::set<Path> uniqueDirs{begin(filePathView), end(filePathView)};
+			::std::ranges::for_each(uniqueDirs
+					| ::std::views::transform(
 						[this] (const Path& dir) { return dirToDirPlusRegex(dir); }),
 				[this, functor] (const DirPlusRegex& dirPlusRegex) { processRootDir(dirPlusRegex, functor); });
 		}
 
-#if defined(CMDLINEUTIL_TEST_MODE)
-	// Testing facilities:
-	using PathList = ::std::vector<Path>;
-	void getFileSpecList(PathList& fileSpecList) const;
-#endif
-
 private:
 	using FileSpecMap = ::std::multimap<Path, CmdLineFileSpec>;
-	using RootDirRng = ::boost::iterator_range<FileSpecMap::const_iterator>;
+	using RootDirRange = ::std::ranges::subrange<FileSpecMap::const_iterator>;
 	using DirPlusRegex = ::std::pair<Path, ::std::regex>;
 	using DirEntry = ::std::filesystem::directory_entry;
 	using DirIter = ::std::filesystem::directory_iterator;
@@ -87,7 +79,7 @@ private:
 	// pattern1, pattern2, pattern3, then this method produces a
 	// single pattern that looks like this:
 	//    ^(?:pattern1)|(?:pattern2)|(?:pattern3)$
-	static ::std::string combineRegexPatterns(const RootDirRng& rootRng);
+	static ::std::string combineRegexPatterns(const RootDirRange& rootRng);
 
 	DirPlusRegex dirToDirPlusRegex(const Path& dir) const;
 	static bool isFile(const Path& p)	// canonical() resolves symlinks
@@ -98,11 +90,11 @@ private:
 	template<typename DirIterType, typename FileProcessingFunctor>
 	void processRootDirHelper(const DirPlusRegex& dirPlusRegex, FileProcessingFunctor functor) const
 	{
-		::boost::for_each(::boost::make_iterator_range(
+		::std::ranges::for_each(::std::ranges::subrange(
 					DirIterType(dirPlusRegex.first), DirIterType())
-				| ::boost::adaptors::transformed(
+				| ::std::views::transform(
 					[] (const DirEntry& de) { return de.path(); })
-				| ::boost::adaptors::filtered(
+				| ::std::views::filter(
 					[regex = dirPlusRegex.second] (const Path& p)
 						{ return isFile(p) && matchesWildcard(p, regex); }),
 			functor);

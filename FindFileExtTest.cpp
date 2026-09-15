@@ -8,8 +8,8 @@
 #include "TestUtil.h"
 #include "Utils.h"
 
+#include <algorithm>
 #include <boost/range/algorithm_ext/for_each.hpp>
-#include <boost/range/algorithm/sort.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
 #include <string>
@@ -21,6 +21,9 @@ namespace utd = ::boost::unit_test::data;
 
 using ::std::begin;
 using ::std::end;
+using ::std::ranges::sort;
+using ::std::size_t;
+using ::std::span;
 using ::std::string;
 
 using PathList = ::std::vector<fs::path>;
@@ -64,7 +67,7 @@ BOOST_AUTO_TEST_SUITE(CmdLineParseOkTestSuite)
 
 struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 {
-	template<::std::size_t N, ::std::size_t M>
+	template<size_t N, size_t M>
 	CmdLineParseOkTestCase(const char*const(&args)[N], bool isRecursive,
 			bool includeCounts, bool outputAsWildcards,
 			const char*const(&fileList)[M]) noexcept :
@@ -72,7 +75,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 		m_isRecursive(isRecursive),
 		m_includeCounts(includeCounts),
 		m_outputAsWildcards(outputAsWildcards),
-		m_fileList(::std::span{fileList, M})
+		m_fileList(span{fileList, M})
 		{}
 
 	bool			m_isRecursive;
@@ -125,11 +128,9 @@ BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 	BOOST_CHECK_EQUAL(tc.m_fileList.size(), app.m_fileEnumerator.numFileSpecs());
 
 	PathList tcList(begin(tc.m_fileList), end(tc.m_fileList));
-	b::sort(tcList);
+	sort(tcList);
 
-	PathList appList;
-	app.m_fileEnumerator.getFileSpecList(appList);
-	b::sort(appList);
+	auto appList = app.m_fileEnumerator.getSortedFileSpecList();
 
 	b::for_each(tcList, appList, checkEqual);
 }
@@ -142,18 +143,18 @@ BOOST_AUTO_TEST_SUITE(CountFilesTestSuite)
 
 struct CountFilesTestCase : public CmdLineParseTestCase
 {
-	template<::std::size_t N>
+	template<size_t N>
 	CountFilesTestCase(const char*const(&args)[N], bool isRecursive,
-		::std::size_t hCount, ::std::size_t cppCount) noexcept :
+		size_t hCount, size_t cppCount) noexcept :
 		CmdLineParseTestCase(args),
 		m_isRecursive(isRecursive),
 		m_hCount(hCount),
 		m_cppCount(cppCount)
 		{}
 
-	bool				m_isRecursive;
-	::std::size_t	m_hCount;
-	::std::size_t	m_cppCount;
+	bool		m_isRecursive;
+	size_t	m_hCount;
+	size_t	m_cppCount;
 };
 
 static char const*const k_args00[] = { "findext", "TempTestDir" };

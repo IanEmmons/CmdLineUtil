@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <locale>
+#include <ranges>
 #include <string_view>
 
 #if defined(CMDLINEUTIL_TEST_MODE)
@@ -17,6 +18,12 @@ template<typename T, ::std::size_t N>
 constexpr ::std::size_t arrayLen(T(&)[N]) noexcept
 {
 	return N;
+}
+
+template<typename T, ::std::size_t N>
+constexpr ::std::ranges::subrange<T*> arrayToRange(T arr[N]) noexcept
+{
+	return ::std::ranges::subrange{::std::begin(arr), ::std::end(arr)};
 }
 
 inline bool isIEqual(::std::string_view str1, ::std::string_view str2)

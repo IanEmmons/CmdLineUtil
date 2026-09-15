@@ -6,12 +6,11 @@
 #include <format>
 #include <iostream>
 
-namespace b = ::boost;
-
 using ::std::cout;
 using ::std::endl;
 using ::std::format;
 using ::std::ostream;
+using ::std::ranges::for_each;
 using ::std::string;
 using ::std::string_view;
 
@@ -98,7 +97,7 @@ int FindFileExt::run()
 	countFiles();
 
 	cout << endl;
-	b::for_each(m_extToCountMap,
+	for_each(m_extToCountMap,
 		[this](const StrToCountMap::value_type& extToCountMapping)
 		{
 			reportExtension(extToCountMapping);

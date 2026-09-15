@@ -8,13 +8,14 @@
 #include "Utils.h"
 
 #include <boost/range/algorithm_ext/for_each.hpp>
-#include <boost/range/algorithm/sort.hpp>
+#include <boost/range/iterator_range_core.hpp>
 #include <boost/test/unit_test.hpp>
 #include <string_view>
 
 namespace b = ::boost;
 namespace fs = ::std::filesystem;
 
+using ::std::ranges::sort;
 using ::std::string_view;
 
 BOOST_AUTO_TEST_SUITE(FileEnumeratorTestSuite)
@@ -57,7 +58,7 @@ BOOST_AUTO_TEST_CASE(ExpandWildCardTest)
 		fe.enumerateFiles([&fileList] (const fs::path& path) { fileList.push_back(path); });
 
 		BOOST_CHECK_EQUAL(arrayLen(k_matchList1), fileList.size());
-		b::sort(fileList);
+		sort(fileList);
 		b::for_each(b::make_iterator_range(k_matchList1), fileList, checkEqual);
 	}
 
@@ -70,7 +71,7 @@ BOOST_AUTO_TEST_CASE(ExpandWildCardTest)
 		fe.enumerateFiles([&fileList] (const fs::path& path) { fileList.push_back(path); });
 
 		BOOST_CHECK_EQUAL(arrayLen(k_matchList2), fileList.size());
-		b::sort(fileList);
+		sort(fileList);
 		b::for_each(b::make_iterator_range(k_matchList2), fileList, checkEqual);
 	}
 
@@ -85,7 +86,7 @@ BOOST_AUTO_TEST_CASE(ExpandWildCardTest)
 		fe.enumerateFiles([&fileList] (const fs::path& path) { fileList.push_back(path); });
 
 		BOOST_CHECK_EQUAL(arrayLen(k_matchList3), fileList.size());
-		b::sort(fileList);
+		sort(fileList);
 		b::for_each(b::make_iterator_range(k_matchList3), fileList, checkEqual);
 	}
 
@@ -100,7 +101,7 @@ BOOST_AUTO_TEST_CASE(ExpandWildCardTest)
 		fe.enumerateFiles([&fileList] (const fs::path& path) { fileList.push_back(path); });
 
 		BOOST_CHECK_EQUAL(arrayLen(k_matchList4), fileList.size());
-		b::sort(fileList);
+		sort(fileList);
 		b::for_each(b::make_iterator_range(k_matchList4), fileList, checkEqual);
 	}
 }

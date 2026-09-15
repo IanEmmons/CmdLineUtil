@@ -2,15 +2,15 @@
 #include "FileEnumerator.h"
 
 #include <boost/algorithm/string/replace.hpp>
-#include <boost/range/algorithm_ext/push_back.hpp>
 #include <format>
 
-namespace b = ::boost;
-namespace bad = ::boost::adaptors;
 namespace balg = ::boost::algorithm;
+namespace views = ::std::views;
 
 using ::std::format;
 using ::std::make_pair;
+using ::std::ranges::for_each;
+using ::std::ranges::sort;
 using ::std::regex;
 using ::std::runtime_error;
 using ::std::string;
@@ -53,23 +53,31 @@ void FileEnumerator::insert(const Path& fileSpecPath)
 	m_fileSpecMap.insert(make_pair(fs.dir(), fs));
 }
 
-#if defined(CMDLINEUTIL_TEST_MODE)
-void FileEnumerator::getFileSpecList(PathList& fileSpecList) const
+FileEnumerator::PathList FileEnumerator::getSortedFileSpecList() const
 {
-	b::push_back(fileSpecList, m_fileSpecMap
-		| bad::map_values
-		| bad::transformed([] (const CmdLineFileSpec& clfs) { return clfs.filePath(); }));
-}
+	auto filePathView = m_fileSpecMap
+		| views::values
+		| views::transform([] (const CmdLineFileSpec& clfs) { return clfs.filePath(); });
+#ifdef __cpp_lib_containers_ranges
+#  warning "NOTICE: Construction of vectors from ranges is supported -- consider removing older code"
+	// Starting with C++23, we can do this instead:
+	using ::std::from_range;
+	PathList result{from_range, filePathView};
+#else
+	PathList result{begin(filePathView), end(filePathView)};
 #endif
+	sort(result);
+	return result;
+}
 
 // Due to the context in which this is called, rootRng is guaranteed not to be empty.
-string FileEnumerator::combineRegexPatterns(const RootDirRng& rootRng)
+string FileEnumerator::combineRegexPatterns(const RootDirRange& rootRng)
 {
 	string result;
 	size_t numStringsConcatenated = 0;
-	b::for_each(rootRng
-			| bad::map_values
-			| bad::transformed([] (const CmdLineFileSpec& clfs) { return clfs.wildcard(); }),
+	for_each(rootRng
+			| views::values
+			| views::transform([] (const CmdLineFileSpec& clfs) { return clfs.wildcard(); }),
 		[&] (string_view str)
 		{
 			if (numStringsConcatenated > 0)
@@ -86,7 +94,8 @@ string FileEnumerator::combineRegexPatterns(const RootDirRng& rootRng)
 
 FileEnumerator::DirPlusRegex FileEnumerator::dirToDirPlusRegex(const Path& dir) const
 {
-	RootDirRng rootRng(m_fileSpecMap.equal_range(dir));
-	const regex rex(combineRegexPatterns(rootRng));
+	auto iterPair = m_fileSpecMap.equal_range(dir);
+	RootDirRange rootDirRng{iterPair.first, iterPair.second};
+	const regex rex{combineRegexPatterns(rootDirRng)};
 	return make_pair(dir, rex);
 }

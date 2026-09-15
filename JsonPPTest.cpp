@@ -8,8 +8,8 @@
 #include "TestUtil.h"
 #include "Utils.h"
 
+#include <algorithm>
 #include <boost/range/algorithm_ext/for_each.hpp>
-#include <boost/range/algorithm/sort.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
 #include <format>
@@ -26,6 +26,10 @@ using ::std::end;
 using ::std::format;
 using ::std::ifstream;
 using ::std::ios_base;
+using ::std::ostream;
+using ::std::ranges::sort;
+using ::std::size_t;
+using ::std::span;
 using ::std::string;
 using ::std::string_view;
 
@@ -68,14 +72,14 @@ BOOST_AUTO_TEST_SUITE(CmdLineParseOkTestSuite)
 
 struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 {
-	template<::std::size_t N, ::std::size_t M>
+	template<size_t N, size_t M>
 	CmdLineParseOkTestCase(const char*const(&args)[N], bool inPlaceMode, bool minifyMode,
 			bool isRecursive, const char*const(&fileList)[M]) noexcept :
 		CmdLineParseTestCase(args),
 		m_inPlaceMode(inPlaceMode),
 		m_minifyMode(minifyMode),
 		m_isRecursive(isRecursive),
-		m_fileList(::std::span{fileList, M})
+		m_fileList(span{fileList, M})
 		{}
 
 	bool		m_inPlaceMode;
@@ -113,10 +117,8 @@ BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 	BOOST_CHECK_EQUAL(tc.m_fileList.size(), app.m_fileEnumerator.numFileSpecs());
 
 	PathList tcList(begin(tc.m_fileList), end(tc.m_fileList));
-	b::sort(tcList);
-	PathList appList;
-	app.m_fileEnumerator.getFileSpecList(appList);
-	b::sort(appList);
+	sort(tcList);
+	auto appList = app.m_fileEnumerator.getSortedFileSpecList();
 	b::for_each(tcList, appList, checkEqual);
 }
 
@@ -147,7 +149,7 @@ static PrettyPrintTestCase const k_testCases[] =
 	}
 };
 
-static ::std::ostream& operator<<(::std::ostream& ostrm, PrettyPrintTestCase const& tc)
+static ostream& operator<<(ostream& ostrm, PrettyPrintTestCase const& tc)
 {
 	return ostrm << "Test case with output " << tc.m_expectedOutputFile;
 }
@@ -157,7 +159,7 @@ static string readFile(const JsonPP::Path& path)
 	ifstream in(path, ios_base::in);
 	if (!in)
 	{
-		throw ::std::ios_base::failure(
+		throw ios_base::failure(
 			format("Unable to open file '{0}'", path.generic_string()));
 	}
 
@@ -171,7 +173,7 @@ static string readFile(const JsonPP::Path& path)
 
 	if (!in && !in.eof())
 	{
-		throw ::std::ios_base::failure(
+		throw ios_base::failure(
 			format("Unable to read file '{0}'", path.generic_string()));
 	}
 

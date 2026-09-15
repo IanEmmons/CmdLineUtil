@@ -9,8 +9,8 @@
 #include "Utils.h"
 #include "Xeol.h"
 
+#include <algorithm>
 #include <boost/range/algorithm_ext/for_each.hpp>
-#include <boost/range/algorithm/sort.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
 #include <string>
@@ -25,7 +25,11 @@ namespace utd = ::boost::unit_test::data;
 using ::std::begin;
 using ::std::end;
 using ::std::istringstream;
+using ::std::ostream;
 using ::std::ostringstream;
+using ::std::ranges::sort;
+using ::std::size_t;
+using ::std::span;
 using ::std::string;
 
 using PathList = ::std::vector<fs::path>;
@@ -87,7 +91,7 @@ BOOST_AUTO_TEST_SUITE(CmdLineParseOkTestSuite)
 
 struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 {
-	template<::std::size_t N, ::std::size_t M>
+	template<size_t N, size_t M>
 	CmdLineParseOkTestCase(const char*const(&args)[N], bool isInQueryMode,
 			Xeol::EolType targetEolType, bool forceTranslation,
 			const char*const(&fileList)[M]) noexcept :
@@ -95,7 +99,7 @@ struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 		m_isInQueryMode(isInQueryMode),
 		m_targetEolType(targetEolType),
 		m_forceTranslation(forceTranslation),
-		m_fileList(::std::span{fileList, M})
+		m_fileList(span{fileList, M})
 		{}
 
 	bool				m_isInQueryMode;
@@ -150,10 +154,8 @@ BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 	BOOST_CHECK_EQUAL(tc.m_fileList.size(), app.m_fileEnumerator.numFileSpecs());
 
 	PathList tcList(begin(tc.m_fileList), end(tc.m_fileList));
-	b::sort(tcList);
-	PathList appList;
-	app.m_fileEnumerator.getFileSpecList(appList);
-	b::sort(appList);
+	sort(tcList);
+	auto appList = app.m_fileEnumerator.getSortedFileSpecList();
 	b::for_each(tcList, appList, checkEqual);
 }
 
@@ -222,7 +224,7 @@ static ScanFileTestCase const k_testCases[] =
 	}
 };
 
-static ::std::ostream& operator<<(::std::ostream& ostrm, ScanFileTestCase const& tc)
+static ostream& operator<<(ostream& ostrm, ScanFileTestCase const& tc)
 {
 	return ostrm << "Test case with input \"" << tc.m_pInput << "\"";
 }

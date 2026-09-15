@@ -9,8 +9,8 @@
 #include "TestUtil.h"
 #include "Utils.h"
 
+#include <algorithm>
 #include <boost/range/algorithm_ext/for_each.hpp>
-#include <boost/range/algorithm/sort.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/data/test_case.hpp>
 #include <numeric>
@@ -22,9 +22,14 @@ namespace b = ::boost;
 namespace fs = ::std::filesystem;
 namespace utd = ::boost::unit_test::data;
 
+using ::std::accumulate;
 using ::std::begin;
 using ::std::end;
 using ::std::istringstream;
+using ::std::ostream;
+using ::std::ranges::sort;
+using ::std::size_t;
+using ::std::span;
 using ::std::string;
 
 using PathList = ::std::vector<fs::path>;
@@ -64,12 +69,12 @@ BOOST_AUTO_TEST_SUITE(CmdLineParseOkTestSuite)
 
 struct CmdLineParseOkTestCase : public CmdLineParseTestCase
 {
-	template<::std::size_t N, ::std::size_t M>
+	template<size_t N, size_t M>
 	CmdLineParseOkTestCase(const char*const(&args)[N], bool isRecursive,
 			const char*const(&fileList)[M]) noexcept :
 		CmdLineParseTestCase(args),
 		m_isRecursive(isRecursive),
-		m_fileList(::std::span{fileList, M})
+		m_fileList(span{fileList, M})
 		{}
 
 	bool			m_isRecursive;
@@ -100,11 +105,9 @@ BOOST_DATA_TEST_CASE(cmdLineParseOkTest, utd::make(k_testCases), tc)
 	BOOST_CHECK_EQUAL(tc.m_fileList.size(), app.m_fileEnumerator.numFileSpecs());
 
 	PathList tcList(begin(tc.m_fileList), end(tc.m_fileList));
-	b::sort(tcList);
+	sort(tcList);
 
-	PathList appList;
-	app.m_fileEnumerator.getFileSpecList(appList);
-	b::sort(appList);
+	auto appList = app.m_fileEnumerator.getSortedFileSpecList();
 
 	b::for_each(tcList, appList, checkEqual);
 }
@@ -235,7 +238,7 @@ static ScanFileTestCase const k_testCases[] =
 	}
 };
 
-static ::std::ostream& operator<<(::std::ostream& ostrm, const ScanFileTestCase& tc)
+static ostream& operator<<(ostream& ostrm, const ScanFileTestCase& tc)
 {
 	return ostrm << "Test case with input \"" << tc.m_pInput << "\"";
 }
@@ -256,7 +259,7 @@ BOOST_DATA_TEST_CASE(scanFileTest, utd::make(k_testCases), tc)
 	BOOST_CHECK_EQUAL(tc.m_numMixedLines, get(lineTypeCounts, IndentType::mixed));
 	BOOST_CHECK_EQUAL(tc.m_numIndLines, get(lineTypeCounts, IndentType::indeterminate));
 
-	auto totalLines{::std::accumulate(begin(lineTypeCounts), end(lineTypeCounts), size_t{0},
+	auto totalLines{accumulate(begin(lineTypeCounts), end(lineTypeCounts), size_t{0},
 		[](size_t value, const LineTypeCounts::value_type& mapEntry){ return value + mapEntry.second; })};
 	BOOST_CHECK_EQUAL(
 		tc.m_numSpaceLines + tc.m_numTabLines + tc.m_numJavadocTabLines
