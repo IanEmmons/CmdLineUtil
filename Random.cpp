@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
+#include <format>
 #include <iostream>
 #include <random>
 #include <stdexcept>
@@ -13,6 +14,7 @@
 using ::std::cout;
 using ::std::default_random_engine;
 using ::std::endl;
+using ::std::format;
 using ::std::invalid_argument;
 using ::std::ostream;
 using ::std::out_of_range;
